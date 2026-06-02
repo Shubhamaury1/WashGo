@@ -1,0 +1,25 @@
+import Package from "../models/Package.js";
+
+export const createPackage = async (req, res) => {
+  try {
+    const pkg = await Package.create(req.body);
+
+    res.status(201).json(pkg);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+export const getPackages = async (req, res) => {
+  try {
+    const packages = await Package.find().populate("vehicleId");
+
+    res.json(packages);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
