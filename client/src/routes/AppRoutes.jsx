@@ -12,6 +12,7 @@ import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
 import Address from "../pages/Address/Address";
 import BookingSuccess from "../pages/BookingSuccess/BookingSuccess";
 import ProtectedRoute from "./ProtectedRoute";
+import MyBookings from "../pages/MyBookings/MyBookings";
 
 const AppRoutes = () => {
   return (
@@ -22,7 +23,7 @@ const AppRoutes = () => {
       <Route path="/reviews" element={<Reviews />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/booking" element={<Booking />} />
-      {/* <Route path="/dashboard" element={<CustomerDashboard />} /> */}
+      <Route path="/my-bookings" element={<MyBookings />} />
       <Route
         path="/dashboard"
         element={

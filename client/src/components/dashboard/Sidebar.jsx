@@ -12,8 +12,7 @@ import { useDispatch } from "react-redux";
 
 import { logout } from "../../redux/authSlice";
 
-import { useNavigate } from "react-router-dom";
-
+import { NavLink, useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
 
@@ -45,15 +44,34 @@ const Sidebar = () => {
 
       {/* Menu */}
       <div className="space-y-3">
-        <button className="w-full flex items-center gap-4 bg-blue-600 text-white px-5 py-4 rounded-2xl font-medium">
+        <NavLink
+          to="/dashboard"
+          className={({ isActive }) =>
+            `w-full flex items-center gap-4 px-5 py-4 rounded-2xl font-medium transition ${
+              isActive
+                ? "bg-blue-600 text-white"
+                : "text-gray-700 hover:bg-gray-100"
+            }`
+          }
+        >
           <FaHome />
           Dashboard
-        </button>
+        </NavLink>
 
-        <button className="w-full flex items-center gap-4 hover:bg-gray-100 text-gray-700 px-5 py-4 rounded-2xl transition">
+        <NavLink
+          to="/my-bookings"
+          className={({ isActive }) =>
+            `w-full flex items-center gap-4 px-5 py-4 rounded-2xl font-medium transition ${
+              isActive
+                ? "bg-blue-600 text-white"
+                : "text-gray-700 hover:bg-gray-100"
+            }`
+          }
+          // className="w-full flex items-center gap-4 hover:bg-gray-100 text-gray-700 px-5 py-4 rounded-2xl transition"
+        >
           <FaCalendarAlt />
           My Bookings
-        </button>
+        </NavLink>
 
         <button className="w-full flex items-center gap-4 hover:bg-gray-100 text-gray-700 px-5 py-4 rounded-2xl transition">
           <FaWallet />

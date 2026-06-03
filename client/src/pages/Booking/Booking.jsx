@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import vehicleApi from "../../api/vehicleApi";
 import packageApi from "../../api/packageApi";
 
+
 const Booking = () => {
   const [step, setStep] = useState(1);
 
@@ -20,6 +21,7 @@ const Booking = () => {
 
   const [selectedPackage, setSelectedPackage] = useState(null);
 
+  
   useEffect(() => {
     loadData();
   }, []);

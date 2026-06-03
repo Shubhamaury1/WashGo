@@ -2,15 +2,11 @@ import { Link } from "react-router-dom";
 import MainLayout from "../../layouts/MainLayout";
 
 const BookingSuccess = () => {
+  const booking = JSON.parse(localStorage.getItem("latest_order"));
 
-  const latestOrder = JSON.parse(localStorage.getItem("latest_order"));
+  const address = booking?.address;
 
-  const booking = latestOrder?.booking;
-
-  const address = latestOrder?.address;
-
-
-  const orderNumber = "WG" + Math.floor(Math.random() * 999999);
+ const orderNumber = booking?.bookingId;
 
   return (
     <MainLayout>
@@ -40,23 +36,27 @@ const BookingSuccess = () => {
               </p>
 
               <p>
-                <strong>Vehicle:</strong> {booking?.vehicle}
+                <strong>Vehicle:</strong>
+                {booking?.vehicleId?.name || "N/A"}
               </p>
 
               <p>
-                <strong>Wash Type:</strong> {booking?.washType}
+                <strong>Wash Type:</strong> {booking?.packageId?.packageName || "N/A"}
               </p>
 
               <p>
-                <strong>Date:</strong> {booking?.date}
+                <strong>Date:</strong>
+                {booking?.bookingDate
+                  ? new Date(booking.bookingDate).toLocaleDateString()
+                  : "N/A"}
               </p>
 
               <p>
-                <strong>Time Slot:</strong> {booking?.time}
+                <strong>Time Slot:</strong> {booking?.timeSlot || "N/A"}
               </p>
 
               <p>
-                <strong>Price:</strong> ₹{booking?.price}
+                <strong>Price:</strong>₹{booking?.amount || "N/A"}
               </p>
             </div>
           </div>
@@ -67,20 +67,20 @@ const BookingSuccess = () => {
 
             <div className="space-y-4 text-lg">
               <p>
-                <strong>Name:</strong> {address?.fullName}
+                <strong>Name:</strong> {address?.name || "N/A"}
               </p>
 
               <p>
-                <strong>Mobile:</strong> {address?.mobile}
+                <strong>Mobile:</strong> {address?.mobile || "N/A"}
               </p>
 
               <p>
-                <strong>Location:</strong> {address?.nearLocation},
-                {address?.district},{address?.state}
+                <strong>Location:</strong> {address?.address || "N/A"} {address?.city }
+                {address?.state}
               </p>
 
               <p>
-                <strong>Pincode:</strong> {address?.pincode}
+                <strong>Pincode:</strong> {address?.pincode || "N/A"}
               </p>
             </div>
           </div>
