@@ -19,9 +19,13 @@ const bookingSchema = new mongoose.Schema(
       ref: "Package",
     },
 
-    addressId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Address",
+    address: {
+      name: String,
+      mobile: String,
+      address: String,
+      city: String,
+      state: String,
+      pincode: String,
     },
 
     bookingDate: Date,
@@ -32,7 +36,14 @@ const bookingSchema = new mongoose.Schema(
 
     status: {
       type: String,
-      enum: ["Pending", "Confirmed", "Completed", "Cancelled"],
+      enum: [
+        "Pending",
+        "Confirmed",
+        "Assigned",
+        "In Progress",
+        "Completed",
+        "Cancelled",
+      ],
       default: "Pending",
     },
   },

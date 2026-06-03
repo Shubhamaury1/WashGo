@@ -22,10 +22,14 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+     status:{
+      type:Boolean,
+      default:true
+   },
 
     role: {
       type: String,
-      enum: ["user", "admin"],
+      enum: ["user", "admin", "washer"],
       default: "user",
     },
   },

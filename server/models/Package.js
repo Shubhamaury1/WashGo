@@ -15,6 +15,10 @@ const packageSchema = new mongoose.Schema(
 
     description: String,
 
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
     price: {
       type: Number,
       required: true,
