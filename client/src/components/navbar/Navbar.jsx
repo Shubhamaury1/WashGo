@@ -33,17 +33,17 @@ const Navbar = () => {
         </li>
 
         <li>
-          <Link to="/admin">Admin</Link>
+          <Link to="/admin/dashboard">Admin</Link>
         </li>
       </ul>
 
       {/* Dashboard Button */}
-      <Link
+      {/* <Link
         to="/dashboard"
         className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl transition"
       >
         Dashboard
-      </Link>
+      </Link> */}
       {/* <Link
         to="/login"
         className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl transition"

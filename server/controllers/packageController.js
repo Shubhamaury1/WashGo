@@ -23,3 +23,33 @@ export const getPackages = async (req, res) => {
     });
   }
 };
+
+export const updatePackage = async (req, res) => {
+  try {
+    const pkg = await Package.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+
+    res.json(pkg);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+export const togglePackageStatus = async (req, res) => {
+  try {
+    const pkg = await Package.findById(req.params.id);
+
+    pkg.isActive = !pkg.isActive;
+
+    await pkg.save();
+
+    res.json(pkg);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};

@@ -135,7 +135,7 @@ const Booking = () => {
                     }`}
                   >
                     <img
-                      src={`http://localhost:5000/${vehicle.image}`}
+                      src={`http://localhost:5000${vehicle.image}`}
                       alt={vehicle.name}
                       className="h-32 w-full object-cover rounded-2xl"
                     />

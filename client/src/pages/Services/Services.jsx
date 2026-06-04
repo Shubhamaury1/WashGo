@@ -53,7 +53,7 @@ const Services = () => {
               className="bg-white rounded-[35px] shadow-lg overflow-hidden hover:shadow-2xl transition duration-300"
             >
               <img
-                src={`http://localhost:5000/${service.image}`}
+                src={`http://localhost:5000${service.image}`}
                 alt={service.name}
                 className="w-full h-64 object-cover"
               />
