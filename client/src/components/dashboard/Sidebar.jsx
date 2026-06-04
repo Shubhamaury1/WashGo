@@ -28,7 +28,7 @@ const Sidebar = () => {
     navigate("/");
   };
   return (
-    <aside className="w-full lg:w-[280px] bg-white rounded-3xl shadow-lg p-6 h-fit">
+    <aside className="w-full lg:w-[270px] bg-white rounded-3xl shadow-lg p-6 h-fit">
       {/* Logo */}
       <div className="flex items-center gap-3 mb-10">
         <div className="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center text-white font-bold text-xl">
@@ -43,7 +43,7 @@ const Sidebar = () => {
       </div>
 
       {/* Menu */}
-      <div className="space-y-3">
+      <div className="space-y-1">
         <NavLink
           to="/dashboard"
           className={({ isActive }) =>
@@ -100,7 +100,7 @@ const Sidebar = () => {
       </div>
 
       {/* Bottom */}
-      <div className="mt-12">
+      <div className="space-y-3 mt-50">
         <button
           onClick={handleLogout}
           className="w-full flex items-center justify-center gap-3 bg-red-500 hover:bg-red-600 text-white py-4 rounded-2xl transition"
@@ -114,3 +114,4 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+
