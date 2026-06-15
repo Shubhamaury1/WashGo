@@ -258,3 +258,19 @@ export const resetPassword = async (req, res) => {
     });
   }
 };
+
+// GET USERS (ADMIN)
+export const getUsers = async (req, res) => {
+  try {
+    const users = await User.find({ role: "user" }, "-password").sort({
+      createdAt: -1,
+    });
+
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};

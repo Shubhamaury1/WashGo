@@ -2,6 +2,7 @@ import MainLayout from "../../layouts/MainLayout";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import vehicleApi from "../../api/vehicleApi";
+import { useSelector } from "react-redux";
 
 import {
   FaCarSide,
@@ -14,6 +15,8 @@ import {
 } from "react-icons/fa";
 
 const Services = () => {
+  const BaseURL = import.meta.env.VITE_API_IMG_URL;
+  const { user } = useSelector((state) => state.auth);
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -25,7 +28,8 @@ const Services = () => {
     try {
       const res = await vehicleApi.getVehicles();
 
-      setServices(res.data);
+      // setServices(res.data);
+       setServices(res.data.filter((vehicle) => vehicle.isActive));
     } catch (error) {
       console.log(error);
     } finally {
@@ -77,7 +81,7 @@ const Services = () => {
                 >
                   <div className="relative overflow-hidden">
                     <img
-                      src={`http://localhost:5000${service.image}`}
+                      src={`${BaseURL}${service.image}`}
                       alt={service.name}
                       className="w-full h-72 object-cover group-hover:scale-110 transition duration-700"
                     />
@@ -98,7 +102,9 @@ const Services = () => {
                   <div className="p-6">
                     <div className="flex items-center gap-2 text-blue-600">
                       <FaCarSide />
-                      <span>Professional Vehicle Care</span>
+                      <span>
+                        {service?.title || "Professional Vehicle Care"}
+                      </span>
                     </div>
 
                     <p className="mt-4 text-gray-600 leading-7 min-h-[80px]">
@@ -115,7 +121,8 @@ const Services = () => {
                     </div>
 
                     <Link
-                      to="/booking"
+                      // to="/booking"
+                      to={user ? "/booking" : "/login"}
                       className="mt-6 bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-2xl font-semibold flex justify-center items-center gap-2"
                     >
                       Book Service
@@ -206,7 +213,7 @@ const Services = () => {
               </p>
 
               <Link
-                to="/booking"
+                // to="/booking"
                 className="inline-block mt-8 bg-blue-600 text-white px-8 py-4 rounded-2xl font-bold hover:bg-blue-700"
               >
                 Book Now

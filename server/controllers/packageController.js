@@ -28,7 +28,7 @@ export const updatePackage = async (req, res) => {
   try {
     const pkg = await Package.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
-    });
+    }).populate("vehicleId");
 
     res.json(pkg);
   } catch (error) {

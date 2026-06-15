@@ -13,6 +13,11 @@ const vehicleSchema = new mongoose.Schema(
     },
 
     description: String,
+    title: {
+      type: String,
+      required: true,
+      max: 100,
+    },
 
     isActive: {
       type: Boolean,

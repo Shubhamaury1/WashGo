@@ -1,66 +1,76 @@
-
+import { useEffect, useState } from "react";
 import { FaCar, FaBoxOpen, FaCalendarAlt, FaUsers } from "react-icons/fa";
+import vehicleApi from "../../api/vehicleApi";
+import packageApi from "../../api/packageApi";
+import bookingApi from "../../api/bookingApi";
+import authApi from "../../api/authApi";
 
 const Dashboard = () => {
-  const stats = [
+  const [recentBookings, setRecentBookings] = useState([]);
+  const [stats, setStats] = useState({
+    vehicles: 0,
+    packages: 0,
+    bookings: 0,
+    users: 0,
+  });
+
+  useEffect(() => {
+    loadDashboardData();
+  }, []);
+
+  const loadDashboardData = async () => {
+    try {
+      const [vehiclesRes, packagesRes, bookingsRes, usersRes] =
+        await Promise.all([
+          vehicleApi.getVehicles(),
+          packageApi.getPackages(),
+          bookingApi.getBookings(),
+          authApi.getUsers(),
+        ]);
+
+      setStats({
+        vehicles: vehiclesRes.data.length,
+        packages: packagesRes.data.length,
+        bookings: bookingsRes.data.length,
+        users: usersRes.data.length,
+      });
+
+      // Last 5 bookings
+      const lastFiveBookings = bookingsRes.data
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .slice(0, 5);
+
+      setRecentBookings(lastFiveBookings);
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const cards = [
     {
       title: "Vehicles",
-      value: "10",
+      value: stats.vehicles,
       icon: <FaCar className="text-4xl text-blue-600" />,
-      bg: "bg-blue-50",
+      bg: "bg-blue-100",
     },
     {
       title: "Packages",
-      value: "25",
+      value: stats.packages,
       icon: <FaBoxOpen className="text-4xl text-green-600" />,
-      bg: "bg-green-50",
+      bg: "bg-green-100",
     },
     {
       title: "Bookings",
-      value: "150",
+      value: stats.bookings,
       icon: <FaCalendarAlt className="text-4xl text-orange-500" />,
-      bg: "bg-orange-50",
+      bg: "bg-orange-100",
     },
     {
       title: "Users",
-      value: "50",
+      value: stats.users,
       icon: <FaUsers className="text-4xl text-purple-600" />,
-      bg: "bg-purple-50",
-    },
-  ];
-
-  const bookings = [
-    {
-      id: "WG-24001",
-      customer: "Shubham Maurya",
-      vehicle: "Car",
-      package: "Premium Wash",
-      amount: "₹399",
-      status: "Active",
-    },
-    {
-      id: "WG-24002",
-      customer: "Rahul Kumar",
-      vehicle: "Bike",
-      package: "Basic Wash",
-      amount: "₹149",
-      status: "Completed",
-    },
-    {
-      id: "WG-24003",
-      customer: "Priya Sharma",
-      vehicle: "SUV",
-      package: "Deluxe Wash",
-      amount: "₹599",
-      status: "Pending",
-    },
-    {
-      id: "WG-24004",
-      customer: "Amit Singh",
-      vehicle: "Car",
-      package: "Premium Wash",
-      amount: "₹399",
-      status: "Completed",
+      bg: "bg-purple-100",
     },
   ];
 
@@ -71,7 +81,7 @@ const Dashboard = () => {
       {/* Cards */}
 
       <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-6">
-        {stats.map((item, index) => (
+        {cards.map((item, index) => (
           <div
             key={index}
             className={`${item.bg} p-6 rounded-3xl hover:scale-105 transition-all duration-300`}
@@ -106,34 +116,45 @@ const Dashboard = () => {
             </tr>
           </thead>
 
+         
           <tbody>
-            {bookings.map((booking) => (
-              <tr key={booking.id} className="border-b hover:bg-slate-50">
-                <td className="py-4">{booking.id}</td>
+            {recentBookings.map((booking) => (
+              <tr key={booking._id} className="border-b hover:bg-slate-50">
+                <td className="py-4">{booking._id.slice(-6).toUpperCase()}</td>
 
-                <td>{booking.customer}</td>
+                <td>{booking.userId?.fullName || booking.customerName || "N/A"}</td>
 
-                <td>{booking.vehicle}</td>
+                <td>{booking.vehicleId?.name || "N/A"}</td>
 
-                <td>{booking.package}</td>
+                <td>{booking.packageId?.packageName || "N/A"}</td>
 
-                <td className="font-semibold">{booking.amount}</td>
+                <td className="font-semibold">
+                  ₹{booking.packageId?.price || 0}
+                </td>
 
                 <td>
                   <span
                     className={`px-3 py-1 rounded-full text-sm font-medium ${
-                      booking.status === "Active"
-                        ? "bg-green-100 text-green-700"
-                        : booking.status === "Completed"
-                          ? "bg-blue-100 text-blue-700"
-                          : "bg-yellow-100 text-yellow-700"
+                      booking.status === "Completed"
+                        ? "bg-blue-100 text-blue-700"
+                        : booking.status === "Pending"
+                          ? "bg-yellow-100 text-yellow-700"
+                          : "bg-green-100 text-green-700"
                     }`}
                   >
-                    {booking.status}
+                    {booking.status || "Booked"}
                   </span>
                 </td>
               </tr>
             ))}
+
+            {recentBookings.length === 0 && (
+              <tr>
+                <td colSpan="6" className="text-center py-8 text-gray-500">
+                  No bookings found
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

@@ -10,6 +10,8 @@ const authApi = {
   verifyOtp: (data) => API.post("/auth/verify-otp", data),
 
   resetPassword: (data) => API.post("/auth/reset-password", data),
+
+  getUsers: () => API.get("/auth/users"),
 };
 
 export default authApi;

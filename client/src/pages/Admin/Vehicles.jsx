@@ -1,8 +1,8 @@
-
 import { useEffect, useState } from "react";
 import vehicleApi from "../../api/vehicleApi";
 
 const Vehicles = () => {
+  const BaseURL = import.meta.env.VITE_API_IMG_URL;
   const [vehicles, setVehicles] = useState([]);
   const [editingId, setEditingId] = useState(null);
 
@@ -12,6 +12,7 @@ const Vehicles = () => {
   const [form, setForm] = useState({
     name: "",
     description: "",
+    title: "",
   });
 
   useEffect(() => {
@@ -34,6 +35,7 @@ const Vehicles = () => {
 
     formData.append("name", form.name);
     formData.append("description", form.description);
+    formData.append("title", form.title);
 
     if (image) {
       formData.append("image", image);
@@ -57,6 +59,7 @@ const Vehicles = () => {
       setForm({
         name: "",
         description: "",
+        title: "",
       });
 
       setImage(null);
@@ -72,9 +75,10 @@ const Vehicles = () => {
     setForm({
       name: vehicle.name,
       description: vehicle.description,
+      title: vehicle.title,
     });
 
-    setPreview(`http://localhost:5000${vehicle.image}`);
+    setPreview(`${BaseURL}${vehicle.image}`);
 
     window.scrollTo({
       top: 0,
@@ -105,6 +109,7 @@ const Vehicles = () => {
     setForm({
       name: "",
       description: "",
+      title: "",
     });
 
     setImage(null);
@@ -165,6 +170,19 @@ const Vehicles = () => {
               setForm({
                 ...form,
                 name: e.target.value,
+              })
+            }
+            className="w-full h-14 px-5 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500"
+          />
+          
+          <input
+            type="text"
+            placeholder="Vehicle Title"
+            value={form.title}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                title: e.target.value,
               })
             }
             className="w-full h-14 px-5 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500"
@@ -275,7 +293,7 @@ const Vehicles = () => {
             >
               <div className="overflow-hidden">
                 <img
-                  src={`http://localhost:5000${vehicle.image}`}
+                  src={`${BaseURL}${vehicle.image}`}
                   alt={vehicle.name}
                   className="w-full h-64 object-cover hover:scale-105 transition duration-500"
                 />

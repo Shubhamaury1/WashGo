@@ -6,6 +6,7 @@ import packageApi from "../../api/packageApi";
 
 
 const Booking = () => {
+  const BaseURL = import.meta.env.VITE_API_IMG_URL;
   const [step, setStep] = useState(1);
 
   const [selectedVehicle, setSelectedVehicle] = useState("");
@@ -34,7 +35,8 @@ const Booking = () => {
 
       setVehicles(vehicleRes.data);
 
-      setPackages(packageRes.data);
+      // setPackages(packageRes.data);
+      setPackages(packageRes.data.filter((pack) => pack.isActive));
     } catch (error) {
       console.log(error);
     }
@@ -135,7 +137,7 @@ const Booking = () => {
                     }`}
                   >
                     <img
-                      src={`http://localhost:5000${vehicle.image}`}
+                      src={`${BaseURL}${vehicle.image}`}
                       alt={vehicle.name}
                       className="h-32 w-full object-cover rounded-2xl"
                     />

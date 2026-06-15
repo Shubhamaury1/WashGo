@@ -8,6 +8,8 @@ export const createVehicle = async (req, res) => {
       image: req.file ? `/uploads/${req.file.filename}` : "",
 
       description: req.body.description,
+      title: req.body.title,
+      
     });
 
     res.status(201).json(vehicle);
@@ -35,6 +37,7 @@ export const updateVehicle = async (req, res) => {
     const updateData = {
       name: req.body.name,
       description: req.body.description,
+      title: req.body.title,
     };
 
     if (req.file) {
