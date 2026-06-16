@@ -4,6 +4,8 @@ import bookingApi from "../../api/bookingApi";
 const Bookings = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [editingId, setEditingId] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState("");
 
   useEffect(() => {
     loadBookings();
@@ -21,19 +23,33 @@ const Bookings = () => {
     }
   };
 
+  const handleUpdate = async (id) => {
+    try {
+      await bookingApi.updateBookingStatus(id, selectedStatus);
+
+      setEditingId(null);
+
+      loadBookings();
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const getStatusStyle = (status) => {
     switch (status?.toLowerCase()) {
       case "completed":
-        return "bg-blue-100 text-blue-700";
+        return "bg-green-100 text-blue-700";
 
       case "pending":
         return "bg-yellow-100 text-yellow-700";
 
-      case "active":
-        return "bg-green-100 text-green-700";
+      case "confirmed":
+        return "bg-blue-100 text-green-700";
 
       case "cancelled":
         return "bg-red-100 text-red-700";
+      
+      case "assigned":
+        return "bg-purple-100 text-purple-700";
 
       default:
         return "bg-gray-100 text-gray-700";
@@ -100,7 +116,7 @@ const Bookings = () => {
                       })}
                     </td>
 
-                    <td className="py-5">
+                    {/* <td className="py-5">
                       <span
                         className={`px-4 py-1 rounded-full text-sm font-semibold ${getStatusStyle(
                           booking.status,
@@ -108,12 +124,59 @@ const Bookings = () => {
                       >
                         {booking.status}
                       </span>
+                    </td> */}
+
+                    <td className="py-5">
+                      {editingId === booking._id ? (
+                        <select
+                          value={selectedStatus}
+                          onChange={(e) => setSelectedStatus(e.target.value)}
+                          className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                          <option value="Pending">Pending</option>
+                          <option value="Confirmed">Confirmed</option>
+                          <option value="Assigned">Assigned</option>
+                          <option value="In Progress">In Progress</option>
+                          <option value="Completed">Completed</option>
+                          <option value="Cancelled">Cancelled</option>
+                        </select>
+                      ) : (
+                        <span
+                          className={`inline-block px-3 py-1 rounded-full text-sm font-semibold ${getStatusStyle(
+                            booking.status,
+                          )}`}
+                        >
+                          {booking.status}
+                        </span>
+                      )}
                     </td>
 
                     <td className="py-5">
-                      <button className="bg-blue-100 text-blue-700 px-4 py-2 rounded-xl font-medium hover:bg-blue-200">
+                      {/* <button className="bg-blue-100 text-blue-700 px-4 py-2 rounded-xl font-medium hover:bg-blue-200">
                         View
-                      </button>
+                      </button> */}
+
+                    
+                        {booking.status !== "Completed" &&
+                          (editingId === booking._id ? (
+                            <button
+                              onClick={() => handleUpdate(booking._id)}
+                              className="bg-green-600 text-white px-4 py-2 rounded-xl"
+                            >
+                              Save
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() => {
+                                setEditingId(booking._id);
+                                setSelectedStatus(booking.status);
+                              }}
+                              className="bg-yellow-500 text-white px-4 py-2 rounded-xl font-medium hover:bg-yellow-700"
+                            >
+                              Update
+                            </button>
+                          ))}
+                 
                     </td>
                   </tr>
                 ))

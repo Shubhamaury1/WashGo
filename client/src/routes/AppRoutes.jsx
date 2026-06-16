@@ -19,6 +19,7 @@ import Vehicles from "../pages/Admin/Vehicles";
 import Packages from "../pages/Admin/Packages";
 import Bookings from "../pages/Admin/Bookings";
 import Users from "../pages/Admin/Users";
+import SingleBookingReview from "../pages/SingleBookingReview/SingleBookingReview";
 
 const AppRoutes = () => {
   return (
@@ -38,6 +39,7 @@ const AppRoutes = () => {
         }
       />
       <Route path="/my-bookings" element={<MyBookings />} />
+      <Route path="/my-bookings/:id" element={<SingleBookingReview />} />
       <Route
         path="/dashboard"
         element={

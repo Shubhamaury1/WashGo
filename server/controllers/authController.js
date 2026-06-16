@@ -90,7 +90,7 @@ export const loginUser = async (req, res) => {
       success: true,
       message: "Login Successful",
 
-      token: generateToken(user._id),
+      token: generateToken(user._id, user.role),
 
       user: {
         id: user._id,

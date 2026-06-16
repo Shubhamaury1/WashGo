@@ -3,7 +3,7 @@ import vehicleRoutes from "./routes/vehicleRoutes.js";
 import packageRoutes from "./routes/packageRoutes.js";
 import bookingRoutes from "./routes/bookingRoutes.js";
 import addressRoutes from "./routes/addressRoutes.js";
-
+import reviewRoutes from "./routes/reviewRoutes.js";
 // dotenv.config();
 
 import connectDB from "./config/db.js";
@@ -20,6 +20,9 @@ app.use("/api/packages", packageRoutes);
 app.use("/api/bookings", bookingRoutes);
 
 app.use("/api/addresses", addressRoutes);
+
+app.use("/api/reviews", reviewRoutes);
+
 // connect mongodb
 connectDB();
 

@@ -4,31 +4,39 @@ import StatsCard from "../../components/dashboard/StatsCard";
 import VehicleCard from "../../components/dashboard/VehicleCard";
 import BookingCard from "../../components/dashboard/BookingCard";
 import MainLayout from "../../layouts/MainLayout";
-
-const vehicles = [
-  {
-    title: "Car",
-    image:
-      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1000&auto=format&fit=crop",
-  },
-  {
-    title: "Bike",
-    image:
-      "https://images.unsplash.com/photo-1558981806-ec527fa84c39?q=80&w=1000&auto=format&fit=crop",
-  },
-  {
-    title: "Truck",
-    image:
-      "https://images.unsplash.com/photo-1519003722824-194d4455a60c?q=80&w=1000&auto=format&fit=crop",
-  },
-  {
-    title: "Tractor",
-    image:
-      "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?q=80&w=1000&auto=format&fit=crop",
-  },
-];
+import { useEffect, useState } from "react";
+import vehicleApi from "../../api/vehicleApi";
 
 const CustomerDashboard = () => {
+  const BaseURL = import.meta.env.VITE_API_IMG_URL;
+  const [vehicles, setVehicles] = useState([]);
+
+  useEffect(() => {
+    const fetchVehicles = async () => {
+      try {
+        const response = await vehicleApi.getVehicles();
+
+        // Keep only active vehicles
+        const activeVehicles = response.data.filter(
+          (vehicle) => vehicle.isActive,
+        );
+
+        // Randomly shuffle and take 4
+        const randomVehicles = [...activeVehicles]
+          .sort(() => Math.random() - 0.5)
+          .slice(0, 4);
+
+        // setVehicles(activeVehicles);
+        setVehicles(randomVehicles);
+
+      } catch (error) {
+        console.error("Error fetching vehicles:", error);
+      }
+    };
+
+    fetchVehicles();
+  }, []);
+
   return (
     <MainLayout>
       <div className="min-h-screen bg-gray-100 p-4 lg:p-8">
@@ -67,9 +75,17 @@ const CustomerDashboard = () => {
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                {vehicles.map((vehicle, index) => (
-                  <VehicleCard key={index} {...vehicle} />
-                ))}
+                {vehicles.length > 0 ? (
+                  vehicles.map((vehicle) => (
+                    <VehicleCard
+                      key={vehicle._id}
+                      title={vehicle.name}
+                      image={`${BaseURL}${vehicle.image}`}
+                    />
+                  ))
+                ) : (
+                  <p>No active vehicles found.</p>
+                )}
               </div>
             </div>
 
@@ -87,7 +103,7 @@ const CustomerDashboard = () => {
 
               <div className="space-y-6">
                 <BookingCard />
-                <BookingCard />
+      
               </div>
             </div>
           </div>

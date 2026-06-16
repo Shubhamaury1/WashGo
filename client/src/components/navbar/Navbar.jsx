@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { getRole } from "../../utils/getRole";
 const Navbar = () => {
 
+  const { token } = useSelector((state) => state.auth);
+  const role = getRole(token);
   const { user } = useSelector((state) => state.auth);
   return (
     <nav className="w-full bg-white shadow-sm px-4 md:px-10 py-4 flex items-center justify-between sticky top-0 z-50">
@@ -32,9 +35,11 @@ const Navbar = () => {
           <Link to="/contact">Contact</Link>
         </li>
 
-        <li>
-          <Link to="/admin/dashboard">Admin</Link>
-        </li>
+        {role === "admin" && (
+          <li>
+            <Link to="/admin/dashboard">Admin</Link>
+          </li>
+        )}
       </ul>
 
       {/* Dashboard Button */}

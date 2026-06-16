@@ -51,7 +51,7 @@ const ServicesSection = () => {
       const activeVehicles = vehiclesRes.data.filter(
         (vehicle) => vehicle.isActive,
       );
-      console.log("Active Vehicles:", activeVehicles);
+     
 
       const vehiclesWithPrice = activeVehicles.map((vehicle) => {
         const vehiclePackages = packagesRes.data.filter(
