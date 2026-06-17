@@ -49,6 +49,8 @@ function Users() {
 
                 <th className="text-left py-5 font-semibold">Phone</th>
 
+                <th className="text-left py-5 font-semibold">Role</th>
+
                 <th className="text-left py-5 font-semibold">Status</th>
 
                 <th className="text-left py-5 font-semibold">Joined</th>
@@ -94,6 +96,9 @@ function Users() {
 
                     {/* Mobile */}
                     <td className="py-4 text-gray-600">{user.mobile}</td>
+
+                    {/* Role */}
+                    <td className="py-4 text-gray-600">{user.role}</td>
 
                     {/* Status */}
                     <td className="py-4">

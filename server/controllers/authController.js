@@ -12,6 +12,8 @@ import generateOtp from "../utils/generateOtp.js";
 
 import otpTemplate from "../utils/otpTemplate.js";
 
+import { auth } from "../config/firebaseAdmin.js";
+
 // REGISTER
 export const registerUser = async (req, res) => {
   try {
@@ -110,7 +112,6 @@ export const loginUser = async (req, res) => {
 // FORGOT PASSWORD
 export const forgotPassword = async (req, res) => {
   try {
-
     const { email } = req.body;
 
     // check user
@@ -130,9 +131,7 @@ export const forgotPassword = async (req, res) => {
     await Otp.create({
       email,
       otp,
-      expiresAt: new Date(
-        Date.now() + 10 * 60 * 1000
-      ), // 10 min
+      expiresAt: new Date(Date.now() + 10 * 60 * 1000), // 10 min
     });
 
     // send email
@@ -143,19 +142,14 @@ export const forgotPassword = async (req, res) => {
 
       subject: "WashGo Password Reset OTP",
 
-      html: otpTemplate(
-        user.fullName,
-        otp
-      ),
+      html: otpTemplate(user.fullName, otp),
     });
 
     res.status(200).json({
       success: true,
       message: "OTP sent successfully",
     });
-
   } catch (error) {
-
     res.status(500).json({
       success: false,
       message: error.message,
@@ -166,7 +160,6 @@ export const forgotPassword = async (req, res) => {
 // VERIFY OTP
 export const verifyOtp = async (req, res) => {
   try {
-
     const { email, otp } = req.body;
 
     // check otp
@@ -183,9 +176,7 @@ export const verifyOtp = async (req, res) => {
     }
 
     // expiry check
-    if (
-      validOtp.expiresAt < new Date()
-    ) {
+    if (validOtp.expiresAt < new Date()) {
       return res.status(400).json({
         success: false,
         message: "OTP Expired",
@@ -196,9 +187,7 @@ export const verifyOtp = async (req, res) => {
       success: true,
       message: "OTP Verified Successfully",
     });
-
   } catch (error) {
-
     res.status(500).json({
       success: false,
       message: error.message,
@@ -271,6 +260,50 @@ export const getUsers = async (req, res) => {
     res.status(500).json({
       success: false,
       message: error.message,
+    });
+  }
+};
+
+// LOGIN WIH GOOGLE
+export const googleLogin = async (req, res) => {
+  try {
+    const { token } = req.body;
+
+    const decodedToken = await auth.verifyIdToken(token);
+
+    const { uid, email, name, picture } = decodedToken;
+
+    let user = await User.findOne({ email });
+
+    const randomPassword = Math.random().toString(36).slice(-10);
+    const hashedPassword = await bcrypt.hash(randomPassword, 10);
+
+    if (!user) {
+      user = await User.create({
+        fullName: name,
+        email,
+        googleId: uid,
+        photo: picture,
+        provider: "google",
+        mobile: "1234567890",
+        password: hashedPassword,
+      });
+    }
+
+    const jwtToken = generateToken(user._id);
+
+    res.json({
+      success: true,
+      token: jwtToken,
+      user,
+    });
+  } catch (err) {
+    console.error("Google Login Error:", err);
+
+    res.status(401).json({
+      success: false,
+      message: err.message,
+      error: err,
     });
   }
 };

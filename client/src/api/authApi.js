@@ -12,6 +12,8 @@ const authApi = {
   resetPassword: (data) => API.post("/auth/reset-password", data),
 
   getUsers: () => API.get("/auth/users"),
+
+  googleLogin: (data) => API.post("/auth/google-login", data),
 };
 
 export default authApi;
