@@ -4,14 +4,15 @@ import packageRoutes from "./routes/packageRoutes.js";
 import bookingRoutes from "./routes/bookingRoutes.js";
 import addressRoutes from "./routes/addressRoutes.js";
 import reviewRoutes from "./routes/reviewRoutes.js";
+import paymentRoutes from "./routes/paymentRoutes.js";
 // dotenv.config();
 
 import connectDB from "./config/db.js";
-
+dotenv.config();
 import app from "./app.js";
 
   
-dotenv.config();
+
 
 app.use("/api/vehicles", vehicleRoutes);
 
@@ -22,6 +23,8 @@ app.use("/api/bookings", bookingRoutes);
 app.use("/api/addresses", addressRoutes);
 
 app.use("/api/reviews", reviewRoutes);
+
+app.use("/api/payments", paymentRoutes);
 
 // connect mongodb
 connectDB();

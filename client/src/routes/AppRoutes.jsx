@@ -20,6 +20,7 @@ import Packages from "../pages/Admin/Packages";
 import Bookings from "../pages/Admin/Bookings";
 import Users from "../pages/Admin/Users";
 import SingleBookingReview from "../pages/SingleBookingReview/SingleBookingReview";
+import Payment from "../pages/Payment/Payment";
 
 const AppRoutes = () => {
   return (
@@ -56,6 +57,15 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <Address />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/payment"
+        element={
+          <ProtectedRoute>
+            <Payment />
           </ProtectedRoute>
         }
       />

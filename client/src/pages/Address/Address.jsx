@@ -48,47 +48,61 @@ const Address = () => {
     }
   };
 
-  const handleConfirmBooking = async () => {
-    try {
-      const booking = JSON.parse(localStorage.getItem("washgo_booking"));
+//   const handleConfirmBooking = async () => {
+//     try {
+//       const booking = JSON.parse(localStorage.getItem("washgo_booking"));
 
-      const user = JSON.parse(localStorage.getItem("user"));
+//       const user = JSON.parse(localStorage.getItem("user"));
 
-console.log("USER:", user); 
+// console.log("USER:", user); 
 
-      const payload = {
-        bookingId: "WG" + Date.now(),
+//       const payload = {
+//         bookingId: "WG" + Date.now(),
 
-        userId: user.id,
+//         userId: user.id,
 
-        vehicleId: booking.vehicleId,
+//         vehicleId: booking.vehicleId,
 
-        packageId: booking.packageId,
+//         packageId: booking.packageId,
 
-        addressId: selectedAddress._id,
+//         addressId: selectedAddress._id,
 
-        bookingDate: booking.date,
+//         bookingDate: booking.date,
 
-        timeSlot: booking.timeSlot,
+//         timeSlot: booking.timeSlot,
 
-        amount: booking.amount,
-      };
+//         amount: booking.amount,
+//       };
 
-      const response = await bookingApi.createBooking(payload);
+//       const response = await bookingApi.createBooking(payload);
 
-      localStorage.setItem(
-        "latest_order",
-        JSON.stringify(response.data.booking),
-      );
+//       localStorage.setItem(
+//         "latest_order",
+//         JSON.stringify(response.data.booking),
+//       );
 
-      navigate("/booking-success");
-    } catch (error) {
-      console.log(error);
-      alert("Booking Failed");
-    }
-  };
+//       navigate("/booking-success");
+//     } catch (error) {
+//       console.log(error);
+//       alert("Booking Failed");
+//     }
+//   };
 
   // input change
+  
+  const handleConfirmBooking = () => {
+    if (!selectedAddress) {
+      alert("Please select an address");
+      return;
+    }
+
+    localStorage.setItem("selected_address", JSON.stringify(selectedAddress));
+
+    navigate("/payment");
+  };
+  
+  
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -399,7 +413,7 @@ console.log("USER:", user);
               onClick={handleConfirmBooking}
               className="mt-10 w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white py-5 rounded-2xl text-lg font-semibold"
             >
-              Confirm Booking
+              Continue To Payment
             </button>
           )}
         </div>
