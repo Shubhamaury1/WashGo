@@ -50,6 +50,34 @@ const Booking = () => {
     "04:00 PM - 05:00 PM",
   ];
 
+  const isSlotDisabled = (slot) => {
+    if (!selectedDate) return false;
+
+    // Today's date in yyyy-mm-dd
+    const today = new Date().toISOString().split("T")[0];
+
+    // Future date
+    if (selectedDate > today) return false;
+
+    // Past date
+    if (selectedDate < today) return true;
+
+    // Same day
+    const now = new Date();
+
+    const endTime = slot.split(" - ")[1];
+
+    let [time, meridian] = endTime.split(" ");
+    let [hour, minute] = time.split(":").map(Number);
+
+    if (meridian === "PM" && hour !== 12) hour += 12;
+    if (meridian === "AM" && hour === 12) hour = 0;
+
+    const slotEnd = new Date();
+    slotEnd.setHours(hour, minute, 0, 0);
+
+    return now >= slotEnd;
+  };
   return (
     <MainLayout>
       <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
@@ -223,7 +251,7 @@ const Booking = () => {
               <div>
                 <h2 className="font-semibold text-lg mb-6">Select Time Slot</h2>
 
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {/* <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {timeSlots.map((slot, index) => (
                     <button
                       key={index}
@@ -237,6 +265,28 @@ const Booking = () => {
                       {slot}
                     </button>
                   ))}
+                </div> */}
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {timeSlots.map((slot, index) => {
+                    const disabled = isSlotDisabled(slot);
+
+                    return (
+                      <button
+                        key={slot}
+                        disabled={disabled}
+                        onClick={() => setSelectedTime(slot)}
+                        className={`py-4 rounded-2xl border-2 font-semibold transition ${
+                          disabled
+                            ? "bg-gray-200 text-gray-400 border-gray-200 cursor-not-allowed"
+                            : selectedTime === slot
+                              ? "bg-blue-600 text-white border-blue-600"
+                              : "border-gray-300 hover:border-blue-500"
+                        }`}
+                      >
+                        {slot}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 

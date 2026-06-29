@@ -21,6 +21,8 @@ import Bookings from "../pages/Admin/Bookings";
 import Users from "../pages/Admin/Users";
 import SingleBookingReview from "../pages/SingleBookingReview/SingleBookingReview";
 import Payment from "../pages/Payment/Payment";
+import ChatPage from "../pages/Chat/ChatPage";
+import AdminChatPage from "../pages/Admin/AdminChatPage";
 
 const AppRoutes = () => {
   return (
@@ -30,6 +32,7 @@ const AppRoutes = () => {
       <Route path="/services" element={<Services />} />
       <Route path="/reviews" element={<Reviews />} />
       <Route path="/contact" element={<Contact />} />
+      <Route path="/chat" element={<ChatPage />} />
       {/* <Route path="/booking" element={<Booking />} /> */}
       <Route
         path="/booking"
@@ -81,6 +84,8 @@ const AppRoutes = () => {
         <Route path="/admin/bookings" element={<Bookings />} />
 
         <Route path="/admin/users" element={<Users />} />
+
+        <Route path="/admin/chat" element={<AdminChatPage />} />
       </Route>
     </Routes>
   );

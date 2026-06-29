@@ -1,12 +1,42 @@
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import MainLayout from "../../layouts/MainLayout";
+import chatApi from "../../api/chatApi";
 
 const BookingSuccess = () => {
+  const navigate = useNavigate();
   const booking = JSON.parse(localStorage.getItem("latest_order"));
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const [chatCreated, setChatCreated] = useState(false);
+  const [error, setError] = useState("");
 
   const address = booking?.address;
-
   const orderNumber = booking?.bookingId;
+
+  // Auto-create chat for booking
+  useEffect(() => {
+    const createChatForBooking = async () => {
+      try {
+        console.log("Creating chat with:", { bookingId: booking._id, customerId: user.id });
+        
+        const res = await chatApi.createChat({
+          bookingId: booking._id,
+          customerId: user.id,
+        });
+        
+        console.log("Chat created:", res.data);
+        setChatCreated(true);
+      } catch (err) {
+        console.error("Failed to create chat:", err.response?.data || err.message);
+        setError(err.response?.data?.message || "Failed to create chat");
+      }
+    };
+
+    if (booking?._id && user?.id && !chatCreated) {
+      createChatForBooking();
+    }
+  }, [booking?._id, user?.id, chatCreated]);
 
   return (
     <MainLayout>
@@ -96,12 +126,25 @@ const BookingSuccess = () => {
             </Link>
 
             <Link
+              to="/chat"
+              className="flex-1 bg-green-600 hover:bg-green-700 text-white py-4 rounded-2xl text-lg font-semibold transition"
+            >
+              💬 Chat with Admin
+            </Link>
+
+            <Link
               to="/tracking"
               className="flex-1 border border-blue-600 text-blue-600 hover:bg-blue-50 py-4 rounded-2xl text-lg font-semibold transition"
             >
               Track Booking
             </Link>
           </div>
+
+          {error && (
+            <div className="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+              {error}
+            </div>
+          )}
         </div>
       </div>
     </MainLayout>

@@ -6,7 +6,7 @@ import {
   FaStar,
   FaCog,
   FaSignOutAlt,
-  FaQuestion,
+  FaComments,
 } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 
@@ -88,11 +88,19 @@ const Sidebar = () => {
           Reviews
         </button>
 
-        <button className="w-full flex items-center gap-4 hover:bg-gray-100 text-gray-700 px-5 py-4 rounded-2xl transition">
-          <FaQuestion />
-          Help & Support
-        </button>
-
+        <NavLink
+          to="/chat"
+          className={({ isActive }) =>
+            `w-full flex items-center gap-4 px-5 py-4 rounded-2xl font-medium transition ${
+              isActive
+                ? "bg-blue-600 text-white"
+                : "text-gray-700 hover:bg-gray-100"
+            }`
+          }
+        >
+          <FaComments />
+          Chat
+        </NavLink>
         <button className="w-full flex items-center gap-4 hover:bg-gray-100 text-gray-700 px-5 py-4 rounded-2xl transition">
           <FaCog />
           Settings

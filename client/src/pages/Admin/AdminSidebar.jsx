@@ -7,6 +7,7 @@ import {
   FaStar,
   FaCog,
   FaSignOutAlt,
+  FaComments,
 } from "react-icons/fa";
 
 import { NavLink, Link, useNavigate } from "react-router-dom";
@@ -32,7 +33,6 @@ const AdminSidebar = () => {
 
   return (
     <aside className="w-[280px] bg-white rounded-[30px] shadow-lg  p-5  fixed top-24 flex flex-col left-6  h-[calc(100vh-120px)]">
-
       {/* Logo */}
 
       <Link to="/" className="flex items-center gap-3 mb-10">
@@ -73,6 +73,11 @@ const AdminSidebar = () => {
         <NavLink to="/admin/users" className={menuClass}>
           <FaUsers />
           Users
+        </NavLink>
+
+        <NavLink to="/admin/chat" className={menuClass}>
+          <FaComments />
+          Chats
         </NavLink>
 
         <button className="w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-slate-600 hover:bg-slate-100">

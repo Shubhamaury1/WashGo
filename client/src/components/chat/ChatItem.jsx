@@ -1,0 +1,72 @@
+import moment from "moment";
+import { FaCircle } from "react-icons/fa";
+import { useSelector } from "react-redux";
+
+const ChatItem = ({ chat, currentUser, selected, onClick }) => {
+  const onlineUsers = useSelector((state) => state.socket.onlineUsers);
+
+  let otherUser;
+
+  if (chat.customer?._id !== currentUser.id) {
+    otherUser = chat.customer;
+  } else if (chat.currentSupport === "admin") {
+    otherUser = chat.admin;
+  } else {
+    otherUser = chat.washer;
+  }
+
+  const isOnline = onlineUsers.includes(otherUser?._id);
+
+  return (
+    <div
+      onClick={onClick}
+      className={`flex items-center gap-3 px-4 py-3 cursor-pointer transition-all duration-200 border-b
+      ${
+        selected
+          ? "bg-gradient-to-r from-blue-50 to-blue-100 border-l-4 border-l-blue-600"
+          : "hover:bg-gray-50 bg-white"
+      }`}
+    >
+      {/* Avatar with Online Status */}
+      <div className="relative flex-shrink-0">
+        <img
+          src={otherUser?.profileImage || "/default-avatar.png"}
+          alt={otherUser?.fullName}
+          className={`w-12 h-12 rounded-full object-cover ${
+            selected ? "ring-2 ring-blue-500" : "ring-1 ring-gray-200"
+          }`}
+        />
+        {isOnline && (
+          <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
+        )}
+      </div>
+
+      {/* Chat Info */}
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center justify-between gap-2">
+          <h3 className="font-semibold text-gray-800 truncate">
+            {otherUser?.fullName}
+          </h3>
+          {chat.lastMessage && (
+            <span className="text-xs text-gray-400 flex-shrink-0 ml-2">
+              {moment(chat.lastMessage.createdAt).format("hh:mm A")}
+            </span>
+          )}
+        </div>
+
+        <p className="text-sm text-gray-600 truncate mt-1">
+          {chat.lastMessage ? chat.lastMessage.text : "Start chatting..."}
+        </p>
+      </div>
+
+      {/* Online Indicator */}
+      {isOnline && (
+        <div className="flex-shrink-0 ml-2">
+          <FaCircle size={6} className="text-green-500" />
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default ChatItem;
