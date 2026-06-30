@@ -8,7 +8,7 @@ const onlineUsers = new Map();
 export const initSocket = (server) => {
   io = new Server(server, {
     cors: {
-      origin: process.env.CLIENT_URL || "http://localhost:5173",
+      origin: process.env.FRONTEND_URL,
       methods: ["GET", "POST"],
       credentials: true,
     },
@@ -17,9 +17,7 @@ export const initSocket = (server) => {
   io.on("connection", (socket) => {
     console.log("✅ User Connected:", socket.id);
 
-    /**
-     * User Login
-     */
+     // User Login
     socket.on("join", (userId) => {
       onlineUsers.set(userId, socket.id);
 
@@ -32,39 +30,33 @@ export const initSocket = (server) => {
       socket.broadcast.emit("user-online", userId);
     });
 
-    /**
-     * Join Chat Room
-     */
+     // Join Chat Room
     socket.on("join-chat", (chatId) => {
       socket.join(chatId);
 
       console.log(`Socket ${socket.id} joined room ${chatId}`);
     });
 
-    /**
-     * Typing Start
-     */
+
+     //Typing Start
     socket.on("typing", ({ chatId, sender }) => {
       socket.to(chatId).emit("typing", sender);
     });
 
-    /**
-     * Typing Stop
-     */
+
+     // Typing Stop
     socket.on("stop-typing", ({ chatId }) => {
       socket.to(chatId).emit("stop-typing");
     });
 
-    /**
-     * Message Seen
-     */
+
+     // Message Seen
     socket.on("seen", ({ chatId, messageId }) => {
       socket.to(chatId).emit("message-seen", messageId);
     });
 
-    /**
-     * Disconnect
-     */
+
+     // Disconnect
     socket.on("disconnect", () => {
       console.log("❌ User Disconnected");
 

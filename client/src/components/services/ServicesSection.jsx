@@ -10,37 +10,6 @@ const ServicesSection = () => {
     loadServices();
   }, []);
 
-  // const loadServices = async () => {
-  //   try {
-  //     const { data } = await vehicleApi.getVehicles();
-
-  //     // Show only active vehicles
-  //     const activeServices = data.filter((vehicle) => vehicle.isActive);
-
-  //     setServices(activeServices);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-
-  // const loadServices = async () => {
-  //   try {
-  //     const { data } = await vehicleApi.getVehicles();
-
-  //     const activeServices = data.filter((vehicle) => vehicle.isActive);
-
-  //     // Randomly shuffle and take 4
-  //     const randomServices = [...activeServices]
-  //       .sort(() => Math.random() - 0.5)
-  //       .slice(0, 4);
-
-  //     setServices(randomServices);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
   const loadServices = async () => {
     try {
       const [vehiclesRes, packagesRes] = await Promise.all([

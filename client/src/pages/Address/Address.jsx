@@ -31,7 +31,11 @@ const Address = () => {
 
   const loadAddresses = async () => {
     try {
-      const res = await addressApi.getAddresses();
+      const user = JSON.parse(localStorage.getItem("user"));
+
+      const userId = user?._id || user?.id;
+
+      const res = await addressApi.getAddressesByUserId(userId);
 
       setAddresses(res.data);
 
@@ -39,57 +43,16 @@ const Address = () => {
 
       if (defaultAddress) {
         setSelectedAddress(defaultAddress);
+      } else if (res.data.length > 0) {
+        setSelectedAddress(res.data[0]);
       } else {
         setSelectedAddress(null);
       }
-      // setSelectedAddress(null);
     } catch (error) {
       console.log(error);
     }
   };
-
-//   const handleConfirmBooking = async () => {
-//     try {
-//       const booking = JSON.parse(localStorage.getItem("washgo_booking"));
-
-//       const user = JSON.parse(localStorage.getItem("user"));
-
-// console.log("USER:", user); 
-
-//       const payload = {
-//         bookingId: "WG" + Date.now(),
-
-//         userId: user.id,
-
-//         vehicleId: booking.vehicleId,
-
-//         packageId: booking.packageId,
-
-//         addressId: selectedAddress._id,
-
-//         bookingDate: booking.date,
-
-//         timeSlot: booking.timeSlot,
-
-//         amount: booking.amount,
-//       };
-
-//       const response = await bookingApi.createBooking(payload);
-
-//       localStorage.setItem(
-//         "latest_order",
-//         JSON.stringify(response.data.booking),
-//       );
-
-//       navigate("/booking-success");
-//     } catch (error) {
-//       console.log(error);
-//       alert("Booking Failed");
-//     }
-//   };
-
   // input change
-  
   const handleConfirmBooking = () => {
     if (!selectedAddress) {
       alert("Please select an address");
@@ -100,8 +63,6 @@ const Address = () => {
 
     navigate("/payment");
   };
-  
-  
   
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -146,9 +107,8 @@ const Address = () => {
 
     try {
       const user = JSON.parse(localStorage.getItem("user"));
-
       const payload = {
-        userId: user?._id,
+        userId: user?._id || user?.id,
         name: formData.name,
         mobile: formData.mobile,
         address: formData.address,
@@ -191,6 +151,7 @@ const Address = () => {
       alert("Save Failed");
     }
   };
+
   // edit
   const handleEdit = (address) => {
     setEditId(address._id);
@@ -206,6 +167,7 @@ const Address = () => {
 
     setShowForm(true);
   };
+
   // delete
   const handleDelete = async (id) => {
     try {

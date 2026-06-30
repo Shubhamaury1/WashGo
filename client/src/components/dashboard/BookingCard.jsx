@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import bookingApi from "../../api/bookingApi";
+import { Link } from "react-router-dom";
 
 const BookingCard = () => {
    const BaseURL = import.meta.env.VITE_API_IMG_URL;
@@ -87,9 +88,12 @@ const BookingCard = () => {
                 {booking.status}
               </span>
 
-              <button className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-2xl transition">
+              <Link
+                to={`/my-bookings/${booking._id}`}
+                className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-2xl transition"
+              >
                 Track Live
-              </button>
+              </Link>
             </div>
           </div>
         ))

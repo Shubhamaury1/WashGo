@@ -8,6 +8,8 @@ const addressApi = {
   updateAddress: (id, data) => API.put(`/addresses/${id}`, data),
 
   deleteAddress: (id) => API.delete(`/addresses/${id}`),
+
+  getAddressesByUserId: (userId) => API.get(`/addresses/user/${userId}`),
 };
 
 export default addressApi;

@@ -133,7 +133,7 @@ const BookingSuccess = () => {
             </Link>
 
             <Link
-              to="/tracking"
+              to={`/my-bookings/${booking._id}`}
               className="flex-1 border border-blue-600 text-blue-600 hover:bg-blue-50 py-4 rounded-2xl text-lg font-semibold transition"
             >
               Track Booking

@@ -1,9 +1,8 @@
-
 import { useEffect, useState } from "react";
-import MainLayout from "../../layouts/MainLayout";
-import bookingApi from "../../api/bookingApi";
-import Sidebar from "../../components/dashboard/Sidebar";
 import { Link } from "react-router-dom";
+import MainLayout from "../../layouts/MainLayout";
+import Sidebar from "../../components/dashboard/Sidebar";
+import bookingApi from "../../api/bookingApi";
 
 import {
   FaCar,
@@ -62,11 +61,13 @@ const MyBookings = () => {
 
   return (
     <MainLayout>
-      <div className="min-h-screen bg-gray-100 p-4 lg:p-8">
-        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
+      <div className="bg-[#f5f7fb] min-h-screen">
+        <div className="flex p-6 gap-6">
+          {/* Sidebar */}
           <Sidebar />
 
-          <div>
+          {/* Main Content */}
+          <main className="flex-1 ml-[294px]">
             <h1 className="text-4xl font-bold text-[#0d2240] mb-8">
               My Bookings
             </h1>
@@ -76,26 +77,26 @@ const MyBookings = () => {
                 No Bookings Found
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                 {bookings.map((booking) => (
                   <div
                     key={booking._id}
-                    className="bg-white rounded-3xl shadow-lg hover:shadow-2xl transition duration-300 overflow-hidden border"
+                    className="bg-white rounded-3xl shadow-md hover:shadow-2xl transition overflow-hidden border"
                   >
                     {/* Header */}
-                    <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-6 flex justify-between items-center">
+                    <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-4 flex justify-between items-center">
                       <div>
                         <h2 className="text-2xl font-bold">
                           {booking.vehicleId?.name}
                         </h2>
 
-                        <p className="text-sm opacity-90 mt-1">
+                        <p className="text-sm mt-1 opacity-90">
                           Booking ID : {booking.bookingId}
                         </p>
                       </div>
 
                       <span
-                        className={`px-4 py-2 rounded-full text-sm font-bold ${getStatusColor(
+                        className={`px-4 py-2 rounded-full text-sm font-semibold ${getStatusColor(
                           booking.status,
                         )}`}
                       >
@@ -104,10 +105,10 @@ const MyBookings = () => {
                     </div>
 
                     {/* Body */}
-                    <div className="p-4 grid md:grid-cols-2 ">
-                      {/* Booking Details */}
+                    <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-8">
+                      {/* Booking */}
                       <div>
-                        <h3 className="text-lg font-bold text-gray-800 mb-4">
+                        <h3 className="font-bold text-lg mb-4">
                           Booking Details
                         </h3>
 
@@ -145,7 +146,7 @@ const MyBookings = () => {
 
                       {/* Address */}
                       <div>
-                        <h3 className="text-lg font-bold text-gray-800 mb-4">
+                        <h3 className="font-bold text-lg mb-5">
                           Service Address
                         </h3>
 
@@ -180,14 +181,13 @@ const MyBookings = () => {
 
                     {/* Footer */}
                     <div className="border-t bg-gray-50 px-6 py-4 flex justify-between items-center">
-                      <div className="text-sm text-gray-500">
-                        Booking-Date :{" "}
+                      <span className="text-sm text-gray-500">
+                        Booking Date :{" "}
                         {new Date(booking.createdAt).toLocaleDateString(
                           "en-GB",
                         )}
-                      </div>
+                      </span>
 
-                      {/* <div className="text-blue-600 font-semibold">View Details</div> */}
                       <Link
                         to={`/my-bookings/${booking._id}`}
                         className="text-blue-600 font-semibold hover:underline"
@@ -199,7 +199,7 @@ const MyBookings = () => {
                 ))}
               </div>
             )}
-          </div>
+          </main>
         </div>
       </div>
     </MainLayout>

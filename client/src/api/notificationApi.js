@@ -1,19 +1,22 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:5000/api/notifications";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const notificationApi = {
-  getNotifications: (userId) => axios.get(`${BASE_URL}/${userId}`),
+  getNotifications: (userId) =>
+    axios.get(`${BASE_URL}/notifications/${userId}`),
 
-  getUnreadCount: (userId) => axios.get(`${BASE_URL}/count/${userId}`),
+  getUnreadCount: (userId) =>
+    axios.get(`${BASE_URL}/notifications/count/${userId}`),
 
-  markRead: (notificationId) => axios.put(`${BASE_URL}/read/${notificationId}`),
+  markRead: (notificationId) =>
+    axios.put(`${BASE_URL}/notifications/read/${notificationId}`),
 
   deleteNotification: (notificationId) =>
-    axios.delete(`${BASE_URL}/${notificationId}`),
+    axios.delete(`${BASE_URL}/notifications/${notificationId}`),
 
   clearChatNotifications: (userId, chatId) =>
-    axios.delete(`${BASE_URL}/${userId}/${chatId}`),
+    axios.delete(`${BASE_URL}/notifications/${userId}/${chatId}`),
 };
 
 export default notificationApi;

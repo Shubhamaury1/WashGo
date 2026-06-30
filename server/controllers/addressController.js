@@ -1,17 +1,5 @@
 import Address from "../models/Address.js";
 
-// Create
-// export const createAddress = async (req, res) => {
-//   try {
-//     const address = await Address.create(req.body);
-
-//     res.status(201).json(address);
-//   } catch (error) {
-//     res.status(500).json({
-//       message: error.message,
-//     });
-//   }
-// };
 export const createAddress = async (req, res) => {
   try {
     const { userId } = req.body;
@@ -84,6 +72,24 @@ export const deleteAddress = async (req, res) => {
     res.json({
       message: "Address deleted successfully",
     });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+// Get Address By UserId
+export const getAddressesByUserId = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const addresses = await Address.find({ userId }).sort({
+      isDefault: -1,
+      createdAt: -1,
+    });
+
+    res.status(200).json(addresses);
   } catch (error) {
     res.status(500).json({
       message: error.message,

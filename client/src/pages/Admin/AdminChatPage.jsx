@@ -4,22 +4,22 @@ import ChatBox from "../../components/chat/ChatBox";
 
 const AdminChatPage = () => {
   return (
-    <div className="min-h-screen bg-slate-100">
+    <div className="bg-slate-100 overflow-hidden">
       <div className="flex">
         {/* Sidebar */}
         <AdminSidebar />
 
         {/* Content */}
-        <div className="ml-[310px] w-full p-6">
-          <div className="bg-white rounded-3xl shadow-lg overflow-hidden h-[calc(100vh-70px)]">
-            <div className="grid grid-cols-12 h-full">
+        <div className="w-full p-6 flex-1 overflow-hidden">
+          <div className="bg-white rounded-3xl shadow-lg overflow-hidden h-[calc(100vh-140px)]">
+            <div className="grid grid-cols-12 h-full overflow-hidden">
               {/* Chat List */}
-              <div className="col-span-4 border-r bg-white">
+              <div className="col-span-4 border-r bg-white overflow-hidden">
                 <ChatList />
               </div>
 
               {/* Chat Box */}
-              <div className="col-span-8 bg-gray-50">
+              <div className="col-span-8 bg-gray-50 overflow-hidden">
                 <ChatBox />
               </div>
             </div>
@@ -31,3 +31,6 @@ const AdminChatPage = () => {
 };
 
 export default AdminChatPage;
+
+
+

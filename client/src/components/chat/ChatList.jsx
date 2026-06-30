@@ -55,9 +55,10 @@ const ChatList = () => {
   });
 
   return (
-    <div className="h-full bg-white flex flex-col">
+    <div className="flex flex-col h-full overflow-hidden">
       {/* Header */}
-      <div className="p-4 border-b bg-gradient-to-r from-blue-50 to-blue-100">
+     
+      <div className="flex-shrink-0 p-4 border-b bg-gradient-to-r from-blue-50 to-blue-100">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-2xl font-bold text-gray-800">Chats</h2>
           <button
@@ -66,7 +67,9 @@ const ChatList = () => {
             className="p-2 hover:bg-blue-200 rounded-full transition"
             title="Refresh chats"
           >
-            <FaSyncAlt className={`text-gray-600 ${loading ? "animate-spin" : ""}`} />
+            <FaSyncAlt
+              className={`text-gray-600 ${loading ? "animate-spin" : ""}`}
+            />
           </button>
         </div>
 

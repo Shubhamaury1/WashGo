@@ -39,18 +39,17 @@ const CustomerDashboard = () => {
 
   return (
     <MainLayout>
-      <div className="min-h-screen bg-gray-100 p-4 lg:p-8">
-        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
+      <div className="bg-[#f5f7fb]">
+        <div className="flex h-full p-6 gap-6">
           {/* Sidebar */}
           <Sidebar />
 
-          {/* Main Content */}
-          <div>
-            {/* Header */}
+          {/* Right Content */}
+          <main className="flex-1 ml-[294px] overflow-y-auto pr-2">
             <TopHeader />
 
             {/* Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
               <StatsCard
                 title="Wallet Balance"
                 value="₹1250"
@@ -62,12 +61,10 @@ const CustomerDashboard = () => {
               <StatsCard title="Reviews" value="4.8★" color="text-yellow-500" />
             </div>
 
-            {/* Vehicle Categories */}
-            <div className="mt-14">
+            {/* Vehicle */}
+            <div className="mt-12">
               <div className="flex justify-between items-center mb-8">
-                <h1 className="text-3xl font-bold text-gray-800">
-                  Book New Service
-                </h1>
+                <h1 className="text-3xl font-bold">Book New Service</h1>
 
                 <button className="text-blue-600 font-semibold">
                   View All
@@ -75,26 +72,20 @@ const CustomerDashboard = () => {
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                {vehicles.length > 0 ? (
-                  vehicles.map((vehicle) => (
-                    <VehicleCard
-                      key={vehicle._id}
-                      title={vehicle.name}
-                      image={`${BaseURL}${vehicle.image}`}
-                    />
-                  ))
-                ) : (
-                  <p>No active vehicles found.</p>
-                )}
+                {vehicles.map((vehicle) => (
+                  <VehicleCard
+                    key={vehicle._id}
+                    title={vehicle.name}
+                    image={`${BaseURL}${vehicle.image}`}
+                  />
+                ))}
               </div>
             </div>
 
-            {/* Active Booking */}
-            <div className="mt-14">
+            {/* Booking */}
+            <div className="mt-12 pb-10">
               <div className="flex justify-between items-center mb-8">
-                <h1 className="text-3xl font-bold text-gray-800">
-                  Active Booking
-                </h1>
+                <h1 className="text-3xl font-bold">Active Booking</h1>
 
                 <button className="text-blue-600 font-semibold">
                   View All
@@ -103,10 +94,9 @@ const CustomerDashboard = () => {
 
               <div className="space-y-6">
                 <BookingCard />
-      
               </div>
             </div>
-          </div>
+          </main>
         </div>
       </div>
     </MainLayout>

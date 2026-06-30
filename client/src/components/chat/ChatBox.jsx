@@ -93,12 +93,23 @@ const ChatBox = () => {
   }
 
   return (
-    <div className="flex flex-col h-full bg-white">
+  
+    <div className="flex flex-col h-full bg-white overflow-hidden">
       {/* Header */}
       <ChatHeader user={otherUser} />
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto bg-gradient-to-b from-white to-gray-50 p-4 space-y-4">
+      {/* <div className="flex-1 overflow-y-auto bg-gradient-to-b from-white to-gray-50 p-4 space-y-4"> */}
+      <div
+        className="
+        flex-1
+        overflow-y-auto
+        px-5
+        py-4
+        bg-[#f8fafc]
+        space-y-3
+    "
+      >
         {messages.length === 0 ? (
           <div className="flex justify-center mt-10">
             <div className="bg-white px-6 py-3 rounded-2xl shadow-sm text-gray-500 text-center">
@@ -123,6 +134,7 @@ const ChatBox = () => {
 
       {/* Input */}
       <ChatInput onSend={sendMessage} />
+     
     </div>
   );
 };
