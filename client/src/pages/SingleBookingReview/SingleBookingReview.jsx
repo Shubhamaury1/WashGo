@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import bookingApi from "../../api/bookingApi";
 import MainLayout from "../../layouts/MainLayout";
 import Sidebar from "../../components/dashboard/Sidebar";
+import { toast } from "react-toastify";
 
 import {
   FaCar,
@@ -69,9 +70,10 @@ function SingleBookingReview() {
 
       setReview(null);
 
-      alert("Review Deleted Successfully.");
+      toast.success("Review Deleted Successfully.");
     } catch (err) {
       console.log(err);
+      toast.error(err.response?.data?.message || "Failed to delete review.");
     }
   };
 
@@ -106,9 +108,7 @@ function SingleBookingReview() {
                   Booking ID : {booking.bookingId}
                 </p>
 
-                {/* <div className="mt-5 inline-block bg-white text-blue-700 px-5 py-2 rounded-full font-bold">
-                {booking.status}
-              </div> */}
+              
               </div>
 
               {/* Timeline */}

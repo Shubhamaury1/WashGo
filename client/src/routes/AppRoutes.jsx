@@ -23,6 +23,7 @@ import SingleBookingReview from "../pages/SingleBookingReview/SingleBookingRevie
 import Payment from "../pages/Payment/Payment";
 import ChatPage from "../pages/Chat/ChatPage";
 import AdminChatPage from "../pages/Admin/AdminChatPage";
+import Settings from "../pages/Settings/Settings";
 
 const AppRoutes = () => {
   return (
@@ -44,6 +45,7 @@ const AppRoutes = () => {
       />
       <Route path="/my-bookings" element={<MyBookings />} />
       <Route path="/my-bookings/:id" element={<SingleBookingReview />} />
+      <Route path="/settings" element={<Settings />} />
       <Route
         path="/dashboard"
         element={

@@ -10,6 +10,7 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../../firebase";
 import loginlogo from "../../assets/logos/logi.avif"
 import { IoEye, IoEyeOff } from "react-icons/io5";
+import { toast } from "react-toastify";
 
 const Login = () => {
 
@@ -47,7 +48,7 @@ const Login = () => {
 
       navigate("/dashboard");
     } catch (err) {
-      alert(err.response?.data?.message || "Login Failed");
+      toast.error(err.response?.data?.message || "Login Failed");
     }
   };
 

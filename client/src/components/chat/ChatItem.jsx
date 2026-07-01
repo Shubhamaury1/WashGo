@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 
 const ChatItem = ({ chat, currentUser, selected, onClick }) => {
   const onlineUsers = useSelector((state) => state.socket.onlineUsers);
+  const unreadByChat = useSelector((state) => state.notification.unreadByChat);
 
   let otherUser;
 
@@ -16,6 +17,7 @@ const ChatItem = ({ chat, currentUser, selected, onClick }) => {
   }
 
   const isOnline = onlineUsers.includes(otherUser?._id);
+  const unreadCount = unreadByChat[chat._id] || 0;
 
   return (
     <div
@@ -47,11 +49,18 @@ const ChatItem = ({ chat, currentUser, selected, onClick }) => {
           <h3 className="font-semibold text-gray-800 truncate">
             {otherUser?.fullName}
           </h3>
-          {chat.lastMessage && (
-            <span className="text-xs text-gray-400 flex-shrink-0 ml-2">
-              {moment(chat.lastMessage.createdAt).format("hh:mm A")}
-            </span>
-          )}
+          <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+            {chat.lastMessage && (
+              <span className="text-xs text-gray-400">
+                {moment(chat.lastMessage.createdAt).format("hh:mm A")}
+              </span>
+            )}
+            {unreadCount > 0 && (
+              <span className="bg-blue-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                {unreadCount > 9 ? "9+" : unreadCount}
+              </span>
+            )}
+          </div>
         </div>
 
         <p className="text-sm text-gray-600 truncate mt-1">
@@ -61,7 +70,7 @@ const ChatItem = ({ chat, currentUser, selected, onClick }) => {
 
       {/* Online Indicator */}
       {isOnline && (
-        <div className="flex-shrink-0 ml-2">
+        <div className="flex-shrink-0">
           <FaCircle size={6} className="text-green-500" />
         </div>
       )}

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MainLayout from "../../layouts/MainLayout";
-import bookingApi from "../../api/bookingApi";
 import addressApi from "../../api/addressApi";
+import { toast } from "react-toastify";
 
 const Address = () => {
   const navigate = useNavigate();
@@ -55,7 +55,7 @@ const Address = () => {
   // input change
   const handleConfirmBooking = () => {
     if (!selectedAddress) {
-      alert("Please select an address");
+      toast.error("Please select an address");
       return;
     }
 
@@ -148,7 +148,7 @@ const Address = () => {
       });
     } catch (error) {
       console.log(error);
-      alert("Save Failed");
+      toast.error("Save Failed");
     }
   };
 
@@ -190,7 +190,7 @@ const Address = () => {
       }
     } catch (error) {
       console.log(error);
-      alert("Delete Failed");
+      toast.error("Delete Failed");
     }
   };
 

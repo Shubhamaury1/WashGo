@@ -247,16 +247,6 @@ const Vehicles = () => {
             />
           </label>
 
-          {/* <button
-            type="submit"
-            className={`px-8 h-14 rounded-2xl text-white font-semibold transition ${
-              editingId
-                ? "bg-green-600 hover:bg-green-700"
-                : "bg-blue-600 hover:bg-blue-700"
-            }`}
-          >
-            {editingId ? "Update Vehicle" : "Add Vehicle"}
-          </button> */}
           <div className="flex gap-4">
             <button
               type="submit"

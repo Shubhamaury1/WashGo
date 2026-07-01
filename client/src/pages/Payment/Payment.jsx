@@ -9,6 +9,8 @@ import PaymentLoader from "../../components/Payment/PaymentLoader";
 import paymentApi from "../../api/paymentApi";
 import bookingApi from "../../api/bookingApi";
 
+import { toast } from "react-toastify";
+
 function Payment() {
   const navigate = useNavigate();
 
@@ -104,7 +106,7 @@ function Payment() {
       const loaded = await loadRazorpayScript();
 
       if (!loaded) {
-        alert("Unable to load Razorpay.");
+        toast.error("Unable to load Razorpay.");
         setLoading(false);
         return;
       }
@@ -160,7 +162,7 @@ console.log("Key:", key);
 
             if (!verify.success) {
               setLoading(false);
-              alert("Payment verification failed.");
+              toast.error("Payment verification failed.");
               return;
             }
 
@@ -208,7 +210,7 @@ console.log("Key:", key);
           } catch (err) {
             console.log(err);
             setLoading(false);
-            alert("Booking creation failed.");
+            toast.error("Booking creation failed.");
           }
         },
       };
@@ -216,10 +218,7 @@ console.log("Key:", key);
       console.log(options);
       const razor = new window.Razorpay(options);
 
-      // razor.on("payment.failed", function (res) {
-      //   setLoading(false);
-      //   alert(res.error.description);
-      // });
+     
       razor.on("payment.failed", function (res) {
         setLoading(false);
 
@@ -233,7 +232,7 @@ console.log("Key:", key);
         console.log("Reason:", res.error.reason);
         console.log("Metadata:", res.error.metadata);
 
-        alert(`
+        toast.error(`
 Code: ${res.error.code}
 
 Description: ${res.error.description}
@@ -250,7 +249,7 @@ Step: ${res.error.step}
     } catch (err) {
       console.log(err);
       setLoading(false);
-      alert("Payment initialization failed.");
+      toast.error("Payment initialization failed.");
     }
   };
   return (

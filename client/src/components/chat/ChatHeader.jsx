@@ -3,9 +3,26 @@ import { useSelector } from "react-redux";
 
 const ChatHeader = ({ user, onBack }) => {
   const onlineUsers = useSelector((state) => state.socket.onlineUsers);
-
   const isOnline = onlineUsers.includes(user?._id);
 
+
+  
+  const getAvatarColor = (name = "") => {
+    const colors = [
+      "bg-red-500",
+      "bg-blue-500",
+      "bg-green-500",
+      "bg-purple-500",
+      "bg-pink-500",
+      "bg-orange-500",
+      "bg-indigo-500",
+      "bg-cyan-500",
+    ];
+
+    const index = name.length % colors.length;
+
+    return colors[index];
+  };
   return (
     <div className="h-16 bg-white border-b px-6 flex items-center justify-between shadow-sm">
       {/* Left */}
@@ -25,6 +42,21 @@ const ChatHeader = ({ user, onBack }) => {
             alt={user?.fullName}
             className="w-12 h-12 rounded-full object-cover border-2 border-gray-200"
           />
+          {/* {imageUrl ? (
+            <img
+              src={imageUrl}
+              alt={user?.fullName}
+              className="w-12 h-12 rounded-full object-cover border-2 border-gray-200"
+            />
+          ) : (
+            <div
+              className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg border-2 border-gray-200 ${getAvatarColor(
+                user?.fullName,
+              )}`}
+            >
+              {getInitials(user?.fullName)}
+            </div>
+          )} */}
           {isOnline && (
             <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
           )}

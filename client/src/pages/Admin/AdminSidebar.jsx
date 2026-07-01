@@ -11,12 +11,51 @@ import {
 } from "react-icons/fa";
 
 import { NavLink, Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 import { logout } from "../../redux/authSlice";
+import { setUnreadCount, setUnreadByChat } from "../../redux/notificationSlice";
+import notificationApi from "../../api/notificationApi";
 
 const AdminSidebar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const unreadCount = useSelector((state) => state.notification.unreadCount);
+  const currentUser = useSelector((state) => state.auth.user);
+
+  // Load unread count whenever user is available
+  useEffect(() => {
+    if (!currentUser?.id) return;
+
+    const loadUnreadCount = async () => {
+      try {
+        // Load notifications to count unread by chat
+        const notificationsRes = await notificationApi.getNotifications(currentUser.id);
+        const notifications = notificationsRes.data.notifications || [];
+
+        // Count unread
+        const unreadByChat = {};
+        let totalUnread = 0;
+        
+        notifications.forEach((notif) => {
+          if (!notif.isRead) {
+            const chatId = notif.chat || notif.chatId;
+            if (chatId) {
+              unreadByChat[chatId] = (unreadByChat[chatId] || 0) + 1;
+              totalUnread += 1;
+            }
+          }
+        });
+        
+        dispatch(setUnreadCount(totalUnread));
+        dispatch(setUnreadByChat(unreadByChat));
+      } catch (err) {
+        console.error("Failed to load unread count:", err);
+      }
+    };
+
+    loadUnreadCount();
+  }, [currentUser?.id, dispatch]);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -25,7 +64,7 @@ const AdminSidebar = () => {
   };
 
   const menuClass = ({ isActive }) =>
-    `flex items-center gap-4 px-5 py-4 rounded-2xl font-medium transition-all duration-300 ${
+    `flex items-center gap-4 px-5 py-4 rounded-2xl font-medium transition-all duration-300 relative ${
       isActive
         ? "bg-blue-600 text-white shadow-lg shadow-blue-200"
         : "text-slate-600 hover:bg-slate-100"
@@ -78,6 +117,11 @@ const AdminSidebar = () => {
         <NavLink to="/admin/chat" className={menuClass}>
           <FaComments />
           Chats
+          {unreadCount > 0 && (
+            <span className="ml-auto bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+              {unreadCount > 9 ? "9+" : unreadCount}
+            </span>
+          )}
         </NavLink>
 
         <button className="w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-slate-600 hover:bg-slate-100">

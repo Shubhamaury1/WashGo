@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import MainLayout from "../../layouts/MainLayout";
 import authApi from "../../api/authApi";
 import { IoEye, IoEyeOff } from "react-icons/io5";
+import { toast } from "react-toastify";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -33,11 +34,11 @@ const ForgotPassword = () => {
         email,
       });
 
-      alert(res.data.message);
+      toast.success(res.data.message);
 
       setStep(2);
     } catch (error) {
-      alert(error.response?.data?.message || "Failed to send OTP");
+      toast.error(error.response?.data?.message || "Failed to send OTP");
     } finally {
       setSendingOtp(false);
     }
@@ -54,11 +55,11 @@ const ForgotPassword = () => {
         otp,
       });
 
-      alert(res.data.message);
+      toast.success(res.data.message);
 
       setStep(3);
     } catch (error) {
-      alert(error.response?.data?.message || "Invalid OTP");
+      toast.error(error.response?.data?.message || "Invalid OTP");
     } finally {
       setVerifyingOtp(false);
     }
@@ -69,7 +70,7 @@ const ForgotPassword = () => {
     e.preventDefault();
 
     if (newPassword !== confirmPassword) {
-      alert("Passwords do not match");
+      toast.error("Passwords do not match");
       return;
     }
 
@@ -81,11 +82,11 @@ const ForgotPassword = () => {
         password: newPassword,
       });
 
-      alert(res.data.message);
+      toast.success(res.data.message);
 
       navigate("/login");
     } catch (error) {
-      alert(error.response?.data?.message || "Password reset failed");
+      toast.error(error.response?.data?.message || "Password reset failed");
     } finally {
       setResettingPassword(false);
     }
@@ -121,12 +122,6 @@ const ForgotPassword = () => {
                 />
               </div>
 
-              {/* <button
-                type="submit"
-                className="w-full rounded-2xl py-4 text-lg font-semibold text-white bg-gradient-to-r from-[#2E63F4] to-[#244ED6] shadow-xl hover:scale-[1.02] transition"
-              >
-                Send OTP →
-              </button> */}
               <button
                 type="submit"
                 disabled={sendingOtp}
@@ -164,12 +159,6 @@ const ForgotPassword = () => {
                 />
               </div>
 
-              {/* <button
-                type="submit"
-                className="w-full rounded-2xl py-4 text-lg font-semibold text-white bg-gradient-to-r from-[#2E63F4] to-[#244ED6] shadow-xl hover:scale-[1.02] transition"
-              >
-                Verify OTP
-              </button> */}
               <button
                 type="submit"
                 disabled={verifyingOtp}
@@ -242,12 +231,6 @@ const ForgotPassword = () => {
                 </div>
               </div>
 
-              {/* <button
-                type="submit"
-                className="w-full rounded-2xl py-4 text-lg font-semibold text-white bg-gradient-to-r from-[#2E63F4] to-[#244ED6] shadow-xl hover:scale-[1.02] transition"
-              >
-                Continue
-              </button> */}
               <button
                 type="submit"
                 disabled={resettingPassword}

@@ -54,9 +54,7 @@ const Services = () => {
 
         <section className="py-10 px-6">
           <div className="max-w-7xl mx-auto text-center">
-            {/* <span className="bg-blue-100 text-blue-600 px-5 py-2 rounded-full font-medium">
-              Premium Vehicle Washing
-            </span> */}
+          
 
             <h1 className="text-5xl md:text-6xl font-bold text-slate-900 mt-8">
               Our Services

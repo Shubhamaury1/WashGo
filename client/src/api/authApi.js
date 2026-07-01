@@ -14,6 +14,15 @@ const authApi = {
   getUsers: () => API.get("/auth/users"),
 
   googleLogin: (data) => API.post("/auth/google-login", data),
+
+  changePassword: (data) => API.put("/auth/change-password", data),
+
+  updateProfile: (data) =>
+    API.put("/auth/update-profile", data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }),
 };
 
 export default authApi;

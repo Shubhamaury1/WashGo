@@ -10,6 +10,7 @@ import reglogo from "../../assets/logos/register.jpg";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 import { auth } from "../../firebase";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { toast } from "react-toastify";
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -38,12 +39,12 @@ const Register = () => {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match");
+      toast.error("Passwords do not match");
       return;
     }
 
     if (!formData.terms) {
-      alert("Please accept Terms & Conditions");
+      toast.error("Please accept Terms & Conditions");
       return;
     }
 
@@ -57,11 +58,11 @@ const Register = () => {
 
       const res = await authApi.register(payload);
 
-      alert(res.data.message);
+      toast.success(res.data.message);
 
       navigate("/login");
     } catch (error) {
-      alert(error.response?.data?.message || "Registration Failed");
+      toast.error(error.response?.data?.message || "Registration Failed");
     }
   };
 

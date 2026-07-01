@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { FaCloudUploadAlt, FaTrash } from "react-icons/fa";
 import RatingStars from "./RatingStars";
 import reviewApi from "../api/reviewApi";
+import { toast } from "react-toastify";
 
 function ReviewForm({ bookingId, onReviewAdded, reviewData, isEditing }) {
   const BaseUrl = import.meta.env.VITE_API_IMG_URL; 
@@ -19,7 +20,7 @@ function ReviewForm({ bookingId, onReviewAdded, reviewData, isEditing }) {
     const files = Array.from(e.target.files);
 
     if (images.length + files.length > 5) {
-      alert("Maximum 5 images allowed.");
+      toast.error("Maximum 5 images allowed.");
       return;
     }
 
@@ -36,11 +37,11 @@ function ReviewForm({ bookingId, onReviewAdded, reviewData, isEditing }) {
     e.preventDefault();
 
     if (!rating) {
-      return alert("Please give rating.");
+      return toast.error("Please give rating.");
     }
 
     if (!review.trim()) {
-      return alert("Please write your review.");
+      return toast.error("Please write your review.");
     }
 
     try {
@@ -65,7 +66,7 @@ function ReviewForm({ bookingId, onReviewAdded, reviewData, isEditing }) {
         res = await reviewApi.createReview(formData);
       }
 
-      alert(
+      toast.success(
         isEditing
           ? "Review Updated Successfully"
           : "Review Submitted Successfully"
@@ -84,7 +85,7 @@ function ReviewForm({ bookingId, onReviewAdded, reviewData, isEditing }) {
     } catch (err) {
       console.log(err);
 
-      alert(err.response?.data?.message || "Something went wrong.");
+      toast.error(err.response?.data?.message || "Something went wrong.");
     } finally {
       setLoading(false);
     }

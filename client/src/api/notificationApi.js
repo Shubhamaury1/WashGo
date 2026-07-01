@@ -9,8 +9,14 @@ const notificationApi = {
   getUnreadCount: (userId) =>
     axios.get(`${BASE_URL}/notifications/count/${userId}`),
 
+  createNotification: (data) =>
+    axios.post(`${BASE_URL}/notifications/create`, data),
+
   markRead: (notificationId) =>
     axios.put(`${BASE_URL}/notifications/read/${notificationId}`),
+
+  markChatAsRead: (userId, chatId) =>
+    axios.put(`${BASE_URL}/notifications/chat-read`, { userId, chatId }),
 
   deleteNotification: (notificationId) =>
     axios.delete(`${BASE_URL}/notifications/${notificationId}`),

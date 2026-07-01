@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import vehicleApi from "../../api/vehicleApi";
 import packageApi from "../../api/packageApi";
 
-
 const Booking = () => {
   const BaseURL = import.meta.env.VITE_API_IMG_URL;
   const [step, setStep] = useState(1);
@@ -22,7 +21,6 @@ const Booking = () => {
 
   const [selectedPackage, setSelectedPackage] = useState(null);
 
-  
   useEffect(() => {
     loadData();
   }, []);
@@ -251,21 +249,6 @@ const Booking = () => {
               <div>
                 <h2 className="font-semibold text-lg mb-6">Select Time Slot</h2>
 
-                {/* <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {timeSlots.map((slot, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setSelectedTime(slot)}
-                      className={`py-4 rounded-2xl border-2 font-semibold transition ${
-                        selectedTime === slot
-                          ? "bg-blue-600 text-white border-blue-600"
-                          : "border-gray-300"
-                      }`}
-                    >
-                      {slot}
-                    </button>
-                  ))}
-                </div> */}
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {timeSlots.map((slot, index) => {
                     const disabled = isSlotDisabled(slot);
@@ -291,12 +274,6 @@ const Booking = () => {
               </div>
 
               <Link to="/address">
-                {/* <button
-                    disabled={!selectedDate || !selectedTime}
-                    className="mt-10 w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white py-4 rounded-2xl text-lg font-semibold transition"
-                  >
-                    Continue →
-                  </button> */}
                 <button
                   disabled={!selectedDate || !selectedTime}
                   onClick={() => {

@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import vehicleApi from "../../api/vehicleApi";
 import packageApi from "../../api/packageApi";
+import { toast } from "react-toastify";
 
 const Packages = () => {
   const [vehicles, setVehicles] = useState([]);
@@ -45,7 +46,7 @@ const Packages = () => {
       !form.description ||
       !form.price
     ) {
-      alert("Please fill all fields");
+      toast.error("Please fill all fields");
       return;
     }
 
@@ -76,12 +77,7 @@ const Packages = () => {
         setPackages((prev) => [newPackage, ...prev]);
       }
 
-      // setForm({
-      //   vehicleId: "",
-      //   packageName: "",
-      //   description: "",
-      //   price: "",
-      // });
+     
       handleCancelForm();
     } catch (error) {
       console.log(error);
