@@ -8,7 +8,10 @@ import {
   resetPassword,
   getUsers,
   googleLogin,
+  changePassword,
+  updateProfile,
 } from "../controllers/authController.js";
+import uploadProfile from "../middleware/uploadProfile.js";
 
 const router = express.Router();
 
@@ -25,4 +28,8 @@ router.post("/reset-password", resetPassword);
 router.get("/users", getUsers);
 
 router.post("/google-login", googleLogin);
+
+router.put("/change-password", changePassword);
+
+router.put("/update-profile", uploadProfile.single("photo"), updateProfile);
 export default router;

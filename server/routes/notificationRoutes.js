@@ -5,6 +5,7 @@ import {
   markAsRead,
   deleteNotification,
   getUnreadCount,
+  markChatNotificationsAsRead,
   clearChatNotifications,
 } from "../controllers/notificationController.js";
 
@@ -15,6 +16,8 @@ router.get("/:userId", getNotifications);
 router.get("/count/:userId", getUnreadCount);
 
 router.put("/read/:notificationId", markAsRead);
+
+router.put("/chat-read", markChatNotificationsAsRead);
 
 router.delete("/:notificationId", deleteNotification);
 

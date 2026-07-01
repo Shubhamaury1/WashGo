@@ -18,6 +18,7 @@ export const createAddress = async (req, res) => {
     });
   }
 };
+
 // Get All
 export const getAddresses = async (req, res) => {
   try {

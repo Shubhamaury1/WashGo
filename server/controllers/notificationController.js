@@ -1,8 +1,6 @@
 import Notification from "../models/Notification.js";
 
-/**
- * Get User Notifications
- */
+//Get User Notifications
 export const getNotifications = async (req, res) => {
   try {
     const notifications = await Notification.find({
@@ -23,9 +21,7 @@ export const getNotifications = async (req, res) => {
   }
 };
 
-/**
- * Mark Notification as Read
- */
+//Mark Notification as Read
 export const markAsRead = async (req, res) => {
   try {
     const notification = await Notification.findByIdAndUpdate(
@@ -50,9 +46,7 @@ export const markAsRead = async (req, res) => {
   }
 };
 
-/**
- * Delete Notification
- */
+// Delete Notification
 export const deleteNotification = async (req, res) => {
   try {
     await Notification.findByIdAndDelete(req.params.notificationId);
@@ -69,9 +63,7 @@ export const deleteNotification = async (req, res) => {
   }
 };
 
-/**
- * Notification Count
- */
+//Notification Count
 export const getUnreadCount = async (req, res) => {
   try {
     const count = await Notification.countDocuments({
@@ -91,9 +83,35 @@ export const getUnreadCount = async (req, res) => {
   }
 };
 
-/**
- * Clear Chat Notifications for a user coming online
- */
+// Mark all chat notifications as read
+export const markChatNotificationsAsRead = async (req, res) => {
+  try {
+    const { userId, chatId } = req.body;
+
+    const result = await Notification.updateMany(
+      {
+        receiver: userId,
+        chat: chatId,
+        type: "chat",
+        isRead: false,
+      },
+      { isRead: true },
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Chat notifications marked as read",
+      updatedCount: result.modifiedCount,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// Clear Chat Notifications for a user coming online
 export const clearChatNotifications = async (req, res) => {
   try {
     const { userId, chatId } = req.params;
