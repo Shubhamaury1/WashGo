@@ -19,6 +19,35 @@ const ChatItem = ({ chat, currentUser, selected, onClick }) => {
   const isOnline = onlineUsers.includes(otherUser?._id);
   const unreadCount = unreadByChat[chat._id] || 0;
 
+  const getAvatarColor = (name = "") => {
+    const colors = [
+      "bg-red-500",
+      "bg-blue-500",
+      "bg-green-500",
+      "bg-purple-500",
+      "bg-pink-500",
+      "bg-orange-500",
+      "bg-indigo-500",
+      "bg-cyan-500",
+    ];
+
+    return colors[name.length % colors.length];
+  };
+
+  const getInitials = (name = "") => {
+    if (!name) return "?";
+
+    const words = name.trim().split(" ");
+
+    if (words.length === 1) {
+      return words[0].charAt(0).toUpperCase();
+    }
+
+    return (
+      words[0].charAt(0) + words[words.length - 1].charAt(0)
+    ).toUpperCase();
+  };
+
   return (
     <div
       onClick={onClick}
@@ -31,13 +60,24 @@ const ChatItem = ({ chat, currentUser, selected, onClick }) => {
     >
       {/* Avatar with Online Status */}
       <div className="relative flex-shrink-0">
-        <img
-          src={otherUser?.profileImage || "/default-avatar.png"}
-          alt={otherUser?.fullName}
-          className={`w-12 h-12 rounded-full object-cover ${
-            selected ? "ring-2 ring-blue-500" : "ring-1 ring-gray-200"
-          }`}
-        />
+        {otherUser?.profileImage ? (
+          <img
+            src={otherUser.profileImage}
+            alt={otherUser.fullName}
+            className={`w-12 h-12 rounded-full object-cover ${
+              selected ? "ring-2 ring-blue-500" : "ring-1 ring-gray-200"
+            }`}
+          />
+        ) : (
+          <div
+            className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg ${getAvatarColor(
+              otherUser?.fullName,
+            )} ${selected ? "ring-2 ring-blue-500" : "ring-1 ring-gray-200"}`}
+          >
+            {getInitials(otherUser?.fullName)}
+          </div>
+        )}
+
         {isOnline && (
           <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
         )}

@@ -23,6 +23,19 @@ const ChatHeader = ({ user, onBack }) => {
 
     return colors[index];
   };
+  const getInitials = (name = "") => {
+    if (!name) return "?";
+
+    const words = name.trim().split(" ");
+
+    if (words.length === 1) {
+      return words[0].charAt(0).toUpperCase();
+    }
+
+    return (
+      words[0].charAt(0) + words[words.length - 1].charAt(0)
+    ).toUpperCase();
+  };
   return (
     <div className="h-16 bg-white border-b px-6 flex items-center justify-between shadow-sm">
       {/* Left */}
@@ -37,15 +50,10 @@ const ChatHeader = ({ user, onBack }) => {
         )}
 
         <div className="relative">
-          <img
-            src={user?.profileImage || "/default-avatar.png"}
-            alt={user?.fullName}
-            className="w-12 h-12 rounded-full object-cover border-2 border-gray-200"
-          />
-          {/* {imageUrl ? (
+          {user?.profileImage ? (
             <img
-              src={imageUrl}
-              alt={user?.fullName}
+              src={user.profileImage}
+              alt={user.fullName}
               className="w-12 h-12 rounded-full object-cover border-2 border-gray-200"
             />
           ) : (
@@ -56,12 +64,12 @@ const ChatHeader = ({ user, onBack }) => {
             >
               {getInitials(user?.fullName)}
             </div>
-          )} */}
+          )}
+
           {isOnline && (
             <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
           )}
         </div>
-
         <div>
           <h2 className="font-semibold text-gray-800">{user?.fullName}</h2>
           <p
