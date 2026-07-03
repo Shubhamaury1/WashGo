@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import Payment from "../models/Payment.js";
 import razorpay from "../config/razorpayConfig.js";
+import { sendNotification } from "../utils/notificationService.js";
 
 export const createOrder = async (req, res) => {
   try {
@@ -63,6 +64,14 @@ export const verifyPayment = async (req, res) => {
       razorpaySignature: razorpay_signature,
     });
 
+    await sendNotification({
+      receiver: user,
+      booking,
+      title: "Payment Successful",
+      message: `Your payment of ₹${amount} has been received successfully.`,
+      type: "payment",
+    });
+
     res.status(200).json({
       success: true,
       payment,
@@ -85,6 +94,14 @@ export const cashOnDelivery = async (req, res) => {
       amount,
       paymentMethod: "COD",
       paymentStatus: "Pending",
+    });
+
+    await sendNotification({
+      receiver: user,
+      booking,
+      title: "Cash on Delivery Selected",
+      message: `Your booking has been confirmed with Cash on Delivery. Amount payable: ₹${amount}.`,
+      type: "payment",
     });
 
     res.status(201).json({

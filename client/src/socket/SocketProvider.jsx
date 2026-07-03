@@ -65,11 +65,16 @@ export const SocketProvider = ({ children }) => {
       }
     });
 
+    socket.on("new-notification", (notification) => {
+      console.log("Realtime Notification", notification);
+    });
+
     return () => {
       socket.off("connect");
       socket.off("disconnect");
       socket.off("online-users");
       socket.off("user-online");
+      socket.off("new-notification");
 
       socket.disconnect();
     };

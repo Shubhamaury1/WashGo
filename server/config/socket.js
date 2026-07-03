@@ -17,7 +17,7 @@ export const initSocket = (server) => {
   io.on("connection", (socket) => {
     console.log("✅ User Connected:", socket.id);
 
-     // User Login
+    // User Login
     socket.on("join", (userId) => {
       onlineUsers.set(userId, socket.id);
 
@@ -30,40 +30,36 @@ export const initSocket = (server) => {
       socket.broadcast.emit("user-online", userId);
     });
 
-     // Join Chat Room
+    // Join Chat Room
     socket.on("join-chat", (chatId) => {
       socket.join(chatId);
 
       console.log(`Socket ${socket.id} joined room ${chatId}`);
     });
 
-
-     //Typing Start
+    //Typing Start
     socket.on("typing", ({ chatId, sender }) => {
       socket.to(chatId).emit("typing", sender);
     });
 
-
-     // Typing Stop
+    // Typing Stop
     socket.on("stop-typing", ({ chatId }) => {
       socket.to(chatId).emit("stop-typing");
     });
 
-
-     // Message Seen
+    // Message Seen
     socket.on("seen", ({ chatId, messageId }) => {
       socket.to(chatId).emit("message-seen", messageId);
     });
 
-
-     // Disconnect
+    // Disconnect
     socket.on("disconnect", () => {
       console.log("❌ User Disconnected");
 
       for (const [userId, socketId] of onlineUsers.entries()) {
         if (socketId === socket.id) {
           onlineUsers.delete(userId);
-          break;    
+          break;
         }
       }
 
@@ -76,4 +72,13 @@ export const getIO = () => io;
 
 export const getReceiverSocketId = (userId) => {
   return onlineUsers.get(userId);
+};
+
+
+export const emitNotification = (userId, notification) => {
+  const socketId = onlineUsers.get(userId.toString());
+
+  if (socketId && io) {
+    io.to(socketId).emit("new-notification", notification);
+  }
 };

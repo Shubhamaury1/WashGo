@@ -9,6 +9,7 @@ import {
   FaSignOutAlt,
   FaComments,
 } from "react-icons/fa";
+import { BiSolidOffer } from "react-icons/bi";
 
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -122,6 +123,11 @@ const AdminSidebar = () => {
               {unreadCount > 9 ? "9+" : unreadCount}
             </span>
           )}
+        </NavLink>
+
+        <NavLink to="/admin/offers" className={menuClass}>
+          <BiSolidOffer />
+          Offers
         </NavLink>
 
         <button className="w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-slate-600 hover:bg-slate-100">

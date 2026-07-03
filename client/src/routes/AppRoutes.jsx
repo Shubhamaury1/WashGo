@@ -24,6 +24,8 @@ import Payment from "../pages/Payment/Payment";
 import ChatPage from "../pages/Chat/ChatPage";
 import AdminChatPage from "../pages/Admin/AdminChatPage";
 import Settings from "../pages/Settings/Settings";
+import Notifications from "../pages/Notifications/Notifications";
+import AdminOffers from "../pages/Admin/AdminOffers";
 
 const AppRoutes = () => {
   return (
@@ -46,6 +48,7 @@ const AppRoutes = () => {
       <Route path="/my-bookings" element={<MyBookings />} />
       <Route path="/my-bookings/:id" element={<SingleBookingReview />} />
       <Route path="/settings" element={<Settings />} />
+      <Route path="/notifications" element={<Notifications />} />
       <Route
         path="/dashboard"
         element={
@@ -88,6 +91,8 @@ const AppRoutes = () => {
         <Route path="/admin/users" element={<Users />} />
 
         <Route path="/admin/chat" element={<AdminChatPage />} />
+
+        <Route path="/admin/offers" element={<AdminOffers />} />
       </Route>
     </Routes>
   );

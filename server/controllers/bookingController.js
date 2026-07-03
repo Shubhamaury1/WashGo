@@ -1,5 +1,6 @@
 import Booking from "../models/Booking.js";
 import Address from "../models/Address.js";
+import { sendNotification } from "../utils/notificationService.js";
 
 export const createBooking = async (req, res) => {
   try {
@@ -28,11 +29,20 @@ export const createBooking = async (req, res) => {
     const populatedBooking = await Booking.findById(booking._id)
       .populate("vehicleId")
       .populate("packageId");
+    
+     await sendNotification({
+       receiver: booking.userId,
+       booking: booking._id,
+       title: "Booking Confirmed",
+       message: "Your booking has been placed successfully.",
+       type: "booking",
+     });
 
     res.status(201).json({
       success: true,
       booking: populatedBooking,
     });
+   
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -99,6 +109,46 @@ export const updateBookingStatus = async (req, res) => {
 
     await booking.save();
 
+    if (status === "Pending") {
+      await sendNotification({
+        receiver: booking.userId,
+        booking: booking._id,
+        title: "Booking Pending",
+        message: "Your booking is waiting for confirmation.",
+        type: "status",
+      });
+    }
+
+    if (status === "Accepted") {
+      await sendNotification({
+        receiver: booking.userId,
+        booking: booking._id,
+        title: "Booking Accepted",
+        message: "Your booking has been accepted.",
+        type: "status",
+      });
+    }
+
+    if (status === "Completed") {
+      await sendNotification({
+        receiver: booking.userId,
+        booking: booking._id,
+        title: "Booking Completed",
+        message: "Your vehicle wash has been completed successfully.",
+        type: "status",
+      });
+    }
+
+    if (status === "Cancelled") {
+      await sendNotification({
+        receiver: booking.userId,
+        booking: booking._id,
+        title: "Booking Cancelled",
+        message: "Your booking has been cancelled.",
+        type: "status",
+      });
+    }
+    
     res.json({
       success: true,
       message: "Booking status updated.",

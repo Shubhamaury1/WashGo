@@ -113,15 +113,20 @@ const Sidebar = () => {
           My Bookings
         </NavLink>
 
-        <button className="w-full flex items-center gap-4 hover:bg-gray-100 text-gray-700 px-5 py-4 rounded-2xl transition">
-          <FaWallet />
-          Wallet
-        </button>
 
-        <button className="w-full flex items-center gap-4 hover:bg-gray-100 text-gray-700 px-5 py-4 rounded-2xl transition">
+        <NavLink
+          to="/notifications"
+          className={({ isActive }) =>
+            `w-full flex items-center gap-4 px-5 py-4 rounded-2xl font-medium transition ${
+              isActive
+                ? "bg-blue-600 text-white"
+                : "text-gray-700 hover:bg-gray-100"
+            }`
+          }
+        >
           <FaBell />
           Notifications
-        </button>
+        </NavLink>
 
         <button className="w-full flex items-center gap-4 hover:bg-gray-100 text-gray-700 px-5 py-4 rounded-2xl transition">
           <FaStar />

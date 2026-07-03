@@ -11,6 +11,7 @@ import packageRoutes from "./routes/packageRoutes.js";
 import addressRoutes from "./routes/addressRoutes.js";
 import reviewRoutes from "./routes/reviewRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
+import adminNotificationRoutes from "./routes/adminNotificationRoutes.js";
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use("/api/packages", packageRoutes);
 app.use("/api/address", addressRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/payments", paymentRoutes);
+app.use("/api/admin-notifications", adminNotificationRoutes);
 
 app.get("/", (req, res) => {
   res.send("WashGo API Running");
