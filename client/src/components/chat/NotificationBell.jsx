@@ -1,13 +1,32 @@
 import { FaBell } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
-import { markRead } from "../../redux/notificationSlice";
+import { markRead, setNotifications as setReduxNotifications } from "../../redux/notificationSlice";
+import { useSocket } from "../../socket/SocketProvider";
 
 const NotificationBell = () => {
   const dispatch = useDispatch();
   const unread = useSelector((state) => state.notification.unreadCount);
   const notifications = useSelector((state) => state.notification.notifications);
   const [showDropdown, setShowDropdown] = useState(false);
+  const socket = useSocket();
+
+  // Listen to real-time notifications via Socket
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleNewNotification = (notification) => {
+      // Update Redux with new notification
+      const currentNotifications = notifications || [];
+      dispatch(setReduxNotifications([notification, ...currentNotifications]));
+    };
+
+    socket.on("new-notification", handleNewNotification);
+
+    return () => {
+      socket.off("new-notification", handleNewNotification);
+    };
+  }, [socket, dispatch, notifications]);
 
   const handleMarkAsRead = (notificationId) => {
     dispatch(markRead(notificationId));
@@ -49,13 +68,18 @@ const NotificationBell = () => {
                   onClick={() => handleMarkAsRead(notification._id)}
                 >
                   <p className="text-sm text-gray-700 font-medium">
-                    {notification.sender?.fullName || "User"}
+                    {notification.title || notification.sender?.fullName || "Notification"}
                   </p>
                   <p className="text-sm text-gray-600 truncate">
-                    {notification.text}
+                    {notification.message || notification.text}
                   </p>
+                  {notification.couponCode && (
+                    <p className="text-xs text-green-600 mt-1">
+                      Coupon: {notification.couponCode}
+                    </p>
+                  )}
                   <p className="text-xs text-gray-400 mt-1">
-                    {new Date(notification.timestamp).toLocaleTimeString()}
+                    {new Date(notification.createdAt || notification.timestamp).toLocaleTimeString()}
                   </p>
                 </div>
               ))}

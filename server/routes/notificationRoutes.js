@@ -35,6 +35,7 @@ import {
   deleteNotification,
   markChatNotificationsAsRead,
   clearChatNotifications,
+  markOfferNotificationsAsRead,
 } from "../controllers/notificationController.js";
 
 const router = express.Router();
@@ -46,6 +47,8 @@ router.get("/count/:userId", getUnreadCount);
 router.put("/read/:notificationId", markAsRead);
 
 router.put("/read-all/:userId", markAllRead);
+
+router.put("/offer/read/:userId", markOfferNotificationsAsRead);
 
 router.delete("/:notificationId", deleteNotification);
 

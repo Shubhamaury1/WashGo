@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import {
   FaBell,
   FaTrash,
@@ -10,11 +10,15 @@ import {
 import MainLayout from "../../layouts/MainLayout";
 import Sidebar from "../../components/dashboard/Sidebar";
 import notificationApi from "../../api/notificationApi";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { markRead, setNotifications as setReduxNotifications } from "../../redux/notificationSlice";
+import { useSocket } from "../../socket/SocketProvider";
 
 
 function Notifications() {
   const user = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
+  const socket = useSocket();
 
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,6 +29,22 @@ function Notifications() {
     }
   }, [user]);
 
+  // Listen to real-time notifications via Socket.io
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleNewNotification = (notification) => {
+      setNotifications((prev) => [notification, ...prev]);
+      dispatch(setReduxNotifications([notification, ...notifications]));
+    };
+
+    socket.on("new-notification", handleNewNotification);
+
+    return () => {
+      socket.off("new-notification", handleNewNotification);
+    };
+  }, [socket, notifications, dispatch]);
+
   const loadNotifications = async () => {
     try {
       const userId = user._id || user.id;
@@ -32,6 +52,11 @@ function Notifications() {
       const res = await notificationApi.getNotifications(userId);
 
       setNotifications(res.data.notifications);
+      // Also update Redux state so notification bell updates
+      dispatch(setReduxNotifications(res.data.notifications));
+
+      // Mark all offer notifications as read when page loads
+      await notificationApi.markOfferNotificationsAsRead(userId);
     } catch (err) {
       console.log(err);
     } finally {
@@ -40,24 +65,42 @@ function Notifications() {
   };
 
   const markAsRead = async (id) => {
-    await notificationApi.markAsRead(id);
+    try {
+      await notificationApi.markRead(id);
 
-    setNotifications((prev) =>
-      prev.map((item) =>
-        item._id === id
-          ? {
-              ...item,
-              isRead: true,
-            }
-          : item,
-      ),
-    );
+      setNotifications((prev) =>
+        prev.map((item) =>
+          item._id === id
+            ? {
+                ...item,
+                isRead: true,
+              }
+            : item,
+        ),
+      );
+
+      // Also update Redux state so notification bell count updates
+      dispatch(markRead(id));
+    } catch (err) {
+      console.error("Error marking notification as read:", err);
+    }
   };
 
-  const deleteNotification = async (id) => {
-    await notificationApi.deleteNotification(id);
+  // Filter out chat notifications - only show offers, coupons, payments, etc
+  const filteredNotifications = notifications.filter(
+    (notif) => notif.type !== "chat" && !notif.chat
+  );
 
-    setNotifications((prev) => prev.filter((item) => item._id !== id));
+  const deleteNotification = async (id) => {
+    try {
+      await notificationApi.deleteNotification(id);
+
+      setNotifications((prev) => prev.filter((item) => item._id !== id));
+      // Also update Redux
+      dispatch(markRead(id)); // This will decrement unread count
+    } catch (err) {
+      console.error("Error deleting notification:", err);
+    }
   };
 
   const icon = (type) => {
@@ -89,7 +132,7 @@ function Notifications() {
 
             {loading ? (
               <div>Loading...</div>
-            ) : notifications.length === 0 ? (
+            ) : filteredNotifications.length === 0 ? (
               <div className="bg-white rounded-xl p-12 text-center shadow">
                 <FaBell className="mx-auto mb-3 text-gray-400" size={50} />
 
@@ -99,17 +142,15 @@ function Notifications() {
               </div>
             ) : (
               <div className="space-y-4">
-                {notifications.map((item) => (
+                {filteredNotifications.map((item) => (
                   <div
                     key={item._id}
-                    className={`bg-white rounded-xl shadow p-5 flex justify-between transition hover:shadow-lg ${
+                    className={`bg-white rounded-xl shadow p-5 flex justify-between transition hover:shadow-lg cursor-pointer ${
                       !item.isRead ? "border-l-4 border-blue-600" : ""
                     }`}
+                    onClick={() => markAsRead(item._id)}
                   >
-                    <div
-                      className="flex gap-4 cursor-pointer flex-1"
-                      onClick={() => markRead(item._id)}
-                    >
+                    <div className="flex gap-4 flex-1">
                       {icon(item.type)}
 
                       <div>
@@ -132,8 +173,6 @@ function Notifications() {
                             </span>
                           </div>
                         )}
-
-                       
                       </div>
                     </div>
 

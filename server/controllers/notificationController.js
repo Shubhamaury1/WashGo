@@ -337,3 +337,46 @@ export const clearChatNotifications = async (req, res) => {
     });
   }
 };
+
+// Mark Offer/Non-Chat Notifications as Read
+export const markOfferNotificationsAsRead = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    await Notification.updateMany(
+      {
+        receiver: userId,
+        isRead: false,
+        isDeleted: false,
+        type: { $ne: "chat" },
+        chat: null,
+      },
+      {
+        isRead: true,
+      },
+    );
+
+    const unread = await Notification.countDocuments({
+      receiver: userId,
+      isRead: false,
+      isDeleted: false,
+    });
+
+    const socketId = getReceiverSocketId(userId);
+
+    if (socketId) {
+      getIO().to(socketId).emit("notification-count", unread);
+    }
+
+    res.json({
+      success: true,
+      message: "Offer notifications marked as read",
+      unread,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};

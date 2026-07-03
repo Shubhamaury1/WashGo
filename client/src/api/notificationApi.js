@@ -15,8 +15,14 @@ const notificationApi = {
   markRead: (notificationId) =>
     axios.put(`${BASE_URL}/notifications/read/${notificationId}`),
 
+  markAllRead: (userId) =>
+    axios.put(`${BASE_URL}/notifications/read-all/${userId}`),
+
+  markOfferNotificationsAsRead: (userId) =>
+    axios.put(`${BASE_URL}/notifications/offer/read/${userId}`),
+
   markChatAsRead: (userId, chatId) =>
-    axios.put(`${BASE_URL}/notifications/chat-read`, { userId, chatId }),
+    axios.put(`${BASE_URL}/notifications/chat/read`, { userId, chatId }),
 
   deleteNotification: (notificationId) =>
     axios.delete(`${BASE_URL}/notifications/${notificationId}`),

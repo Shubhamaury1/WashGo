@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   notifications: [],
-  unreadCount: 0,
+  unreadCount: 0, // All unread notifications
+  unreadChatCount: 0, // Only chat notifications
   unreadByChat: {}, // { chatId: count }
 };
 
@@ -13,6 +14,27 @@ const notificationSlice = createSlice({
   reducers: {
     setNotifications: (state, action) => {
       state.notifications = action.payload;
+      // Calculate unread counts
+      let chatUnread = 0;
+      let totalUnread = 0;
+      const unreadByChat = {};
+      
+      action.payload.forEach((n) => {
+        if (!n.isRead) {
+          totalUnread += 1;
+          
+          // Count chat notifications separately
+          const chatId = n.chat || n.chatId;
+          if (chatId) {
+            chatUnread += 1;
+            unreadByChat[chatId] = (unreadByChat[chatId] || 0) + 1;
+          }
+        }
+      });
+      
+      state.unreadCount = totalUnread;
+      state.unreadChatCount = chatUnread;
+      state.unreadByChat = unreadByChat;
     },
 
     addNotification: (state, action) => {
@@ -20,11 +42,15 @@ const notificationSlice = createSlice({
       const notifChatId = chatId || chat;
       
       state.notifications.unshift(action.payload);
-      state.unreadCount += 1;
       
-      // Track unread count per chat - only increment
-      if (notifChatId) {
-        state.unreadByChat[notifChatId] = (state.unreadByChat[notifChatId] || 0) + 1;
+      if (!action.payload.isRead) {
+        state.unreadCount += 1;
+        
+        // Track unread count per chat - only increment
+        if (notifChatId) {
+          state.unreadChatCount += 1;
+          state.unreadByChat[notifChatId] = (state.unreadByChat[notifChatId] || 0) + 1;
+        }
       }
     },
 
@@ -32,16 +58,26 @@ const notificationSlice = createSlice({
       state.unreadCount = action.payload;
     },
 
+    setUnreadChatCount: (state, action) => {
+      state.unreadChatCount = action.payload;
+    },
+
     markRead: (state, action) => {
       const notification = state.notifications.find(
         (n) => n._id === action.payload,
       );
 
-      if (notification) {
+      if (notification && !notification.isRead) {
         notification.isRead = true;
+        state.unreadCount = Math.max(0, state.unreadCount - 1);
+        
+        // Decrease chat count if it's a chat notification
+        const chatId = notification.chat || notification.chatId;
+        if (chatId) {
+          state.unreadChatCount = Math.max(0, state.unreadChatCount - 1);
+          state.unreadByChat[chatId] = Math.max(0, (state.unreadByChat[chatId] || 0) - 1);
+        }
       }
-
-      state.unreadCount = Math.max(0, state.unreadCount - 1);
     },
 
     markChatAsRead: (state, action) => {
@@ -57,6 +93,7 @@ const notificationSlice = createSlice({
       });
       
       // Update counts
+      state.unreadChatCount = Math.max(0, state.unreadChatCount - unreadCount);
       state.unreadCount = Math.max(0, state.unreadCount - unreadCount);
       state.unreadByChat[chatId] = 0;
     },
@@ -71,6 +108,7 @@ export const {
   setNotifications, 
   addNotification, 
   setUnreadCount, 
+  setUnreadChatCount,
   markRead,
   markChatAsRead,
   setUnreadByChat 

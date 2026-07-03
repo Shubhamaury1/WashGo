@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import { logout } from "../../redux/authSlice";
 import { setUnreadCount, setUnreadByChat } from "../../redux/notificationSlice";
 import notificationApi from "../../api/notificationApi";
+import { useSocket } from "../../socket/SocketProvider";
 
 import { NavLink, useNavigate } from "react-router-dom";
 
@@ -24,7 +25,9 @@ const Sidebar = () => {
   const navigate = useNavigate();
 
   const unreadCount = useSelector((state) => state.notification.unreadCount);
+  const unreadChatCount = useSelector((state) => state.notification.unreadChatCount);
   const currentUser = useSelector((state) => state.auth.user);
+  const socket = useSocket();
 
   // Load unread count whenever user is available
   useEffect(() => {
@@ -32,20 +35,22 @@ const Sidebar = () => {
 
     const loadUnreadCount = async () => {
       try {
-        // Load notifications to count unread by chat
+        // Load notifications to count unread
         const notificationsRes = await notificationApi.getNotifications(currentUser.id);
         const notifications = notificationsRes.data.notifications || [];
 
-        // Count unread
-        const unreadByChat = {};
+        // Count ALL unread notifications
         let totalUnread = 0;
+        const unreadByChat = {};
         
         notifications.forEach((notif) => {
           if (!notif.isRead) {
+            totalUnread += 1;
+            
+            // Also track unread by chat if it has a chat ID
             const chatId = notif.chat || notif.chatId;
             if (chatId) {
               unreadByChat[chatId] = (unreadByChat[chatId] || 0) + 1;
-              totalUnread += 1;
             }
           }
         });
@@ -59,6 +64,21 @@ const Sidebar = () => {
 
     loadUnreadCount();
   }, [currentUser?.id, dispatch]);
+
+  // Listen to real-time notification updates via Socket
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleNotificationCount = (count) => {
+      dispatch(setUnreadCount(count));
+    };
+
+    socket.on("notification-count", handleNotificationCount);
+
+    return () => {
+      socket.off("notification-count", handleNotificationCount);
+    };
+  }, [socket, dispatch]);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -117,7 +137,7 @@ const Sidebar = () => {
         <NavLink
           to="/notifications"
           className={({ isActive }) =>
-            `w-full flex items-center gap-4 px-5 py-4 rounded-2xl font-medium transition ${
+            `w-full flex items-center gap-4 px-5 py-4 rounded-2xl font-medium transition relative ${
               isActive
                 ? "bg-blue-600 text-white"
                 : "text-gray-700 hover:bg-gray-100"
@@ -126,6 +146,11 @@ const Sidebar = () => {
         >
           <FaBell />
           Notifications
+          {unreadCount > 0 && (
+            <span className="ml-auto bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+              {unreadCount > 9 ? "9+" : unreadCount}
+            </span>
+          )}
         </NavLink>
 
         <button className="w-full flex items-center gap-4 hover:bg-gray-100 text-gray-700 px-5 py-4 rounded-2xl transition">
@@ -145,9 +170,9 @@ const Sidebar = () => {
         >
           <FaComments />
           Chat
-          {unreadCount > 0 && (
+          {unreadChatCount > 0 && (
             <span className="ml-auto bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-              {unreadCount > 9 ? "9+" : unreadCount}
+              {unreadChatCount > 9 ? "9+" : unreadChatCount}
             </span>
           )}
         </NavLink>
