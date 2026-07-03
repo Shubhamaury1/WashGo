@@ -213,6 +213,7 @@ function AdminOffers() {
               name="expiryDate"
               value={form.expiryDate}
               onChange={handleChange}
+              min={new Date().toISOString().split('T')[0]}
             />
 
             <select
@@ -330,7 +331,7 @@ function AdminOffers() {
                     key={item._id}
                     className="bg-white rounded-2xl shadow hover:shadow-xl transition overflow-hidden"
                   >
-                    <div className="bg-gradient-to-r from-indigo-600 to-blue-600 p-5 text-white">
+                    <div className="bg-gradient-to-r from-indigo-600 to-blue-600 p-4 text-white">
                       <div className="flex justify-between">
                         <div>
                           <h3 className="text-2xl font-bold">{item.title}</h3>
@@ -339,7 +340,7 @@ function AdminOffers() {
                         </div>
 
                         <span
-                          className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                          className={`px-2 py-1 rounded-full text-sm font-semibold flex items-center justify-center w-14 h-14 ${
                             item.isActive ? "bg-green-500" : "bg-red-500"
                           }`}
                         >
@@ -348,7 +349,7 @@ function AdminOffers() {
                       </div>
                     </div>
 
-                    <div className="p-6">
+                    <div className="p-4">
                       <div className="grid grid-cols-2 gap-4">
                         <div>
                           <p className="text-sm text-gray-500">Coupon Code</p>

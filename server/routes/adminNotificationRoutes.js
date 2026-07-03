@@ -5,6 +5,7 @@ import {
   getCoupons,
   toggleCouponStatus,
   deleteCoupon,
+  validateCoupon,
 } from "../controllers/adminNotificationController.js";
 
 const router = express.Router();
@@ -12,6 +13,8 @@ const router = express.Router();
 router.post("/send", sendAdminNotification);
 
 router.get("/coupons", getCoupons);
+
+router.post("/validate-coupon", validateCoupon);
 
 router.put("/toggle/:id", toggleCouponStatus);
 

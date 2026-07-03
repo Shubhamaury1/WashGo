@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   FaCar,
   FaCalendarAlt,
@@ -8,9 +8,78 @@ import {
   FaCheckCircle,
   FaTag,
 } from "react-icons/fa";
+import { toast } from "react-toastify";
+import adminNotificationApi from "../../api/adminNotificationApi";
 
-function BookingSummary({ booking, address }) {
+function BookingSummary({ booking, address, onAmountChange }) {
+  const [couponCode, setCouponCode] = useState("");
+  const [redeemCode, setRedeemCode] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const [validating, setValidating] = useState(false);
+  const [discountAmount, setDiscountAmount] = useState(0);
+
   if (!booking) return null;
+
+  const handleValidateCoupon = async () => {
+    if (!couponCode.trim() || !redeemCode.trim()) {
+      toast.error("Please enter both coupon and redeem code");
+      return;
+    }
+
+    try {
+      setValidating(true);
+      const response = await adminNotificationApi.validateCoupon(
+        couponCode,
+        redeemCode
+      );
+
+      if (response.data.success) {
+        const coupon = response.data.coupon;
+        setAppliedCoupon(coupon);
+
+        // Calculate discount
+        let discount = 0;
+        if (coupon.discountType === "percentage") {
+          discount = (booking.amount * coupon.discountValue) / 100;
+        } else {
+          discount = coupon.discountValue;
+        }
+
+        const finalDiscount = Math.min(discount, booking.amount);
+        setDiscountAmount(finalDiscount);
+        
+        // Call callback with new amount
+        if (onAmountChange) {
+          onAmountChange(booking.amount - finalDiscount);
+        }
+        
+        toast.success("Coupon applied successfully!");
+      }
+    } catch (err) {
+      setAppliedCoupon(null);
+      setDiscountAmount(0);
+      if (onAmountChange) {
+        onAmountChange(booking.amount);
+      }
+      toast.error(err.response?.data?.message || "Invalid coupon code");
+    } finally {
+      setValidating(false);
+    }
+  };
+
+  const handleRemoveCoupon = () => {
+    setAppliedCoupon(null);
+    setCouponCode("");
+    setRedeemCode("");
+    setDiscountAmount(0);
+    
+    // Reset amount to original
+    if (onAmountChange) {
+      onAmountChange(booking.amount);
+    }
+  };
+
+  const totalAmount = booking.amount - discountAmount;
 
   return (
     <div className="bg-white rounded-3xl shadow-lg border border-gray-100 p-8">
@@ -108,6 +177,53 @@ function BookingSummary({ booking, address }) {
       {/* Price Section */}
 
       <div className="mt-8 rounded-2xl bg-blue-50 p-6">
+        {/* Coupon Section */}
+        <div className="mb-6 pb-6 border-b">
+          <h3 className="font-semibold text-gray-800 mb-3">Apply Coupon</h3>
+          {!appliedCoupon ? (
+            <div className="space-y-3">
+              <input
+                type="text"
+                placeholder="Coupon Code"
+                value={couponCode}
+                onChange={(e) => setCouponCode(e.target.value)}
+                className="w-full border rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <input
+                type="text"
+                placeholder="Redeem Code"
+                value={redeemCode}
+                onChange={(e) => setRedeemCode(e.target.value)}
+                className="w-full border rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <button
+                onClick={handleValidateCoupon}
+                disabled={validating}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-xl font-semibold transition disabled:opacity-50"
+              >
+                {validating ? "Verifying..." : "Verify"}
+              </button>
+            </div>
+          ) : (
+            <div className="bg-green-50 border border-green-200 rounded-xl p-4">
+              <div className="flex justify-between items-start mb-2">
+                <div>
+                  <p className="font-semibold text-green-800">
+                    {appliedCoupon.title}
+                  </p>
+                  <p className="text-sm text-green-700">{appliedCoupon.message}</p>
+                </div>
+                <button
+                  onClick={handleRemoveCoupon}
+                  className="text-red-600 hover:text-red-800 font-semibold"
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
         <div className="flex justify-between mb-4">
           <span className="text-gray-600">Package Price</span>
 
@@ -120,11 +236,15 @@ function BookingSummary({ booking, address }) {
           <span className="text-green-600 font-semibold">FREE</span>
         </div>
 
-        <div className="flex justify-between mb-4">
-          <span className="text-gray-600">Discount</span>
+        {discountAmount > 0 && (
+          <div className="flex justify-between mb-4">
+            <span className="text-gray-600">Discount</span>
 
-          <span className="text-green-600 font-semibold">₹0</span>
-        </div>
+            <span className="text-green-600 font-semibold">
+              -₹{discountAmount.toFixed(2)}
+            </span>
+          </div>
+        )}
 
         <hr className="my-4" />
 
@@ -136,7 +256,7 @@ function BookingSummary({ booking, address }) {
           </div>
 
           <span className="text-3xl font-bold text-blue-600">
-            ₹{booking.amount}
+            ₹{totalAmount.toFixed(2)}
           </span>
         </div>
       </div>

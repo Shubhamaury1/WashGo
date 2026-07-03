@@ -12,6 +12,12 @@ const adminNotificationApi = {
     axios.put(`${BASE_URL}/admin-notifications/toggle/${id}`),
 
   deleteCoupon: (id) => axios.delete(`${BASE_URL}/admin-notifications/${id}`),
+
+  validateCoupon: (couponCode, redeemCode) =>
+    axios.post(`${BASE_URL}/admin-notifications/validate-coupon`, {
+      couponCode,
+      redeemCode,
+    }),
 };
 
 export default adminNotificationApi;

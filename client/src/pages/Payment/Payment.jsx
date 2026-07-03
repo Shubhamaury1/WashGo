@@ -19,6 +19,7 @@ function Payment() {
   const user = JSON.parse(localStorage.getItem("user"));
 
   const [loading, setLoading] = useState(false);
+  const [finalAmount, setFinalAmount] = useState(booking?.amount || 0);
 
   const [loadingMessage, setLoadingMessage] = useState(
     "Connecting to Razorpay...",
@@ -71,7 +72,7 @@ function Payment() {
 
           timeSlot: booking.timeSlot,
 
-          amount: booking.amount,
+          amount: finalAmount,
 
           paymentId: null,
 
@@ -112,7 +113,7 @@ function Payment() {
       }
 
       const response = await paymentApi.createOrder({
-        amount: booking.amount,
+        amount: finalAmount,
       });
 
       const { order, key } = response;
@@ -157,7 +158,7 @@ console.log("Key:", key);
               booking: booking._id,
               user: user._id,
               paymentMethod: selectedMethod,
-              amount: booking.amount,
+              amount: finalAmount,
             });
 
             if (!verify.success) {
@@ -183,7 +184,7 @@ console.log("Key:", key);
 
               timeSlot: booking.timeSlot,
 
-              amount: booking.amount,
+              amount: finalAmount,
 
               paymentId: payment.razorpay_payment_id,
 
@@ -267,10 +268,10 @@ Step: ${res.error.step}
           </div>
 
           <div className="grid lg:grid-cols-2 gap-8">
-            <BookingSummary booking={booking} address={address} />
+            <BookingSummary booking={booking} address={address} onAmountChange={setFinalAmount} />
 
             <PaymentMethodCard
-              amount={booking.amount}
+              amount={finalAmount}
               loading={loading}
               onPay={handlePayment}
               selectedMethod={selectedMethod}

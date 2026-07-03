@@ -135,3 +135,66 @@ export const deleteCoupon = async (req, res) => {
     });
   }
 };
+
+// Validate coupon code and redeem code
+export const validateCoupon = async (req, res) => {
+  try {
+    const { couponCode, redeemCode } = req.body;
+
+    if (!couponCode || !redeemCode) {
+      return res.status(400).json({
+        success: false,
+        message: "Coupon code and redeem code are required",
+      });
+    }
+
+    // Find coupon by both codes
+    const coupon = await Coupon.findOne({
+      couponCode,
+      redeemCode,
+    });
+
+    if (!coupon) {
+      return res.status(404).json({
+        success: false,
+        message: "Invalid coupon or redeem code",
+      });
+    }
+
+    // Check if coupon is active
+    if (!coupon.isActive) {
+      return res.status(400).json({
+        success: false,
+        message: "This coupon is inactive",
+      });
+    }
+
+    // Check if coupon is expired
+    const currentDate = new Date();
+    const expiryDate = new Date(coupon.expiryDate);
+    
+    if (currentDate > expiryDate) {
+      return res.status(400).json({
+        success: false,
+        message: "This coupon has expired",
+      });
+    }
+
+    // Return coupon details
+    res.json({
+      success: true,
+      coupon: {
+        _id: coupon._id,
+        title: coupon.title,
+        discountType: coupon.discountType,
+        discountValue: coupon.discountValue,
+        message: coupon.message,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
