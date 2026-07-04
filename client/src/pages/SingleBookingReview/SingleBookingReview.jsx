@@ -102,9 +102,7 @@ function SingleBookingReview() {
 
   return (
     <MainLayout>
-    
       <div className="bg-[#f5f7fb] min-h-screen">
-
         <div className="flex p-6 gap-6">
           <Sidebar />
 
@@ -113,7 +111,7 @@ function SingleBookingReview() {
             <div className="space-y-8">
               {/* Header */}
 
-              <div className="bg-gradient-to-r from-blue-700 to-indigo-700 rounded-3xl text-white p-8 shadow-lg">
+              {/* <div className="bg-gradient-to-r from-blue-700 to-indigo-700 rounded-3xl text-white p-8 shadow-lg">
                 <h1 className="text-3xl font-bold">
                   {booking.vehicleId?.name}
                 </h1>
@@ -121,8 +119,38 @@ function SingleBookingReview() {
                 <p className="mt-2 opacity-90">
                   Booking ID : {booking.bookingId}
                 </p>
+                <button
+                  onClick={handleDownloadInvoice}
+                  className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold transition"
+                >
+                  <FaDownload className="text-lg" />
+                  Invoice
+                </button>
+              </div> */}
+              <div className="bg-gradient-to-r from-blue-700 to-indigo-700 rounded-3xl text-white p-8 shadow-lg">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                  {/* Left Side */}
+                  <div>
+                    <h1 className="text-3xl font-bold">
+                      {booking.vehicleId?.name}
+                    </h1>
 
-              
+                    <p className="mt-2 text-blue-100">
+                      Booking ID : {booking.bookingId}
+                    </p>
+                  </div>
+
+                  {/* Right Side */}
+                  <div className="flex justify-end items-center">
+                    <button
+                      onClick={handleDownloadInvoice}
+                      className="flex items-center gap-2 bg-white text-blue-700 hover:bg-blue-50 px-6 py-3 rounded-xl font-semibold shadow-lg transition-all duration-300"
+                    >
+                      <FaDownload className="text-lg" />
+                      Download Invoice
+                    </button>
+                  </div>
+                </div>
               </div>
 
               {/* Timeline */}
@@ -263,13 +291,13 @@ function SingleBookingReview() {
                 <div className="bg-white rounded-3xl shadow-lg p-6">
                   <div className="flex justify-between items-center mb-4">
                     <h2 className="text-2xl font-bold">Payment Summary</h2>
-                    <button
+                    {/* <button
                       onClick={handleDownloadInvoice}
                       className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold transition"
                     >
                       <FaDownload className="text-lg" />
                       Invoice
-                    </button>
+                    </button> */}
                   </div>
 
                   <div className="space-y-2">
@@ -278,7 +306,12 @@ function SingleBookingReview() {
                         <FaMoneyBillWave className="text-green-600 text-lg" />
                         <span className="text-gray-600">Service Amount</span>
                       </div>
-                      <span className="font-semibold">₹ {(booking.amount + (booking.discountAmount || 0))?.toFixed(2)}</span>
+                      <span className="font-semibold">
+                        ₹{" "}
+                        {(
+                          booking.amount + (booking.discountAmount || 0)
+                        )?.toFixed(2)}
+                      </span>
                     </div>
 
                     <div className="flex justify-between items-center border-b pb-3">
@@ -304,7 +337,9 @@ function SingleBookingReview() {
                     <div className="flex justify-between items-center pt-2  ">
                       <div className="flex items-center gap-3">
                         <FaTag className="text-blue-600 text-lg" />
-                        <span className="text-lg font-bold text-gray-800">Total Paid</span>
+                        <span className="text-lg font-bold text-gray-800">
+                          Total Paid
+                        </span>
                       </div>
                       <span className="text-xl font-bold text-green-600">
                         ₹ {booking.amount?.toFixed(2)}
