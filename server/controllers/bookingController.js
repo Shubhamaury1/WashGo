@@ -15,6 +15,9 @@ export const createBooking = async (req, res) => {
       bookingDate: req.body.bookingDate,
       timeSlot: req.body.timeSlot,
       amount: req.body.amount,
+      discountAmount: req.body.discountAmount || 0,
+      couponCode: req.body.couponCode || null,
+      paymentMethod: req.body.paymentMethod || "upi",
 
       address: {
         name: selectedAddress.name,
@@ -109,26 +112,17 @@ export const updateBookingStatus = async (req, res) => {
 
     await booking.save();
 
-    if (status === "Pending") {
+    if (status === "Assigned") {
       await sendNotification({
         receiver: booking.userId,
         booking: booking._id,
-        title: "Booking Pending",
-        message: "Your booking is waiting for confirmation.",
+        title: "Booking Assigned",
+        message: "Your booking has been assigned to the washer.",
         type: "status",
       });
     }
 
-    if (status === "Accepted") {
-      await sendNotification({
-        receiver: booking.userId,
-        booking: booking._id,
-        title: "Booking Accepted",
-        message: "Your booking has been accepted.",
-        type: "status",
-      });
-    }
-
+    
     if (status === "Completed") {
       await sendNotification({
         receiver: booking.userId,

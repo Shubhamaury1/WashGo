@@ -34,6 +34,22 @@ const bookingSchema = new mongoose.Schema(
 
     amount: Number,
 
+    discountAmount: {
+      type: Number,
+      default: 0,
+    },
+
+    couponCode: {
+      type: String,
+      default: null,
+    },
+
+    paymentMethod: {
+      type: String,
+      enum: ["upi", "card", "cod"],
+      default: "upi",
+    },
+
     status: {
       type: String,
       enum: [

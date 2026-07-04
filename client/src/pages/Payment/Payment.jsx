@@ -74,6 +74,10 @@ function Payment() {
 
           amount: finalAmount,
 
+          discountAmount: booking.discountAmount || 0,
+
+          couponCode: booking.couponCode || null,
+
           paymentId: null,
 
           paymentOrderId: null,
@@ -186,6 +190,10 @@ console.log("Key:", key);
 
               amount: finalAmount,
 
+              discountAmount: booking.discountAmount || 0,
+
+              couponCode: booking.couponCode || null,
+
               paymentId: payment.razorpay_payment_id,
 
               paymentOrderId: payment.razorpay_order_id,
@@ -259,7 +267,7 @@ Step: ${res.error.step}
 
       <div className="min-h-screen bg-gray-100 py-10 px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-10">
+          <div className="mb-6">
             <h1 className="text-4xl font-bold">Secure Checkout</h1>
 
             <p className="text-gray-500 mt-2">
