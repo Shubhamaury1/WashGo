@@ -213,7 +213,7 @@ function AdminOffers() {
               name="expiryDate"
               value={form.expiryDate}
               onChange={handleChange}
-              min={new Date().toISOString().split('T')[0]}
+              min={new Date().toISOString().split("T")[0]}
             />
 
             <select
@@ -290,7 +290,7 @@ function AdminOffers() {
 
         {/* Coupon List Part 2 goes here */}
         <div className="mt-10">
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
             <h2 className="text-2xl font-bold text-slate-800">
               All Coupons ({offers.length})
             </h2>
@@ -298,14 +298,14 @@ function AdminOffers() {
             <input
               type="text"
               placeholder="Search Coupon..."
-              className="border rounded-xl px-4 py-3 w-80"
+              className="border border-gray-300 rounded-xl px-4 py-3 w-full md:w-80 focus:ring-2 focus:ring-indigo-500 outline-none"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
 
           {offers.length === 0 ? (
-            <div className="bg-white rounded-2xl shadow p-16 text-center">
+            <div className="bg-white rounded-2xl shadow-md p-16 text-center">
               <FaTicketAlt className="mx-auto text-6xl text-gray-300 mb-5" />
 
               <h2 className="text-2xl font-bold text-gray-600">
@@ -317,7 +317,7 @@ function AdminOffers() {
               </p>
             </div>
           ) : (
-            <div className="grid xl:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
               {offers
                 .filter(
                   (item) =>
@@ -329,143 +329,153 @@ function AdminOffers() {
                 .map((item) => (
                   <div
                     key={item._id}
-                    className="bg-white rounded-2xl shadow hover:shadow-xl transition overflow-hidden"
+                    className="bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl transition duration-300 overflow-hidden"
                   >
-                    <div className="bg-gradient-to-r from-indigo-600 to-blue-600 p-4 text-white">
-                      <div className="flex justify-between">
-                        <div>
-                          <h3 className="text-2xl font-bold">{item.title}</h3>
-
-                          <p className="opacity-80 mt-1">{item.message}</p>
+                    {/* Header */}
+                    <div className="flex justify-between items-start p-4 border-b">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-xl bg-indigo-100 flex items-center justify-center">
+                          <FaTicketAlt className="text-indigo-600 text-xl" />
                         </div>
 
-                        <span
-                          className={`px-2 py-1 rounded-full text-sm font-semibold flex items-center justify-center w-14 h-14 ${
-                            item.isActive ? "bg-green-500" : "bg-red-500"
-                          }`}
-                        >
-                          {item.isActive ? "Active" : "Inactive"}
-                        </span>
+                        <div>
+                          <h3 className="font-bold text-lg text-gray-800">
+                            {item.title}
+                          </h3>
+
+                          <p className="text-sm text-gray-500 line-clamp-1">
+                            {item.message}
+                          </p>
+                        </div>
+                      </div>
+
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                          item.isActive
+                            ? "bg-green-100 text-green-700"
+                            : "bg-red-100 text-red-700"
+                        }`}
+                      >
+                        {item.isActive ? "Active" : "Inactive"}
+                      </span>
+                    </div>
+
+                    {/* Body */}
+                    <div className="p-4 grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
+                      <div>
+                        <p className="text-gray-400">Coupon</p>
+
+                        <div className="flex items-center gap-2">
+                          <span className="font-semibold text-gray-800">
+                            {item.couponCode}
+                          </span>
+
+                          <button
+                            onClick={() => {
+                              navigator.clipboard.writeText(item.couponCode);
+                              toast.success("Coupon copied");
+                            }}
+                            className="text-xs text-blue-600 hover:underline"
+                          >
+                            Copy
+                          </button>
+                        </div>
+                      </div>
+
+                      <div>
+                        <p className="text-gray-400">Redeem</p>
+
+                        <p className="font-semibold text-gray-800">
+                          {item.redeemCode || "-"}
+                        </p>
+                      </div>
+
+                      <div>
+                        <p className="text-gray-400">Discount</p>
+
+                        <p className="font-bold text-green-600">
+                          {item.discountType === "percentage"
+                            ? `${item.discountValue}%`
+                            : `₹${item.discountValue}`}
+                        </p>
+                      </div>
+
+                      <div>
+                        <p className="text-gray-400">Expiry</p>
+
+                        <p className="text-gray-700">
+                          {item.expiryDate
+                            ? new Date(item.expiryDate).toLocaleDateString()
+                            : "-"}
+                        </p>
+                      </div>
+
+                      <div>
+                        <p className="text-gray-400">Target</p>
+
+                        <p className="text-gray-700">
+                          {item.targetType === "all"
+                            ? "All Users"
+                            : `${item.selectedUsers.length} Users`}
+                        </p>
+                      </div>
+
+                      <div>
+                        <p className="text-gray-400">Created</p>
+
+                        <p className="text-gray-700">
+                          {new Date(item.createdAt).toLocaleDateString()}
+                        </p>
                       </div>
                     </div>
 
-                    <div className="p-4">
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <p className="text-sm text-gray-500">Coupon Code</p>
+                    {/* Footer */}
+                    <div className="border-t flex">
+                      <button
+                        onClick={async () => {
+                          try {
+                            await adminNotificationApi.toggleCoupon(item._id);
+                            toast.success("Status Updated");
+                            loadOffers();
+                          } catch {
+                            toast.error("Unable to update");
+                          }
+                        }}
+                        className={`flex-1 py-3 text-sm font-semibold transition ${
+                          item.isActive
+                            ? "text-orange-600 hover:bg-orange-50"
+                            : "text-green-600 hover:bg-green-50"
+                        }`}
+                      >
+                        {item.isActive ? "Deactivate" : "Activate"}
+                      </button>
 
-                          <div className="flex items-center gap-3 mt-1">
-                            <span className="font-bold text-lg">
-                              {item.couponCode}
-                            </span>
+                      <div className="w-px bg-gray-200"></div>
 
-                            <button
-                              onClick={() => {
-                                navigator.clipboard.writeText(item.couponCode);
+                      <button
+                        onClick={async () => {
+                          if (!window.confirm("Delete this coupon?")) return;
 
-                                toast.success("Coupon copied");
-                              }}
-                              className="text-blue-600 text-sm"
-                            >
-                              Copy
-                            </button>
-                          </div>
-                        </div>
-
-                        <div>
-                          <p className="text-sm text-gray-500">Redeem Code</p>
-
-                          <span className="font-semibold">
-                            {item.redeemCode || "-"}
-                          </span>
-                        </div>
-
-                        <div>
-                          <p className="text-sm text-gray-500">Discount</p>
-
-                          <span className="font-bold text-green-600">
-                            {item.discountType === "percentage"
-                              ? `${item.discountValue}%`
-                              : `₹${item.discountValue}`}
-                          </span>
-                        </div>
-
-                        <div>
-                          <p className="text-sm text-gray-500">Expiry</p>
-
-                          <span>
-                            {item.expiryDate
-                              ? new Date(item.expiryDate).toLocaleDateString()
-                              : "-"}
-                          </span>
-                        </div>
-
-                        <div>
-                          <p className="text-sm text-gray-500">Target</p>
-
-                          <span>
-                            {item.targetType === "all"
-                              ? "All Users"
-                              : `${item.selectedUsers.length} Users`}
-                          </span>
-                        </div>
-
-                        <div>
-                          <p className="text-sm text-gray-500">Created</p>
-
-                          <span>
-                            {new Date(item.createdAt).toLocaleDateString()}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="flex gap-3 mt-8">
-                        <button
-                          onClick={async () => {
-                            try {
-                              await adminNotificationApi.toggleCoupon(item._id);
-
-                              toast.success("Status Updated");
-
-                              loadOffers();
-                            } catch (err) {
-                              toast.error("Unable to update");
-                            }
-                          }}
-                          className={`flex-1 py-3 rounded-xl text-white ${
-                            item.isActive
-                              ? "bg-orange-500 hover:bg-orange-600"
-                              : "bg-green-600 hover:bg-green-700"
-                          }`}
-                        >
-                          {item.isActive ? "Deactivate" : "Activate"}
-                        </button>
-
-                        <button
-                          onClick={async () => {
-                            if (!window.confirm("Delete this coupon?")) return;
-
-                            try {
-                              await adminNotificationApi.deleteCoupon(item._id);
-
-                              toast.success("Deleted");
-
-                              loadOffers();
-                            } catch {
-                              toast.error("Delete failed");
-                            }
-                          }}
-                          className="flex-1 py-3 rounded-xl bg-red-600 hover:bg-red-700 text-white"
-                        >
-                          Delete
-                        </button>
-                      </div>
+                          try {
+                            await adminNotificationApi.deleteCoupon(item._id);
+                            toast.success("Deleted");
+                            loadOffers();
+                          } catch {
+                            toast.error("Delete failed");
+                          }
+                        }}
+                        className="flex-1 py-3 text-sm font-semibold text-red-600 hover:bg-red-50 transition"
+                      >
+                        Delete
+                      </button>
                     </div>
                   </div>
                 ))}
             </div>
           )}
         </div>
+
+        {/* Coupon List */}
       </div>
     </div>
   );

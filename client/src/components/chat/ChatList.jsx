@@ -32,10 +32,22 @@ const ChatList = () => {
     }
   }, [user?.id]);
 
-  // Deduplicate chats by bookingId (keep latest)
+  // Deduplicate chats by user (keep latest for same user)
   const uniqueChatsMap = new Map();
   chats.forEach((chat) => {
-    const key = chat.bookingId?.toString() || chat._id;
+    // Determine the other user
+    let otherUserId;
+    if (chat.customer?._id !== user.id) {
+      otherUserId = chat.customer?._id;
+    } else if (chat.currentSupport === "admin") {
+      otherUserId = chat.admin?._id;
+    } else {
+      otherUserId = chat.washer?._id;
+    }
+
+    const key = otherUserId?.toString() || chat._id;
+    
+    // Keep the latest chat for same user
     if (!uniqueChatsMap.has(key) || new Date(chat.updatedAt) > new Date(uniqueChatsMap.get(key).updatedAt)) {
       uniqueChatsMap.set(key, chat);
     }
@@ -105,7 +117,7 @@ const ChatList = () => {
             </p>
           </div>
         ) : (
-          chats.map((chat) => (
+          filteredChats.map((chat) => (
             <ChatItem
               key={chat._id}
               chat={chat}
