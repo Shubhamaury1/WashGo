@@ -3,12 +3,12 @@ import bookingApi from "../../api/bookingApi";
 import { Link } from "react-router-dom";
 
 const BookingCard = () => {
-   const BaseURL = import.meta.env.VITE_API_IMG_URL;
-   const [bookings, setBookings] = useState([]);
+  const BaseURL = import.meta.env.VITE_API_IMG_URL;
+  const [bookings, setBookings] = useState([]);
 
-   useEffect(() => {
-     loadBookings();
-   }, []);
+  useEffect(() => {
+    loadBookings();
+  }, []);
 
   const loadBookings = async () => {
     try {
@@ -48,49 +48,82 @@ const BookingCard = () => {
         return "bg-gray-100 text-gray-700";
     }
   };
+
   return (
     <>
       {bookings.length > 0 ? (
         bookings.map((booking) => (
           <div
             key={booking._id}
-            className="bg-white rounded-3xl p-6 shadow-md flex flex-col lg:flex-row justify-between items-center gap-6"
+            className="bg-white rounded-2xl md:rounded-3xl p-4 md:p-6 shadow-md"
           >
-            <div className="flex items-center gap-5">
-              <img
-                src={`${BaseURL}${booking.vehicleId.image}`}
-                alt={booking.vehicleId.name}
-                className="w-28 h-28 rounded-2xl object-cover"
-              />
+            <div className="flex flex-col gap-4 md:gap-6">
+              {/* Top Section */}
+              <div className="flex flex-col lg:flex-row justify-between items-start md:items-center gap-4 md:gap-6">
+                <div className="flex items-start gap-3 md:gap-5 w-full">
+                  {/* Vehicle Image */}
+                  <img
+                    src={`${BaseURL}${booking.vehicleId.image}`}
+                    alt={booking.vehicleId.name}
+                    className="w-20 md:w-28 h-20 md:h-28 rounded-xl md:rounded-2xl object-cover flex-shrink-0"
+                  />
 
-              <div>
-                <h1 className="text-2xl font-bold">{booking.vehicleId.name}</h1>
+                  {/* Right Content */}
+                  <div className="flex-1 min-w-0">
+                    {/* Mobile Header */}
+                    <div className="flex items-start justify-between gap-2 md:hidden">
+                      <h1 className="text-xl font-bold leading-none">
+                        {booking.vehicleId.name}
+                      </h1>
 
-                <p className="text-gray-500 mt-2">
-                  {booking.packageId.packageName}
-                </p>
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap ${getStatusStyle(
+                          booking.status
+                        )}`}
+                      >
+                        {booking.status}
+                      </span>
+                    </div>
 
-                <p className="text-blue-600 font-bold mt-3">
-                  ₹{booking.amount}
-                </p>
+                    {/* Desktop Title */}
+                    <h1 className="hidden md:block text-2xl font-bold">
+                      {booking.vehicleId.name}
+                    </h1>
+
+                    <p className="text-gray-500 mt-2 text-sm md:text-base">
+                      {booking.packageId.packageName}
+                    </p>
+
+                    <p className="text-blue-600 font-bold mt-2 text-base">
+                      ₹{booking.amount}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Desktop Status + Button */}
+
+                <div className="hidden md:flex items-center gap-4 flex-nowrap">
+                  <span
+                    className={`inline-flex items-center justify-center px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap ${getStatusStyle(
+                      booking.status
+                    )}`}
+                  >
+                    {booking.status}
+                  </span>
+
+                  <Link
+                    to={`/my-bookings/${booking._id}`}
+                    className="inline-flex items-center justify-center px-6 h-12 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-medium whitespace-nowrap transition"
+                  >
+                    Track Live
+                  </Link>
+                </div>
               </div>
-            </div>
 
-            <div className="flex flex-col items-center">
-              {/* <span className="bg-yellow-100 text-yellow-700 px-5 py-2 rounded-full font-medium">
-                {booking.status}
-              </span> */}
-              <span
-                className={`inline-block px-3 py-1 rounded-full text-sm font-semibold ${getStatusStyle(
-                  booking.status,
-                )}`}
-              >
-                {booking.status}
-              </span>
-
+              {/* Mobile Button */}
               <Link
                 to={`/my-bookings/${booking._id}`}
-                className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-2xl transition"
+                className="md:hidden w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl transition text-sm text-center"
               >
                 Track Live
               </Link>

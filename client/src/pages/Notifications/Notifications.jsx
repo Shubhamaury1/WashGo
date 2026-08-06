@@ -122,71 +122,89 @@ function Notifications() {
   return (
     <MainLayout>
       <div className="bg-[#f5f7fb] min-h-screen">
-        <div className="flex gap-6 p-6">
+        <div className="flex gap-4 md:gap-6 p-4 md:p-6">
           <Sidebar />
 
-          <main className="flex-1 ml-[294px]">
-            <h1 className="text-4xl font-bold text-[#0d2240] mb-8">
+          <main className="flex-1 md:ml-[294px] w-full md:w-auto">
+            {/* <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#0d2240] mb-4 md:mb-8">
+              Notifications
+            </h1> */}
+             <h1 className="px-12 sm:px-12 lg:px-0 py-6 sm:py-6 lg:py-0 text-2xl sm:text-3xl md:text-4xl font-bold text-[#0d2240] mb-4 md:mb-8">
               Notifications
             </h1>
+           
 
             {loading ? (
-              <div>Loading...</div>
+              <div className="text-center py-8 text-gray-500">Loading...</div>
             ) : filteredNotifications.length === 0 ? (
-              <div className="bg-white rounded-xl p-12 text-center shadow">
-                <FaBell className="mx-auto mb-3 text-gray-400" size={50} />
+              <div className="bg-white rounded-2xl md:rounded-xl p-8 md:p-12 text-center shadow">
+                <FaBell className="mx-auto mb-3 text-gray-400" size={40} />
 
-                <h2 className="text-xl font-semibold">No Notifications</h2>
+                <h2 className="text-lg md:text-xl font-semibold">No Notifications</h2>
 
-                <p className="text-gray-500 mt-2">You're all caught up.</p>
+                <p className="text-sm md:text-base text-gray-500 mt-2">You're all caught up.</p>
               </div>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-3 md:space-y-4">
                 {filteredNotifications.map((item) => (
                   <div
                     key={item._id}
-                    className={`bg-white rounded-xl shadow p-5 flex justify-between transition hover:shadow-lg cursor-pointer ${
+                    className={`bg-white rounded-lg md:rounded-xl shadow p-3 md:p-5 transition hover:shadow-lg cursor-pointer ${
                       !item.isRead ? "border-l-4 border-blue-600" : ""
                     }`}
                     onClick={() => markAsRead(item._id)}
                   >
-                    <div className="flex gap-4 flex-1">
-                      {icon(item.type)}
+                    {/* Top Section: Icon and Title with Delete Button */}
+                    <div className="flex gap-3 md:gap-4 items-start justify-between mb-2">
+                      <div className="flex gap-3 md:gap-4 flex-1 min-w-0">
+                        <div className="flex-shrink-0 text-base md:text-lg pt-1">
+                          {icon(item.type)}
+                        </div>
+                        <h3 className="font-semibold text-base md:text-lg line-clamp-2 break-words">{item.title}</h3>
+                      </div>
 
-                      <div>
-                        <h3 className="font-semibold text-lg">{item.title}</h3>
+                      {/* Delete Button */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          deleteNotification(item._id);
+                        }}
+                        className="text-red-500 hover:text-red-700 transition flex-shrink-0 p-1"
+                        title="Delete notification"
+                      >
+                        <FaTrash size={16} />
+                      </button>
+                    </div>
 
-                        <p className="text-gray-600 mt-1">{item.message}</p>
+                    {/* Message */}
+                    <div className="ml-9 md:ml-11">
+                      <p className="text-xs md:text-base text-gray-600 line-clamp-2">{item.message}</p>
 
+                      {/* Coupon and Redeem Codes */}
+                      <div className="mt-2 flex flex-wrap gap-2">
                         {item.couponCode && (
-                          <div className="mt-2">
-                            <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">
-                              Coupon : {item.couponCode}
-                            </span>
-                          </div>
+                          <span className="inline-block bg-green-100 text-green-700 px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-semibold">
+                            Coupon : {item.couponCode}
+                          </span>
                         )}
 
                         {item.redeemCode && (
-                          <div className="mt-2">
-                            <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-semibold">
-                              Redeem : {item.redeemCode}
-                            </span>
-                          </div>
+                          <span className="inline-block bg-blue-100 text-blue-700 px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-semibold">
+                            Redeem : {item.redeemCode}
+                          </span>
                         )}
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-3">
-                      {!item.isRead && (
-                        <FaCheckCircle className="text-blue-600" size={22} />
-                      )}
-
-                      <FaTrash
-                        size={22}
-                        className="cursor-pointer text-red-500 hover:text-red-700"
-                        onClick={() => deleteNotification(item._id)}
-                      />
-                    </div>
+                    {/* Read Status Indicator */}
+                    {!item.isRead && (
+                      <div className="mt-2 ml-9 md:ml-11">
+                        <div className="flex items-center gap-2">
+                          <FaCheckCircle className="text-blue-600" size={14} />
+                          <span className="text-xs text-blue-600">Mark as read</span>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>

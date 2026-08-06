@@ -100,14 +100,13 @@ function ReviewForm({ bookingId, onReviewAdded, reviewData, isEditing }) {
   }, [reviewData]);
 
   return (
-    <div className="bg-white rounded-3xl shadow-lg p-8 mt-8">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">Write a Review</h2>
+    <div className="bg-white rounded-2xl md:rounded-3xl shadow-lg p-4 md:p-8 mt-4 md:mt-8">
+      <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-6">Write a Review</h2>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
         {/* Rating */}
-
         <div>
-          <label className="block font-semibold mb-3">Rating</label>
+          <label className="block font-semibold mb-2 md:mb-3 text-sm md:text-base">Rating</label>
 
           <RatingStars
             rating={rating}
@@ -118,34 +117,33 @@ function ReviewForm({ bookingId, onReviewAdded, reviewData, isEditing }) {
         </div>
 
         {/* Review */}
-
         <div>
-          <label className="block font-semibold mb-3">Review</label>
+          <label className="block font-semibold mb-2 md:mb-3 text-sm md:text-base">Review</label>
 
           <textarea
-            rows={5}
+            rows={4}
             value={review}
             onChange={(e) => setReview(e.target.value)}
             placeholder="Share your experience..."
-            className="w-full border rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+            className="w-full border rounded-lg md:rounded-xl p-3 md:p-4 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
           />
         </div>
 
         {/* Existing Images */}
         {existingImages.length > 0 && (
-          <div className="mb-6">
-            <label className="block font-semibold mb-3">Existing Images</label>
+          <div>
+            <label className="block font-semibold mb-2 md:mb-3 text-sm md:text-base">Existing Images</label>
 
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4">
               {existingImages.map((img, index) => (
                 <div
                   key={index}
-                  className="relative rounded-xl overflow-hidden"
+                  className="relative rounded-lg md:rounded-xl overflow-hidden"
                 >
                   <img
                     src={`${BaseUrl}${img}`}
-                    alt=""
-                    className="h-28 w-full object-cover rounded-xl border"
+                    alt="existing"
+                    className="h-20 md:h-28 w-full object-cover rounded-lg md:rounded-xl border"
                   />
 
                   <button
@@ -155,7 +153,7 @@ function ReviewForm({ bookingId, onReviewAdded, reviewData, isEditing }) {
                         existingImages.filter((_, i) => i !== index),
                       )
                     }
-                    className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-2"
+                    className="absolute top-1 right-1 md:top-2 md:right-2 bg-red-500 text-white rounded-full p-1.5 md:p-2 hover:bg-red-600 transition"
                   >
                     <FaTrash size={12} />
                   </button>
@@ -166,14 +164,13 @@ function ReviewForm({ bookingId, onReviewAdded, reviewData, isEditing }) {
         )}
 
         {/* Upload */}
-
         <div>
-          <label className="block font-semibold mb-3">Upload Images</label>
+          <label className="block font-semibold mb-2 md:mb-3 text-sm md:text-base">Upload Images</label>
 
-          <label className="border-2 border-dashed rounded-xl p-8 flex flex-col items-center cursor-pointer hover:border-blue-500 transition">
-            <FaCloudUploadAlt size={45} className="text-blue-500" />
+          <label className="border-2 border-dashed rounded-lg md:rounded-xl p-6 md:p-8 flex flex-col items-center cursor-pointer hover:border-blue-500 transition">
+            <FaCloudUploadAlt size={40} className="text-blue-500 md:text-[45px]" />
 
-            <span className="mt-3 text-gray-500">Click to upload images</span>
+            <span className="mt-2 md:mt-3 text-sm md:text-base text-gray-500">Click to upload images</span>
 
             <input
               type="file"
@@ -186,27 +183,26 @@ function ReviewForm({ bookingId, onReviewAdded, reviewData, isEditing }) {
         </div>
 
         {/* Preview */}
-
         {images.length > 0 && (
           <div>
-            <h3 className="font-semibold mb-3">Selected Images</h3>
+            <h3 className="font-semibold mb-2 md:mb-3 text-sm md:text-base">Selected Images</h3>
 
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4">
               {images.map((image, index) => (
                 <div
                   key={index}
-                  className="relative rounded-xl overflow-hidden border"
+                  className="relative rounded-lg md:rounded-xl overflow-hidden border"
                 >
                   <img
                     src={URL.createObjectURL(image)}
-                    alt=""
-                    className="w-full h-28 object-cover"
+                    alt="selected"
+                    className="w-full h-20 md:h-28 object-cover"
                   />
 
                   <button
                     type="button"
                     onClick={() => removeImage(index)}
-                    className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full"
+                    className="absolute top-1 right-1 md:top-2 md:right-2 bg-red-500 text-white p-1.5 md:p-2 rounded-full hover:bg-red-600 transition"
                   >
                     <FaTrash size={12} />
                   </button>
@@ -217,11 +213,10 @@ function ReviewForm({ bookingId, onReviewAdded, reviewData, isEditing }) {
         )}
 
         {/* Button */}
-
         <button
           type="submit"
           disabled={loading}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-semibold transition"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white px-6 md:px-8 py-2 md:py-3 rounded-lg md:rounded-xl font-semibold transition text-sm md:text-base"
         >
           {loading
             ? "Saving..."
