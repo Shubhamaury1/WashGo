@@ -6,6 +6,7 @@ import packageApi from "../../api/packageApi";
 const ServicesSection = () => {
   const [services, setServices] = useState([]);
   const BaseURL = import.meta.env.VITE_API_IMG_URL;
+
   useEffect(() => {
     loadServices();
   }, []);
@@ -18,15 +19,14 @@ const ServicesSection = () => {
       ]);
 
       const activeVehicles = vehiclesRes.data.filter(
-        (vehicle) => vehicle.isActive,
+        (vehicle) => vehicle.isActive
       );
-     
 
       const vehiclesWithPrice = activeVehicles.map((vehicle) => {
         const vehiclePackages = packagesRes.data.filter(
           (pkg) =>
             (pkg.vehicleId?._id || pkg.vehicleId) === vehicle._id &&
-            pkg.isActive,
+            pkg.isActive
         );
 
         const minPrice =
@@ -65,17 +65,20 @@ const ServicesSection = () => {
       console.log(error);
     }
   };
-  return (
-    <section className="px-6 md:px-16 py-20 bg-gray-50">
-      <div className="text-center mb-14">
-        <h1 className="text-4xl font-bold text-slate-900">Our Services</h1>
 
-        <p className="mt-5 text-xl text-slate-500">
+  return (
+    <section className="px-4 sm:px-6 md:px-12 lg:px-16 py-12 sm:py-16 md:py-20 bg-gray-50">
+      <div className="text-center mb-8 sm:mb-12 md:mb-14">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900">
+          Our Services
+        </h1>
+
+        <p className="mt-3 sm:mt-4 md:mt-5 text-base sm:text-lg md:text-xl text-slate-500">
           Professional washing solutions for all types of vehicles.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
         {services.map((service) => (
           <ServiceCard
             key={service._id}
@@ -83,9 +86,7 @@ const ServicesSection = () => {
             image={`${BaseURL}${service.image}`}
             description={service.description}
             price={service.minPrice}
-            // badge="Available"
             badge={service.badge}
-            // badgeColor="bg-green-100 text-green-600"
             badgeColor={service.badgeColor}
           />
         ))}
