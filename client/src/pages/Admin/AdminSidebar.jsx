@@ -8,12 +8,14 @@ import {
   FaCog,
   FaSignOutAlt,
   FaComments,
+  FaBars,
+  FaTimes,
 } from "react-icons/fa";
 import { BiSolidOffer } from "react-icons/bi";
 
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { logout } from "../../redux/authSlice";
 import { setUnreadCount, setUnreadByChat } from "../../redux/notificationSlice";
 import notificationApi from "../../api/notificationApi";
@@ -23,6 +25,7 @@ const AdminSidebar = () => {
   const navigate = useNavigate();
   const unreadCount = useSelector((state) => state.notification.unreadCount);
   const currentUser = useSelector((state) => state.auth.user);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // Load unread count whenever user is available
   useEffect(() => {
@@ -62,6 +65,7 @@ const AdminSidebar = () => {
     dispatch(logout());
     localStorage.clear();
     navigate("/");
+    setIsSidebarOpen(false);
   };
 
   const menuClass = ({ isActive }) =>
@@ -72,85 +76,139 @@ const AdminSidebar = () => {
     }`;
 
   return (
-    <aside className="w-[280px] bg-white rounded-[30px] shadow-lg  p-5  fixed top-24 flex flex-col left-6  h-[calc(100vh-120px)]">
-      {/* Logo */}
-
-      <Link to="/" className="flex items-center gap-3 mb-10">
-        <div className="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center text-white font-bold text-xl">
-          W
-        </div>
-
-        <div>
-          <h1 className="text-xl font-bold text-slate-800">WashGo</h1>
-
-          <p className="text-gray-400 text-sm">Admin Panel</p>
-        </div>
-      </Link>
-
-      {/* Menu */}
-
-      <div className="flex-1 space-y-2">
-        <NavLink to="/admin/dashboard" className={menuClass}>
-          <FaHome />
-          Dashboard
-        </NavLink>
-
-        <NavLink to="/admin/vehicles" className={menuClass}>
-          <FaCar />
-          Vehicles
-        </NavLink>
-
-        <NavLink to="/admin/packages" className={menuClass}>
-          <FaBoxOpen />
-          Packages
-        </NavLink>
-
-        <NavLink to="/admin/bookings" className={menuClass}>
-          <FaCalendarAlt />
-          Bookings
-        </NavLink>
-
-        <NavLink to="/admin/users" className={menuClass}>
-          <FaUsers />
-          Users
-        </NavLink>
-
-        <NavLink to="/admin/chat" className={menuClass}>
-          <FaComments />
-          Chats
-          {unreadCount > 0 && (
-            <span className="ml-auto bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-              {unreadCount > 9 ? "9+" : unreadCount}
-            </span>
-          )}
-        </NavLink>
-
-        <NavLink to="/admin/offers" className={menuClass}>
-          <BiSolidOffer />
-          Offers
-        </NavLink>
-
-        <button className="w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-slate-600 hover:bg-slate-100">
-          <FaStar />
-          Reviews
-        </button>
-
-        <button className="w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-slate-600 hover:bg-slate-100">
-          <FaCog />
-          Settings
-        </button>
-      </div>
-
-      {/* Logout */}
-
+    <>
+      {/* Mobile Menu Toggle Button */}
       <button
-        onClick={handleLogout}
-        className="w-full flex items-center justify-center gap-3 bg-red-500 hover:bg-red-600 text-white py-4 rounded-2xl font-semibold transition-all"
+        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+        className="fixed top-24 left-4 z-50 md:hidden bg-blue-600 text-white p-2 rounded-lg shadow-lg"
       >
-        <FaSignOutAlt />
-        Logout
+        {isSidebarOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
       </button>
-    </aside>
+
+      {/* Mobile Overlay */}
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside
+        className={`fixed top-24 left-0 z-40 w-[280px] bg-white rounded-[30px] shadow-lg p-5 flex flex-col h-[calc(100vh-120px)] transition-transform duration-300 md:w-[280px] md:left-6 md:rounded-[30px] ${
+          isSidebarOpen
+            ? "translate-x-0"
+            : "-translate-x-full md:translate-x-0"
+        }`}
+      >
+        {/* Logo */}
+        <Link
+          to="/"
+          onClick={() => setIsSidebarOpen(false)}
+          className="flex items-center gap-3 mb-10"
+        >
+          <div className="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center text-white font-bold text-xl">
+            W
+          </div>
+
+          <div>
+            <h1 className="text-xl font-bold text-slate-800">WashGo</h1>
+
+            <p className="text-gray-400 text-sm">Admin Panel</p>
+          </div>
+        </Link>
+
+        {/* Menu */}
+        <div className="flex-1 space-y-2 overflow-y-auto">
+          <NavLink
+            to="/admin/dashboard"
+            onClick={() => setIsSidebarOpen(false)}
+            className={menuClass}
+          >
+            <FaHome />
+            <span>Dashboard</span>
+          </NavLink>
+
+          <NavLink
+            to="/admin/vehicles"
+            onClick={() => setIsSidebarOpen(false)}
+            className={menuClass}
+          >
+            <FaCar />
+            <span>Vehicles</span>
+          </NavLink>
+
+          <NavLink
+            to="/admin/packages"
+            onClick={() => setIsSidebarOpen(false)}
+            className={menuClass}
+          >
+            <FaBoxOpen />
+            <span>Packages</span>
+          </NavLink>
+
+          <NavLink
+            to="/admin/bookings"
+            onClick={() => setIsSidebarOpen(false)}
+            className={menuClass}
+          >
+            <FaCalendarAlt />
+            <span>Bookings</span>
+          </NavLink>
+
+          <NavLink
+            to="/admin/users"
+            onClick={() => setIsSidebarOpen(false)}
+            className={menuClass}
+          >
+            <FaUsers />
+            <span>Users</span>
+          </NavLink>
+
+          <NavLink
+            to="/admin/chat"
+            onClick={() => setIsSidebarOpen(false)}
+            className={menuClass}
+          >
+            <FaComments />
+            <span>Chats</span>
+            {unreadCount > 0 && (
+              <span className="ml-auto bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                {unreadCount > 9 ? "9+" : unreadCount}
+              </span>
+            )}
+          </NavLink>
+
+          <NavLink
+            to="/admin/offers"
+            onClick={() => setIsSidebarOpen(false)}
+            className={menuClass}
+          >
+            <BiSolidOffer />
+            <span>Offers</span>
+          </NavLink>
+
+          <button className="w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-slate-600 hover:bg-slate-100 transition-all">
+            <FaStar />
+            <span>Reviews</span>
+          </button>
+
+          <button className="w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-slate-600 hover:bg-slate-100 transition-all">
+            <FaCog />
+            <span>Settings</span>
+          </button>
+        </div>
+
+        {/* Logout */}
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center justify-center gap-3 bg-red-500 hover:bg-red-600 text-white py-4 rounded-2xl font-semibold transition-all"
+        >
+          <FaSignOutAlt />
+          <span>Logout</span>
+        </button>
+      </aside>
+    </>
   );
 };
 
