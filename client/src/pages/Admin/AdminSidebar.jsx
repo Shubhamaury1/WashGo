@@ -80,29 +80,31 @@ const AdminSidebar = () => {
       {/* Mobile Menu Toggle Button */}
       <button
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        className="fixed top-24 left-4 z-50 md:hidden bg-blue-600 text-white p-2 rounded-lg shadow-lg"
+        className={`fixed top-24 left-4 z-50 md:hidden bg-blue-600 text-white p-2 rounded-lg shadow-lg ${
+          isSidebarOpen ? "hidden" : "block"
+        }`}
       >
-        {isSidebarOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+        <FaBars size={24} />
       </button>
 
       {/* Mobile Overlay */}
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
+          className="fixed inset-0  bg-opacity-50 z-30 md:hidden"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 z-40 w-[90vw] max-w-sm bg-white rounded-3xl shadow-2xl p-6 flex flex-col h-screen transition-transform duration-300 md:top-24 md:left-6 md:w-[280px] md:rounded-[30px] md:h-[calc(100vh-120px)] md:shadow-lg md:p-5 ${
+        className={`fixed top-0 left-0 z-40 w-60 max-w-sm bg-white rounded-3xl shadow-2xl p-6 flex flex-col h-screen transition-transform duration-300 md:top-24 md:left-6 md:w-[280px] md:rounded-[30px] md:h-[calc(100vh-120px)] md:shadow-lg md:p-5 ${
           isSidebarOpen
             ? "translate-x-0"
             : "-translate-x-full md:translate-x-0"
         }`}
       >
-        {/* Header with Logo and Close Button */}
-        <div className="flex items-start justify-between mb-8">
+        {/* Header with Logo and Close Button - Hidden on Mobile */}
+        <div className="hidden md:flex items-start justify-between mb-8">
           <Link
             to="/"
             onClick={() => setIsSidebarOpen(false)}
@@ -117,14 +119,6 @@ const AdminSidebar = () => {
               <p className="text-gray-400 text-sm">Admin Panel</p>
             </div>
           </Link>
-
-          {/* Close Button */}
-          <button
-            onClick={() => setIsSidebarOpen(false)}
-            className="md:hidden flex-shrink-0 bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700 transition-all"
-          >
-            <FaTimes size={20} />
-          </button>
         </div>
 
         {/* Menu */}
