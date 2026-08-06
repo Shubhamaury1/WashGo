@@ -39,17 +39,17 @@ const CustomerDashboard = () => {
 
   return (
     <MainLayout>
-      <div className="bg-[#f5f7fb]">
-        <div className="flex h-full p-6 gap-6">
+      <div className="bg-[#f5f7fb] min-h-screen">
+        <div className="flex h-full p-4 md:p-6 gap-4 md:gap-6">
           {/* Sidebar */}
           <Sidebar />
 
           {/* Right Content */}
-          <main className="flex-1 ml-[294px] overflow-y-auto pr-2">
+          <main className="flex-1 md:ml-[294px] overflow-y-auto pr-2 w-full md:w-auto">
             <TopHeader />
 
             {/* Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mt-6 md:mt-8">
               <StatsCard
                 title="Wallet Balance"
                 value="₹1250"
@@ -62,16 +62,16 @@ const CustomerDashboard = () => {
             </div>
 
             {/* Vehicle */}
-            <div className="mt-12">
-              <div className="flex justify-between items-center mb-8">
-                <h1 className="text-3xl font-bold">Book New Service</h1>
+            <div className="mt-8 md:mt-12">
+              <div className="flex justify-between items-center gap-4 mb-6 md:mb-8">
+                <h1 className="text-2xl sm:text-3xl font-bold">Book New Service</h1>
 
-                <button className="text-blue-600 font-semibold">
+                <button className="text-blue-600 font-semibold text-sm sm:text-base">
                   View All
                 </button>
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-6">
                 {vehicles.map((vehicle) => (
                   <VehicleCard
                     key={vehicle._id}
@@ -83,11 +83,11 @@ const CustomerDashboard = () => {
             </div>
 
             {/* Booking */}
-            <div className="mt-12 pb-10">
-              <div className="flex justify-between items-center mb-8">
-                <h1 className="text-3xl font-bold">Active Booking</h1>
+            <div className="mt-8 md:mt-12 pb-10">
+              <div className="flex justify-between items-center gap-4 mb-6 md:mb-8">
+                <h1 className="text-2xl sm:text-3xl font-bold">Active Booking</h1>
 
-                <button className="text-blue-600 font-semibold">
+                <button className="text-blue-600 font-semibold text-sm sm:text-base">
                   View All
                 </button>
               </div>

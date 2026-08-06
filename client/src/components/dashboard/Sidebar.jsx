@@ -7,9 +7,11 @@ import {
   FaCog,
   FaSignOutAlt,
   FaComments,
+  FaBars,
+  FaTimes,
 } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { logout } from "../../redux/authSlice";
 import { setUnreadCount, setUnreadByChat } from "../../redux/notificationSlice";
@@ -19,15 +21,13 @@ import { useSocket } from "../../socket/SocketProvider";
 import { NavLink, useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
-
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
-
   const unreadCount = useSelector((state) => state.notification.unreadCount);
   const unreadChatCount = useSelector((state) => state.notification.unreadChatCount);
   const currentUser = useSelector((state) => state.auth.user);
   const socket = useSocket();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // Load unread count whenever user is available
   useEffect(() => {
@@ -82,14 +82,38 @@ const Sidebar = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-
     localStorage.clear();
-
     navigate("/");
+    setIsSidebarOpen(false);
   };
   return (
-    // <aside className="w-full lg:w-[270px] bg-white rounded-3xl shadow-lg p-6 h-fit">
-    <aside className="fixed lg:w-[270px] bg-white rounded-3xl shadow-lg p-6  h-[calc(100vh-112px)]">
+    <>
+      {/* Mobile Menu Toggle Button */}
+      <button
+        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+        className={`fixed top-24 left-4 z-50 md:hidden bg-blue-600 text-white p-2 rounded-lg shadow-lg ${
+          isSidebarOpen ? "hidden" : "block"
+        }`}
+      >
+        <FaBars size={24} />
+      </button>
+
+      {/* Mobile Overlay */}
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0  bg-opacity-50 z-30 md:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside
+        className={`fixed top-0 left-0 z-40 w-60 max-w-sm bg-white rounded-3xl shadow-2xl p-6 flex flex-col h-screen transition-transform duration-300 md:top-24 md:left-6 md:w-[280px] md:rounded-[30px] md:h-[calc(100vh-120px)] md:shadow-lg md:p-5 ${
+          isSidebarOpen
+            ? "translate-x-0"
+            : "-translate-x-full md:translate-x-0"
+        }`}
+      >
       {/* Logo */}
       <div className="flex items-center gap-3 mb-10">
         <div className="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center text-white font-bold text-xl">
@@ -104,9 +128,10 @@ const Sidebar = () => {
       </div>
 
       {/* Menu */}
-      <div className="space-y-1">
+      <div className="flex-1 space-y-1 overflow-y-auto pr-2">
         <NavLink
           to="/dashboard"
+          onClick={() => setIsSidebarOpen(false)}
           className={({ isActive }) =>
             `w-full flex items-center gap-4 px-5 py-4 rounded-2xl font-medium transition ${
               isActive
@@ -121,6 +146,7 @@ const Sidebar = () => {
 
         <NavLink
           to="/my-bookings"
+          onClick={() => setIsSidebarOpen(false)}
           className={({ isActive }) =>
             `w-full flex items-center gap-4 px-5 py-4 rounded-2xl font-medium transition ${
               isActive
@@ -136,6 +162,7 @@ const Sidebar = () => {
 
         <NavLink
           to="/notifications"
+          onClick={() => setIsSidebarOpen(false)}
           className={({ isActive }) =>
             `w-full flex items-center gap-4 px-5 py-4 rounded-2xl font-medium transition relative ${
               isActive
@@ -160,6 +187,7 @@ const Sidebar = () => {
 
         <NavLink
           to="/chat"
+          onClick={() => setIsSidebarOpen(false)}
           className={({ isActive }) =>
             `w-full flex items-center gap-4 px-5 py-4 rounded-2xl font-medium transition relative ${
               isActive
@@ -179,6 +207,7 @@ const Sidebar = () => {
         
         <NavLink
           to="/settings"
+          onClick={() => setIsSidebarOpen(false)}
           className={({ isActive }) =>
             `w-full flex items-center gap-4 px-5 py-4 rounded-2xl font-medium transition ${
               isActive
@@ -192,17 +221,16 @@ const Sidebar = () => {
         </NavLink>
       </div>
 
-      {/* Bottom */}
-      <div className="space-y-3 mt-95">
-        <button
-          onClick={handleLogout}
-          className="w-full flex items-center justify-center gap-3 bg-red-500 hover:bg-red-600 text-white py-4 rounded-2xl transition"
-        >
-          <FaSignOutAlt />
-          Logout
-        </button>
-      </div>
-    </aside>
+      {/* Logout */}
+      <button
+        onClick={handleLogout}
+        className="w-full flex items-center justify-center gap-3 bg-red-500 hover:bg-red-600 text-white py-4 rounded-2xl font-semibold transition-all mt-4"
+      >
+        <FaSignOutAlt />
+        <span>Logout</span>
+      </button>
+      </aside>
+    </>
   );
 };
 
