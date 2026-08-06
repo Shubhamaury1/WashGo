@@ -95,31 +95,40 @@ const AdminSidebar = () => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-24 left-0 z-40 w-[280px] bg-white rounded-[30px] shadow-lg p-5 flex flex-col h-[calc(100vh-120px)] transition-transform duration-300 md:w-[280px] md:left-6 md:rounded-[30px] ${
+        className={`fixed top-0 left-0 z-40 w-[90vw] max-w-sm bg-white rounded-3xl shadow-2xl p-6 flex flex-col h-screen transition-transform duration-300 md:top-24 md:left-6 md:w-[280px] md:rounded-[30px] md:h-[calc(100vh-120px)] md:shadow-lg md:p-5 ${
           isSidebarOpen
             ? "translate-x-0"
             : "-translate-x-full md:translate-x-0"
         }`}
       >
-        {/* Logo */}
-        <Link
-          to="/"
-          onClick={() => setIsSidebarOpen(false)}
-          className="flex items-center gap-3 mb-10"
-        >
-          <div className="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center text-white font-bold text-xl">
-            W
-          </div>
+        {/* Header with Logo and Close Button */}
+        <div className="flex items-start justify-between mb-8">
+          <Link
+            to="/"
+            onClick={() => setIsSidebarOpen(false)}
+            className="flex items-center gap-3 flex-1"
+          >
+            <div className="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center text-white font-bold text-xl flex-shrink-0">
+              W
+            </div>
 
-          <div>
-            <h1 className="text-xl font-bold text-slate-800">WashGo</h1>
+            <div>
+              <h1 className="text-xl font-bold text-slate-800">WashGo</h1>
+              <p className="text-gray-400 text-sm">Admin Panel</p>
+            </div>
+          </Link>
 
-            <p className="text-gray-400 text-sm">Admin Panel</p>
-          </div>
-        </Link>
+          {/* Close Button */}
+          <button
+            onClick={() => setIsSidebarOpen(false)}
+            className="md:hidden flex-shrink-0 bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700 transition-all"
+          >
+            <FaTimes size={20} />
+          </button>
+        </div>
 
         {/* Menu */}
-        <div className="flex-1 space-y-2 overflow-y-auto">
+        <div className="flex-1 space-y-2 overflow-y-auto pr-2">
           <NavLink
             to="/admin/dashboard"
             onClick={() => setIsSidebarOpen(false)}
@@ -202,7 +211,7 @@ const AdminSidebar = () => {
         {/* Logout */}
         <button
           onClick={handleLogout}
-          className="w-full flex items-center justify-center gap-3 bg-red-500 hover:bg-red-600 text-white py-4 rounded-2xl font-semibold transition-all"
+          className="w-full flex items-center justify-center gap-3 bg-red-500 hover:bg-red-600 text-white py-4 rounded-2xl font-semibold transition-all mt-4"
         >
           <FaSignOutAlt />
           <span>Logout</span>

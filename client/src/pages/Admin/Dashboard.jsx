@@ -76,7 +76,7 @@ const Dashboard = () => {
 
   return (
     <div className="w-full overflow-hidden">
-      <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-800 mb-6 sm:mb-8">
+      <h1 className="hidden md:block text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-800 mb-6 sm:mb-8">
         Dashboard
       </h1>
 
