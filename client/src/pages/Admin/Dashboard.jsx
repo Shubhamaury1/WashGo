@@ -76,12 +76,12 @@ const Dashboard = () => {
 
   return (
     <div className="w-full overflow-hidden">
-      <h1 className="hidden md:block text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-800 mb-6 sm:mb-8">
-        Dashboard
-      </h1>
+      <div className="px-10 sm:px-8 lg:px-2 py-4 sm:py-6 lg:py-2 bg-gradient-to-r from-blue-50 to-purple-50">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-800">Dashboard</h1>
+      </div>
 
       {/* Cards Grid - 2 columns on mobile, responsive on larger screens */}
-      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 mt-3">
         {cards.map((item, index) => (
           <div
             key={index}
