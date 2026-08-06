@@ -15,10 +15,10 @@ const MessageBubble = ({ message, currentUser }) => {
 
   return (
     <div
-      className={`flex mb-2 ${isOwnMessage ? "justify-end" : "justify-start"}`}
+      className={`flex mb-1 md:mb-2 ${isOwnMessage ? "justify-end" : "justify-start"}`}
     >
       <div
-        className={`max-w-xs lg:max-w-md px-4 py-3 rounded-2xl shadow-sm break-words transition-all ${
+        className={`max-w-xs md:lg:max-w-md px-3 md:px-4 py-2 md:py-3 rounded-2xl shadow-sm break-words transition-all text-xs md:text-sm ${
           isOwnMessage
             ? `${
                 isPending
@@ -29,12 +29,12 @@ const MessageBubble = ({ message, currentUser }) => {
         }`}
       >
         {/* Message */}
-        <p className="text-sm leading-relaxed whitespace-pre-wrap">
+        <p className="leading-relaxed whitespace-pre-wrap">
           {message.text}
         </p>
 
         {/* Footer - Time & Status */}
-        <div className="flex justify-end items-center gap-1.5 mt-1.5">
+        <div className="flex justify-end items-center gap-1 mt-1">
           <span
             className={`text-xs font-medium ${
               isOwnMessage ? "text-blue-100" : "text-gray-500"
@@ -46,11 +46,11 @@ const MessageBubble = ({ message, currentUser }) => {
           {isOwnMessage && (
             <>
               {isPending ? (
-                <FaClock size={10} className="text-yellow-200 animate-pulse" />
+                <FaClock size={8} className="text-yellow-200 animate-pulse" />
               ) : message.seen ? (
-                <FaCheckDouble size={11} className="text-cyan-300" />
+                <FaCheckDouble size={9} className="text-cyan-300" />
               ) : (
-                <FaCheck size={10} className="text-blue-200" />
+                <FaCheck size={8} className="text-blue-200" />
               )}
             </>
           )}

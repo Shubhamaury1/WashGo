@@ -123,26 +123,26 @@ const Settings = () => {
   return (
     <MainLayout>
       <div className="bg-[#f5f7fb] min-h-screen">
-        <div className="flex gap-6 p-6">
+        <div className="flex gap-3 md:gap-6 p-4 md:p-6">
           {/* Sidebar */}
           <Sidebar />
 
           {/* Main Content */}
-          <main className="flex-1 ml-[294px]">
-            <h1 className="text-3xl font-bold text-[#0d2240] mb-3">
+          <main className="flex-1 md:ml-[294px] w-full md:w-auto">
+            <h1 className="px-12 sm:px-12 lg:px-0 py-6 sm:py-6 lg:py-0 text-2xl sm:text-3xl md:text-3xl font-bold text-[#0d2240] mb-4 md:mb-6">
               Account Settings
             </h1>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
               {/* Profile */}
-              <div className="bg-white rounded-3xl shadow-md overflow-hidden">
+              <div className="bg-white rounded-2xl md:rounded-3xl shadow-md overflow-hidden">
                 {/* Header */}
                 <div className="border-b">
-                  <div className="flex items-center gap-3 p-4">
-                    <FaUser className="text-2xl text-blue-600" />
+                  <div className="flex items-center gap-3 p-3 md:p-4">
+                    <FaUser className="text-xl md:text-2xl text-blue-600 flex-shrink-0" />
 
                     <div>
-                      <h2 className="text-2xl font-bold flex items-center gap-3">
+                      <h2 className="text-lg md:text-2xl font-bold">
                         Profile Information
                       </h2>
                     </div>
@@ -150,90 +150,82 @@ const Settings = () => {
                 </div>
 
                 {/* Body */}
-                <div className="grid lg:grid-cols-3 gap-10 p-6">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-10 p-4 md:p-6">
                   {/* Left Side */}
-                  <div className="lg:col-span-2 space-y-2">
+                  <div className="lg:col-span-2 space-y-3 md:space-y-4">
                     {/* Full Name */}
                     <div>
-                      <label className="font-semibold  mb-1 block">
+                      <label className="font-semibold mb-1.5 md:mb-2 block text-sm md:text-base">
                         Full Name
                       </label>
 
                       <div className="relative">
-                        <FaUser className="absolute top-4 left-4 text-gray-400" />
+                        <FaUser className="absolute top-3 md:top-4 left-3 md:left-4 text-gray-400 text-sm md:text-base" />
 
                         <input
                           type="text"
                           name="fullName"
                           value={formData.fullName}
                           onChange={handleChange}
-                          className="w-full rounded-xl h-12 border border-gray-300 pl-12 pr-5 text-lg outline-none focus:border-blue-600"
+                          className="w-full rounded-lg md:rounded-xl h-10 md:h-12 border border-gray-300 pl-10 md:pl-12 pr-4 text-sm md:text-lg outline-none focus:border-blue-600"
                         />
                       </div>
                     </div>
 
                     {/* Mobile */}
                     <div>
-                      <label className="font-semibold mb-1 block">
+                      <label className="font-semibold mb-1.5 md:mb-2 block text-sm md:text-base">
                         Mobile Number
                       </label>
 
                       <div className="relative">
-                        <FaPhoneAlt className="absolute top-4 left-4 text-gray-400" />
+                        <FaPhoneAlt className="absolute top-3 md:top-4 left-3 md:left-4 text-gray-400 text-sm md:text-base" />
 
                         <input
                           type="text"
                           name="mobile"
                           value={formData.mobile}
                           onChange={handleChange}
-                          className="w-full h-12 rounded-2xl border border-gray-300 pl-14 pr-5 text-lg outline-none focus:border-blue-600"
+                          className="w-full h-10 md:h-12 rounded-lg md:rounded-2xl border border-gray-300 pl-10 md:pl-14 pr-4 text-sm md:text-lg outline-none focus:border-blue-600"
                         />
                       </div>
                     </div>
 
                     {/* Email */}
                     <div>
-                      <label className="font-semibold mb-1 block">Email</label>
+                      <label className="font-semibold mb-1.5 md:mb-2 block text-sm md:text-base">Email</label>
 
                       <div className="relative">
-                        <FaEnvelope className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
+                        <FaEnvelope className="absolute left-3 md:left-5 top-1/2 -translate-y-1/2 text-gray-400 text-sm md:text-lg" />
 
                         <input
                           type="email"
                           disabled
                           value={formData.email}
-                          className="w-full h-12 rounded-2xl border border-gray-300 bg-gray-100 pl-14 pr-5 text-lg cursor-not-allowed"
+                          className="w-full h-10 md:h-12 rounded-lg md:rounded-2xl border border-gray-300 bg-gray-100 pl-10 md:pl-14 pr-4 text-sm md:text-lg cursor-not-allowed"
                         />
                       </div>
                     </div>
                   </div>
 
                   {/* Right Side */}
-                  <div className="border-l lg:pl-10 flex flex-col items-center">
-                    <h3 className="text-xl font-semibold mb-4">
+                  <div className="border-t lg:border-t-0 lg:border-l pt-4 md:pt-0 lg:pl-6 md:pl-10 flex flex-col items-center">
+                    <h3 className="text-base md:text-xl font-semibold mb-3 md:mb-4">
                       Profile Image
                     </h3>
 
                     <div className="relative">
-                      {/* <img
-                        src={
-                          formData.photo ||
-                          `https://ui-avatars.com/api/?name=${formData.fullName}&background=eaf2ff&color=2563eb&size=250`
-                        }
-                        alt=""
-                        className="w-44 h-44 rounded-full object-cover border shadow-md"
-                      /> */}
                       <img
                         src={
                           profileImage ||
                           `https://ui-avatars.com/api/?name=${formData.fullName}`
                         }
-                        className="w-44 h-44 rounded-full object-cover"
+                        className="w-32 md:w-44 h-32 md:h-44 rounded-full object-cover"
                       />
 
                       <label
                         htmlFor="profile"
-                        className="absolute bottom-3 right-3 w-10 h-10 rounded-full bg-blue-600 hover:bg-blue-700 cursor-pointer flex justify-center items-center text-white text-2xl shadow-lg"
+                        className="absolute bottom-2 md:bottom-3 right-2 md:right-3 w-8 md:w-10 h-8 md:h-10 rounded-full bg-blue-600 hover:bg-blue-700 cursor-pointer flex justify-center items-center text-white text-lg md:text-2xl shadow-lg"
                       >
                         📷
                       </label>
@@ -247,7 +239,7 @@ const Settings = () => {
                       />
                     </div>
 
-                    <p className="text-gray-500 mt-6 text-lg">
+                    <p className="text-gray-500 mt-3 md:mt-6 text-xs md:text-lg">
                       JPG, PNG (Max 2MB)
                     </p>
                   </div>
@@ -255,16 +247,16 @@ const Settings = () => {
               </div>
 
               {/* Password */}
-              <div className="bg-white rounded-3xl shadow-md p-6">
-                <h2 className="text-2xl font-bold mb-4 flex items-center gap-3">
-                  <FaLock className="text-red-500" />
+              <div className="bg-white rounded-2xl md:rounded-3xl shadow-md p-4 md:p-6">
+                <h2 className="text-lg md:text-2xl font-bold mb-4 md:mb-6 flex items-center gap-3">
+                  <FaLock className="text-red-500 flex-shrink-0" />
                   Change Password
                 </h2>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6">
                   {/* Current Password */}
                   <div>
-                    <label className="block font-semibold mb-1">
+                    <label className="block font-semibold mb-1.5 md:mb-2 text-sm md:text-base">
                       Current Password
                     </label>
 
@@ -275,13 +267,13 @@ const Settings = () => {
                         value={formData.currentPassword}
                         onChange={handleChange}
                         placeholder="Enter current password"
-                        className="w-full h-12 border border-gray-300 rounded-xl px-4 pr-12 outline-none focus:border-blue-600"
+                        className="w-full h-10 md:h-12 border border-gray-300 rounded-lg md:rounded-xl px-3 md:px-4 pr-10 md:pr-12 text-sm md:text-base outline-none focus:border-blue-600"
                       />
 
                       <button
                         type="button"
                         onClick={() => setShowCurrent(!showCurrent)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-xl text-gray-500 hover:text-blue-600"
+                        className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 text-lg md:text-xl text-gray-500 hover:text-blue-600"
                       >
                         {showCurrent ? <IoEyeOff /> : <IoEye />}
                       </button>
@@ -290,7 +282,7 @@ const Settings = () => {
 
                   {/* New Password */}
                   <div>
-                    <label className="block font-semibold mb-1">
+                    <label className="block font-semibold mb-1.5 md:mb-2 text-sm md:text-base">
                       New Password
                     </label>
 
@@ -301,13 +293,13 @@ const Settings = () => {
                         value={formData.newPassword}
                         onChange={handleChange}
                         placeholder="Enter new password"
-                        className="w-full h-12 border border-gray-300 rounded-xl px-4 pr-12 outline-none focus:border-blue-600"
+                        className="w-full h-10 md:h-12 border border-gray-300 rounded-lg md:rounded-xl px-3 md:px-4 pr-10 md:pr-12 text-sm md:text-base outline-none focus:border-blue-600"
                       />
 
                       <button
                         type="button"
                         onClick={() => setShowNew(!showNew)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-xl text-gray-500 hover:text-blue-600"
+                        className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 text-lg md:text-xl text-gray-500 hover:text-blue-600"
                       >
                         {showNew ? <IoEyeOff /> : <IoEye />}
                       </button>
@@ -316,7 +308,7 @@ const Settings = () => {
 
                   {/* Confirm Password */}
                   <div>
-                    <label className="block font-semibold mb-1">
+                    <label className="block font-semibold mb-1.5 md:mb-2 text-sm md:text-base">
                       Confirm Password
                     </label>
 
@@ -327,13 +319,13 @@ const Settings = () => {
                         value={formData.confirmPassword}
                         onChange={handleChange}
                         placeholder="Confirm password"
-                        className="w-full h-12 border border-gray-300 rounded-xl px-4 pr-12 outline-none focus:border-blue-600"
+                        className="w-full h-10 md:h-12 border border-gray-300 rounded-lg md:rounded-xl px-3 md:px-4 pr-10 md:pr-12 text-sm md:text-base outline-none focus:border-blue-600"
                       />
 
                       <button
                         type="button"
                         onClick={() => setShowConfirm(!showConfirm)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-xl text-gray-500 hover:text-blue-600"
+                        className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 text-lg md:text-xl text-gray-500 hover:text-blue-600"
                       >
                         {showConfirm ? <IoEyeOff /> : <IoEye />}
                       </button>
@@ -343,18 +335,18 @@ const Settings = () => {
               </div>
 
               {/* Preferences */}
-              <div className="bg-white rounded-3xl shadow-md p-6">
-                <h2 className="text-2xl font-bold mb-4 flex items-center gap-3">
-                  <FaBell className="text-yellow-500" />
+              <div className="bg-white rounded-2xl md:rounded-3xl shadow-md p-4 md:p-6">
+                <h2 className="text-lg md:text-2xl font-bold mb-4 md:mb-6 flex items-center gap-3">
+                  <FaBell className="text-yellow-500 flex-shrink-0" />
                   Preferences
                 </h2>
 
-                <div className="space-y-6">
-                  <div className="flex justify-between items-center border-b pb-4">
-                    <div>
-                      <h3 className="font-semibold">Email Notifications</h3>
+                <div className="space-y-4 md:space-y-6">
+                  <div className="flex justify-between items-start md:items-center border-b pb-3 md:pb-4 gap-3">
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-sm md:text-base">Email Notifications</h3>
 
-                      <p className="text-gray-500 text-sm">
+                      <p className="text-gray-500 text-xs md:text-sm">
                         Receive booking updates through email.
                       </p>
                     </div>
@@ -364,15 +356,15 @@ const Settings = () => {
                       name="emailNotification"
                       checked={formData.emailNotification}
                       onChange={handleChange}
-                      className="w-5 h-5"
+                      className="w-4 md:w-5 h-4 md:h-5 flex-shrink-0"
                     />
                   </div>
 
-                  <div className="flex justify-between items-center border-b pb-4">
-                    <div>
-                      <h3 className="font-semibold">SMS Notifications</h3>
+                  <div className="flex justify-between items-start md:items-center border-b pb-3 md:pb-4 gap-3">
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-sm md:text-base">SMS Notifications</h3>
 
-                      <p className="text-gray-500 text-sm">
+                      <p className="text-gray-500 text-xs md:text-sm">
                         Receive booking updates through SMS.
                       </p>
                     </div>
@@ -382,18 +374,18 @@ const Settings = () => {
                       name="smsNotification"
                       checked={formData.smsNotification}
                       onChange={handleChange}
-                      className="w-5 h-5"
+                      className="w-4 md:w-5 h-4 md:h-5 flex-shrink-0"
                     />
                   </div>
 
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center gap-3">
-                      <FaMoon className="text-indigo-600" />
+                  <div className="flex justify-between items-start md:items-center gap-3">
+                    <div className="flex items-start md:items-center gap-2 md:gap-3 flex-1">
+                      <FaMoon className="text-indigo-600 text-lg md:text-base flex-shrink-0" />
 
                       <div>
-                        <h3 className="font-semibold">Dark Mode</h3>
+                        <h3 className="font-semibold text-sm md:text-base">Dark Mode</h3>
 
-                        <p className="text-gray-500 text-sm">
+                        <p className="text-gray-500 text-xs md:text-sm">
                           Enable dark appearance.
                         </p>
                       </div>
@@ -404,7 +396,7 @@ const Settings = () => {
                       name="darkMode"
                       checked={formData.darkMode}
                       onChange={handleChange}
-                      className="w-5 h-5"
+                      className="w-4 md:w-5 h-4 md:h-5 flex-shrink-0"
                     />
                   </div>
                 </div>
@@ -414,7 +406,7 @@ const Settings = () => {
               <div className="flex justify-end">
                 <button
                   type="submit"
-                  className="flex items-center gap-3 bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-2xl font-semibold transition"
+                  className="flex items-center gap-2 md:gap-3 bg-blue-600 hover:bg-blue-700 text-white px-4 md:px-8 py-2 md:py-4 rounded-lg md:rounded-2xl font-semibold transition text-sm md:text-base"
                 >
                   <FaSave />
                   Save Changes

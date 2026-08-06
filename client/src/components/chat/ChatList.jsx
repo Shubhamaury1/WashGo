@@ -5,7 +5,7 @@ import chatApi from "../../api/chatApi";
 import { setChats, setSelectedChat } from "../../redux/chatSlice";
 import ChatItem from "./ChatItem";
 
-const ChatList = () => {
+const ChatList = ({ onSelectChat }) => {
   const dispatch = useDispatch();
   const { chats, selectedChat } = useSelector((state) => state.chat);
   const user = useSelector((state) => state.auth.user);
@@ -70,30 +70,30 @@ const ChatList = () => {
     <div className="flex flex-col h-full overflow-hidden">
       {/* Header */}
      
-      <div className="flex-shrink-0 p-4 border-b bg-gradient-to-r from-blue-50 to-blue-100">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-bold text-gray-800">Chats</h2>
+      <div className="flex-shrink-0 p-3 md:p-4 border-b bg-gradient-to-r from-blue-50 to-blue-100">
+        <div className="flex items-center justify-between mb-2 md:mb-4">
+          <h2 className="text-xl md:text-2xl font-bold text-gray-800">Chats</h2>
           <button
             onClick={loadChats}
             disabled={loading}
-            className="p-2 hover:bg-blue-200 rounded-full transition"
+            className="p-1.5 md:p-2 hover:bg-blue-200 rounded-full transition"
             title="Refresh chats"
           >
             <FaSyncAlt
-              className={`text-gray-600 ${loading ? "animate-spin" : ""}`}
+              className={`text-gray-600 text-base md:text-lg ${loading ? "animate-spin" : ""}`}
             />
           </button>
         </div>
 
         {/* Search */}
         <div className="relative">
-          <FaSearch className="absolute left-3 top-3 text-gray-400" />
+          <FaSearch className="absolute left-3 top-2.5 text-gray-400" />
           <input
             type="text"
             placeholder="Search conversations..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full pl-10 pr-3 py-1.5 md:py-2 border rounded-lg text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
       </div>
@@ -102,15 +102,15 @@ const ChatList = () => {
       <div className="flex-1 overflow-y-auto">
         {loading && chats.length === 0 ? (
           <div className="flex items-center justify-center h-full">
-            <FaSpinner className="animate-spin text-blue-600 text-3xl" />
+            <FaSpinner className="animate-spin text-blue-600 text-2xl md:text-3xl" />
           </div>
         ) : filteredChats.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center px-4">
-            <div className="text-6xl mb-4">💬</div>
-            <p className="text-gray-500 font-medium">
+            <div className="text-4xl md:text-6xl mb-3 md:mb-4">💬</div>
+            <p className="text-gray-500 font-medium text-sm md:text-base">
               {chats.length === 0 ? "No Chats Yet" : "No Chats Found"}
             </p>
-            <p className="text-gray-400 text-sm mt-1">
+            <p className="text-gray-400 text-xs md:text-sm mt-1">
               {chats.length === 0
                 ? "Start a conversation after booking"
                 : "Try a different search"}
@@ -125,6 +125,7 @@ const ChatList = () => {
               selected={selectedChat?._id === chat._id}
               onClick={() => {
                 dispatch(setSelectedChat(chat));
+                onSelectChat?.();
               }}
             />
           ))

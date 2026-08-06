@@ -51,16 +51,16 @@ const ChatInput = ({ onSend }) => {
   }, []);
 
   return (
-    <div className="bg-white border-t px-4 py-3 shadow-lg">
-      <div className="flex items-center gap-3">
+    <div className="bg-white border-t px-2 md:px-4 py-2 md:py-3 shadow-lg">
+      <div className="flex items-center gap-2 md:gap-3">
         {/* Emoji Button */}
-        <button className="text-gray-500 hover:text-blue-600 hover:bg-blue-50 p-2 rounded-full transition">
-          <FaSmile size={20} />
+        <button className="text-gray-500 hover:text-blue-600 hover:bg-blue-50 p-1.5 md:p-2 rounded-full transition flex-shrink-0">
+          <FaSmile size={16} className="md:w-5 md:h-5" />
         </button>
 
         {/* Attachment Button */}
-        <button className="text-gray-500 hover:text-blue-600 hover:bg-blue-50 p-2 rounded-full transition">
-          <FaPaperclip size={18} />
+        <button className="text-gray-500 hover:text-blue-600 hover:bg-blue-50 p-1.5 md:p-2 rounded-full transition flex-shrink-0">
+          <FaPaperclip size={14} className="md:w-4 md:h-4" />
         </button>
 
         {/* Message Input */}
@@ -74,20 +74,20 @@ const ChatInput = ({ onSend }) => {
               handleSend();
             }
           }}
-          className="flex-1 border border-gray-300 rounded-full px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="flex-1 border border-gray-300 rounded-full px-3 md:px-4 py-1.5 md:py-2.5 text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />
 
         {/* Send Button */}
         <button
           onClick={handleSend}
           disabled={!message.trim()}
-          className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${
+          className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-all flex-shrink-0 ${
             message.trim()
               ? "bg-blue-600 hover:bg-blue-700 text-white"
               : "bg-gray-200 text-gray-400 cursor-not-allowed"
           }`}
         >
-          <FaPaperPlane size={16} />
+          <FaPaperPlane size={12} className="md:w-4 md:h-4" />
         </button>
       </div>
     </div>

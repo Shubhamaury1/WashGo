@@ -9,7 +9,7 @@ import ChatHeader from "./ChatHeader";
 import ChatInput from "./ChatInput";
 import MessageBubble from "./MessageBubble";
 
-const ChatBox = () => {
+const ChatBox = ({ onBack }) => {
   const dispatch = useDispatch();
   const socket = useSocket();
 
@@ -252,18 +252,17 @@ const ChatBox = () => {
   
     <div className="flex flex-col h-full bg-white overflow-hidden">
       {/* Header */}
-      <ChatHeader user={otherUser} />
+      <ChatHeader user={otherUser} onBack={onBack} />
 
       {/* Messages */}
-      {/* <div className="flex-1 overflow-y-auto bg-gradient-to-b from-white to-gray-50 p-4 space-y-4"> */}
       <div
         className="
         flex-1
         overflow-y-auto
-        px-5
-        py-4
+        px-2 md:px-5
+        py-3 md:py-4
         bg-[#f8fafc]
-        space-y-3
+        space-y-2 md:space-y-3
     "
       >
         {messages.length === 0 ? (
