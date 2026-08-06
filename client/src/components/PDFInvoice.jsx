@@ -1,10 +1,13 @@
 import jsPDF from "jspdf";
-import "jspdf-autotable";
+import autoTable from "jspdf-autotable";
 
 const generateInvoicePDF = (booking) => {
   if (!booking) return;
 
   const doc = new jsPDF("p", "mm", "a4");
+
+  // Register autoTable with this document instance
+  doc.autoTable = (...args) => autoTable(doc, ...args);
 
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
