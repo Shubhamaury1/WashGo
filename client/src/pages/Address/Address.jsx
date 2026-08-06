@@ -196,11 +196,11 @@ const Address = () => {
 
   return (
     <MainLayout>
-      <div className="min-h-screen bg-gray-100 flex justify-center p-4 md:p-10">
-        <div className="w-full max-w-5xl bg-white rounded-[40px] shadow-xl p-6 md:p-10">
+      <div className="min-h-screen bg-gray-100 flex justify-center p-3 md:p-10">
+        <div className="w-full max-w-5xl bg-white rounded-2xl md:rounded-[40px] shadow-xl p-4 md:p-10">
           {/* HEADER */}
-          <div className="flex flex-col md:flex-row justify-between md:items-center gap-5 mb-10">
-            <h1 className="text-3xl md:text-4xl font-bold">Select Address</h1>
+          <div className="flex flex-col md:flex-row justify-between md:items-center gap-3 md:gap-5 mb-6 md:mb-10">
+            <h1 className="text-2xl md:text-4xl font-bold">Select Address</h1>
 
             <button
               onClick={() => {
@@ -217,56 +217,52 @@ const Address = () => {
 
                 setEditId(null);
               }}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-2xl"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-xl md:rounded-2xl text-sm md:text-base font-semibold whitespace-nowrap"
             >
               + Add New Address
             </button>
           </div>
 
           {/* ADDRESS LIST */}
-          <div className="space-y-6">
+          <div className="space-y-3 md:space-y-6">
             {addresses.map((address) => (
               <div
                 key={address._id}
                 onClick={() => {
                   setSelectedAddress(address);
                 }}
-                className={`border-2 rounded-3xl p-6 cursor-pointer transition
-
-                ${
+                className={`border-2 rounded-2xl md:rounded-3xl p-3 md:p-6 cursor-pointer transition ${
                   selectedAddress?._id === address._id
                     ? "border-blue-600 bg-blue-50"
                     : "border-gray-200"
-                }
-                `}
+                }`}
               >
-                <div className="flex flex-col lg:flex-row lg:justify-between gap-6">
+                <div className="flex flex-col gap-3 md:gap-6">
                   {/* LEFT */}
                   <div className="flex-1">
-                    <h2 className="text-2xl font-bold break-words">
+                    <h2 className="text-lg md:text-2xl font-bold break-words">
                       {address.name}
                     </h2>
 
-                    <p className="text-gray-600 mt-3">{address.mobile}</p>
+                    <p className="text-gray-600 mt-1 md:mt-3 text-sm md:text-base">{address.mobile}</p>
 
-                    <p className="text-gray-600 mt-3 break-words">
+                    <p className="text-gray-600 mt-1 md:mt-3 break-words text-sm md:text-base">
                       {address.address}, {address.city}, {address.state}
                     </p>
 
-                    <p className="text-gray-600 mt-3">
+                    <p className="text-gray-600 mt-1 md:mt-3 text-sm md:text-base">
                       Pincode: {address.pincode}
                     </p>
                   </div>
 
                   {/* RIGHT */}
-                  <div className="flex flex-wrap gap-3 items-start">
+                  <div className="flex flex-wrap gap-2 md:gap-3 items-start">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-
                         handleEdit(address);
                       }}
-                      className="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2 rounded-xl"
+                      className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 md:px-5 py-1 md:py-2 rounded-lg md:rounded-xl text-xs md:text-sm font-semibold"
                     >
                       Edit
                     </button>
@@ -274,16 +270,15 @@ const Address = () => {
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-
                         handleDelete(address._id);
                       }}
-                      className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-xl"
+                      className="bg-red-500 hover:bg-red-600 text-white px-3 md:px-5 py-1 md:py-2 rounded-lg md:rounded-xl text-xs md:text-sm font-semibold"
                     >
                       Delete
                     </button>
 
                     {address.isDefault && (
-                      <span className="bg-green-500 text-white px-5 py-2 rounded-full">
+                      <span className="bg-green-500 text-white px-3 md:px-5 py-1 md:py-2 rounded-full text-xs md:text-sm font-semibold">
                         Default
                       </span>
                     )}
@@ -297,7 +292,7 @@ const Address = () => {
           {showForm && (
             <form
               onSubmit={handleSaveAddress}
-              className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6"
+              className="mt-6 md:mt-10 grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6"
             >
               <input
                 type="text"
@@ -305,7 +300,7 @@ const Address = () => {
                 placeholder="Full Name"
                 value={formData.name}
                 onChange={handleChange}
-                className="border border-gray-300 p-5 rounded-2xl"
+                className="border border-gray-300 p-3 md:p-5 rounded-xl md:rounded-2xl text-sm md:text-base"
                 required
               />
 
@@ -315,7 +310,7 @@ const Address = () => {
                 placeholder="Mobile Number"
                 value={formData.mobile}
                 onChange={handleChange}
-                className="border border-gray-300 p-5 rounded-2xl"
+                className="border border-gray-300 p-3 md:p-5 rounded-xl md:rounded-2xl text-sm md:text-base"
                 required
               />
 
@@ -325,7 +320,7 @@ const Address = () => {
                 placeholder="State"
                 value={formData.state}
                 onChange={handleChange}
-                className="border border-gray-300 p-5 rounded-2xl"
+                className="border border-gray-300 p-3 md:p-5 rounded-xl md:rounded-2xl text-sm md:text-base"
                 required
               />
 
@@ -335,7 +330,7 @@ const Address = () => {
                 placeholder="City"
                 value={formData.city}
                 onChange={handleChange}
-                className="border border-gray-300 p-5 rounded-2xl"
+                className="border border-gray-300 p-3 md:p-5 rounded-xl md:rounded-2xl text-sm md:text-base"
                 required
               />
 
@@ -345,7 +340,7 @@ const Address = () => {
                 placeholder="Near Location"
                 value={formData.address}
                 onChange={handleChange}
-                className="border border-gray-300 p-5 rounded-2xl"
+                className="border border-gray-300 p-3 md:p-5 rounded-xl md:rounded-2xl text-sm md:text-base"
                 required
               />
 
@@ -355,13 +350,13 @@ const Address = () => {
                 placeholder="Pincode"
                 value={formData.pincode}
                 onChange={handleChange}
-                className="border border-gray-300 p-5 rounded-2xl"
+                className="border border-gray-300 p-3 md:p-5 rounded-xl md:rounded-2xl text-sm md:text-base"
                 required
               />
 
               <button
                 type="submit"
-                className="md:col-span-2 bg-blue-600 hover:bg-blue-700 text-white py-5 rounded-2xl text-lg font-semibold"
+                className="col-span-1 md:col-span-2 bg-blue-600 hover:bg-blue-700 text-white py-3 md:py-5 rounded-xl md:rounded-2xl text-sm md:text-lg font-semibold"
               >
                 {editId ? "Update Address" : "Save Address"}
               </button>
@@ -373,7 +368,7 @@ const Address = () => {
             <button
               disabled={!selectedAddress}
               onClick={handleConfirmBooking}
-              className="mt-10 w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white py-5 rounded-2xl text-lg font-semibold"
+              className="mt-6 md:mt-10 w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white py-3 md:py-5 rounded-xl md:rounded-2xl text-sm md:text-lg font-semibold"
             >
               Continue To Payment
             </button>

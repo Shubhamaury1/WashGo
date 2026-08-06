@@ -78,23 +78,21 @@ const Booking = () => {
   };
   return (
     <MainLayout>
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-        <div className="w-full max-w-4xl bg-white rounded-[40px] shadow-xl p-6 md:p-10">
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-3 md:p-4">
+        <div className="w-full max-w-4xl bg-white rounded-2xl md:rounded-[40px] shadow-xl p-4 md:p-10">
           {/* Header */}
-          <div className="flex justify-center mb-10">
-            <div className="flex gap-4 flex-wrap items-center">
+          <div className="flex justify-center mb-6 md:mb-10 overflow-x-auto">
+            <div className="flex gap-2 md:gap-4 flex-wrap items-center justify-center">
               {/* VEHICLE */}
               <button
                 onClick={() => {
                   if (step >= 2) {
                     setStep(1);
-
-                    setSelectedWash("");
                     setSelectedDate("");
                     setSelectedTime("");
                   }
                 }}
-                className={`px-6 py-3 rounded-full font-semibold transition ${
+                className={`px-3 md:px-6 py-2 md:py-3 rounded-full font-semibold text-xs md:text-sm transition whitespace-nowrap ${
                   step === 1
                     ? "bg-blue-600 text-white"
                     : step > 1
@@ -106,19 +104,18 @@ const Booking = () => {
               </button>
 
               {/* LINE */}
-              <div className="w-10 h-[3px] bg-gray-300 rounded-full"></div>
+              <div className="w-6 md:w-10 h-[3px] bg-gray-300 rounded-full hidden sm:block"></div>
 
               {/* WASH TYPE */}
               <button
                 onClick={() => {
                   if (step >= 3) {
                     setStep(2);
-
                     setSelectedDate("");
                     setSelectedTime("");
                   }
                 }}
-                className={`px-6 py-3 rounded-full font-semibold transition ${
+                className={`px-3 md:px-6 py-2 md:py-3 rounded-full font-semibold text-xs md:text-sm transition whitespace-nowrap ${
                   step === 2
                     ? "bg-blue-600 text-white"
                     : step > 2
@@ -130,12 +127,12 @@ const Booking = () => {
               </button>
 
               {/* LINE */}
-              <div className="w-10 h-[3px] bg-gray-300 rounded-full"></div>
+              <div className="w-6 md:w-10 h-[3px] bg-gray-300 rounded-full hidden sm:block"></div>
 
               {/* SCHEDULE */}
               <button
                 disabled={step < 3}
-                className={`px-6 py-3 rounded-full font-semibold transition ${
+                className={`px-3 md:px-6 py-2 md:py-3 rounded-full font-semibold text-xs md:text-sm transition whitespace-nowrap ${
                   step === 3
                     ? "bg-blue-600 text-white"
                     : "bg-gray-200 text-gray-600"
@@ -149,14 +146,14 @@ const Booking = () => {
           {/* STEP 1 */}
           {step === 1 && (
             <div>
-              <h1 className="text-3xl font-bold mb-8">Select Vehicle Type</h1>
+              <h1 className="text-xl md:text-3xl font-bold mb-4 md:mb-8">Select Vehicle Type</h1>
 
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-                {vehicles.map((vehicle, index) => (
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
+                {vehicles.map((vehicle) => (
                   <div
-                    key={index}
+                    key={vehicle._id}
                     onClick={() => setSelectedVehicle(vehicle)}
-                    className={`cursor-pointer border-2 rounded-3xl p-4 transition ${
+                    className={`cursor-pointer border-2 rounded-2xl md:rounded-3xl p-2 md:p-4 transition ${
                       selectedVehicle?._id === vehicle._id
                         ? "border-blue-600 bg-blue-50"
                         : "border-gray-200"
@@ -165,10 +162,10 @@ const Booking = () => {
                     <img
                       src={`${BaseURL}${vehicle.image}`}
                       alt={vehicle.name}
-                      className="h-32 w-full object-cover rounded-2xl"
+                      className="h-20 md:h-32 w-full object-cover rounded-xl md:rounded-2xl"
                     />
 
-                    <h2 className="text-center font-semibold mt-4">
+                    <h2 className="text-center font-semibold mt-2 md:mt-4 text-sm md:text-base">
                       {vehicle.name}
                     </h2>
                   </div>
@@ -178,7 +175,7 @@ const Booking = () => {
               <button
                 disabled={!selectedVehicle}
                 onClick={() => setStep(2)}
-                className="mt-10 w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white py-4 rounded-2xl text-lg font-semibold transition"
+                className="mt-6 md:mt-10 w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white py-3 md:py-4 rounded-xl md:rounded-2xl text-sm md:text-lg font-semibold transition"
               >
                 Continue →
               </button>
@@ -188,29 +185,30 @@ const Booking = () => {
           {/* STEP 2 */}
           {step === 2 && (
             <div>
-              <h1 className="text-3xl font-bold mb-8">Select Wash Type</h1>
+              <h1 className="text-xl md:text-3xl font-bold mb-4 md:mb-8">Select Wash Type</h1>
 
-              <div className="space-y-5">
+              <div className="space-y-3 md:space-y-5">
                 {packages
                   .filter((item) => item.vehicleId._id === selectedVehicle?._id)
                   .map((wash) => (
                     <div
+                      key={wash._id}
                       onClick={() => setSelectedPackage(wash)}
-                      className={`border-2 rounded-3xl p-6 cursor-pointer transition flex justify-between items-center ${
+                      className={`border-2 rounded-2xl md:rounded-3xl p-3 md:p-6 cursor-pointer transition flex flex-col md:flex-row md:justify-between md:items-center gap-3 md:gap-0 ${
                         selectedPackage?._id === wash._id
                           ? "border-blue-600 bg-blue-50"
                           : "border-gray-200"
                       }`}
                     >
-                      <div>
-                        <h2 className="text-2xl font-bold">
+                      <div className="min-w-0 flex-1">
+                        <h2 className="text-lg md:text-2xl font-bold">
                           {wash.packageName}
                         </h2>
 
-                        <p className="text-gray-500 mt-2">{wash.description}</p>
+                        <p className="text-gray-500 mt-1 md:mt-2 text-xs md:text-sm line-clamp-2">{wash.description}</p>
                       </div>
 
-                      <h1 className="text-3xl font-bold text-blue-600">
+                      <h1 className="text-2xl md:text-3xl font-bold text-blue-600 flex-shrink-0">
                         ₹{wash.price}
                       </h1>
                     </div>
@@ -220,7 +218,7 @@ const Booking = () => {
               <button
                 disabled={!selectedPackage}
                 onClick={() => setStep(3)}
-                className="mt-10 w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white py-4 rounded-2xl text-lg font-semibold transition"
+                className="mt-6 md:mt-10 w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white py-3 md:py-4 rounded-xl md:rounded-2xl text-sm md:text-lg font-semibold transition"
               >
                 Continue →
               </button>
@@ -230,27 +228,27 @@ const Booking = () => {
           {/* STEP 3 */}
           {step === 3 && (
             <div>
-              <h1 className="text-3xl font-bold mb-8">Schedule Your Service</h1>
+              <h1 className="text-xl md:text-3xl font-bold mb-4 md:mb-8">Schedule Your Service</h1>
 
               {/* Calendar */}
-              <div className="mb-10">
-                <label className="font-semibold text-lg">Select Date</label>
+              <div className="mb-6 md:mb-10">
+                <label className="font-semibold text-sm md:text-lg">Select Date</label>
 
                 <input
                   type="date"
                   min={new Date().toISOString().split("T")[0]}
                   value={selectedDate}
                   onChange={(e) => setSelectedDate(e.target.value)}
-                  className="w-full mt-4 border border-gray-300 p-5 rounded-2xl text-lg"
+                  className="w-full mt-2 md:mt-4 border border-gray-300 p-3 md:p-5 rounded-xl md:rounded-2xl text-sm md:text-lg"
                 />
               </div>
 
               {/* Time Slots */}
               <div>
-                <h2 className="font-semibold text-lg mb-6">Select Time Slot</h2>
+                <h2 className="font-semibold text-sm md:text-lg mb-3 md:mb-6">Select Time Slot</h2>
 
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {timeSlots.map((slot, index) => {
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-4">
+                  {timeSlots.map((slot) => {
                     const disabled = isSlotDisabled(slot);
 
                     return (
@@ -258,7 +256,7 @@ const Booking = () => {
                         key={slot}
                         disabled={disabled}
                         onClick={() => setSelectedTime(slot)}
-                        className={`py-4 rounded-2xl border-2 font-semibold transition ${
+                        className={`py-2 md:py-4 px-2 md:px-0 rounded-lg md:rounded-2xl border-2 font-semibold text-xs md:text-sm transition ${
                           disabled
                             ? "bg-gray-200 text-gray-400 border-gray-200 cursor-not-allowed"
                             : selectedTime === slot
@@ -303,7 +301,7 @@ const Booking = () => {
                     // navigate
                     window.location.href = "/address";
                   }}
-                  className="mt-10 w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white py-4 rounded-2xl text-lg font-semibold transition"
+                  className="mt-6 md:mt-10 w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white py-3 md:py-4 rounded-xl md:rounded-2xl text-sm md:text-lg font-semibold transition"
                 >
                   Continue →
                 </button>
