@@ -97,10 +97,12 @@ const AdminSidebar = () => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 z-40 w-60 max-w-sm bg-white rounded-3xl shadow-2xl p-6 flex flex-col h-screen transition-transform duration-300 md:top-24 md:left-6 md:w-[280px] md:rounded-[30px] md:h-[calc(100vh-120px)] md:shadow-lg md:p-5 ${
-          isSidebarOpen
-            ? "translate-x-0"
-            : "-translate-x-full md:translate-x-0"
+        // className={`fixed top-0 left-0 z-40 w-60 max-w-sm bg-white rounded-3xl shadow-2xl p-6 flex flex-col h-screen transition-transform duration-300 md:top-24 md:left-6 md:w-[280px] md:rounded-[30px] md:h-[calc(100vh-120px)] md:shadow-lg md:p-5 ${
+        //   isSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+        // }`}
+
+        className={`fixed top-14 left-0 z-40 w-60 max-w-sm bg-white rounded-3xl shadow-2xl p-6 flex flex-col h-[calc(100vh-56px)] transition-transform duration-300 md:top-24 md:left-6 md:w-[280px] md:rounded-[30px] md:h-[calc(100vh-120px)] md:shadow-lg md:p-5 ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >
         {/* Header with Logo and Close Button - Hidden on Mobile */}
