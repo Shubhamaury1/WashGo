@@ -3,10 +3,13 @@ import MainLayout from "../../layouts/MainLayout";
 import { Link } from "react-router-dom";
 import vehicleApi from "../../api/vehicleApi";
 import packageApi from "../../api/packageApi";
+import VehicleSkeleton from "../../components/skeleton/VehicleSkeleton";
+import PackageSkeleton from "../../components/skeleton/PackageSkeleton";
 
 const Booking = () => {
   const BaseURL = import.meta.env.VITE_API_IMG_URL;
   const [step, setStep] = useState(1);
+  const [loading, setLoading] = useState(true);
 
   const [selectedVehicle, setSelectedVehicle] = useState("");
 
@@ -27,6 +30,7 @@ const Booking = () => {
 
   const loadData = async () => {
     try {
+      setLoading(true);
       const vehicleRes = await vehicleApi.getVehicles();
 
       const packageRes = await packageApi.getPackages();
@@ -37,6 +41,8 @@ const Booking = () => {
       setPackages(packageRes.data.filter((pack) => pack.isActive));
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
   const timeSlots = [
@@ -146,10 +152,12 @@ const Booking = () => {
           {/* STEP 1 */}
           {step === 1 && (
             <div>
-              <h1 className="text-xl md:text-3xl font-bold mb-4 md:mb-8">Select Vehicle Type</h1>
+              <h1 className="text-xl md:text-3xl font-bold mb-4 md:mb-8">
+                Select Vehicle Type
+              </h1>
 
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
-                {vehicles.map((vehicle) => (
+                {/* {vehicles.map((vehicle) => (
                   <div
                     key={vehicle._id}
                     onClick={() => setSelectedVehicle(vehicle)}
@@ -169,7 +177,33 @@ const Booking = () => {
                       {vehicle.name}
                     </h2>
                   </div>
-                ))}
+                ))} */}
+
+                {loading
+                  ? Array.from({ length: 6 }).map((_, index) => (
+                      <VehicleSkeleton key={index} />
+                    ))
+                  : vehicles.map((vehicle) => (
+                      <div
+                        key={vehicle._id}
+                        onClick={() => setSelectedVehicle(vehicle)}
+                        className={`cursor-pointer border-2 rounded-2xl md:rounded-3xl p-2 md:p-4 transition ${
+                          selectedVehicle?._id === vehicle._id
+                            ? "border-blue-600 bg-blue-50"
+                            : "border-gray-200"
+                        }`}
+                      >
+                        <img
+                          src={`${BaseURL}${vehicle.image}`}
+                          alt={vehicle.name}
+                          className="h-20 md:h-32 w-full object-cover rounded-xl md:rounded-2xl"
+                        />
+
+                        <h2 className="text-center font-semibold mt-2 md:mt-4 text-sm md:text-base">
+                          {vehicle.name}
+                        </h2>
+                      </div>
+                    ))}
               </div>
 
               <button
@@ -185,10 +219,12 @@ const Booking = () => {
           {/* STEP 2 */}
           {step === 2 && (
             <div>
-              <h1 className="text-xl md:text-3xl font-bold mb-4 md:mb-8">Select Wash Type</h1>
+              <h1 className="text-xl md:text-3xl font-bold mb-4 md:mb-8">
+                Select Wash Type
+              </h1>
 
               <div className="space-y-3 md:space-y-5">
-                {packages
+                {/* {packages
                   .filter((item) => item.vehicleId._id === selectedVehicle?._id)
                   .map((wash) => (
                     <div
@@ -205,14 +241,50 @@ const Booking = () => {
                           {wash.packageName}
                         </h2>
 
-                        <p className="text-gray-500 mt-1 md:mt-2 text-xs md:text-sm line-clamp-2">{wash.description}</p>
+                        <p className="text-gray-500 mt-1 md:mt-2 text-xs md:text-sm line-clamp-2">
+                          {wash.description}
+                        </p>
                       </div>
 
                       <h1 className="text-2xl md:text-3xl font-bold text-blue-600 flex-shrink-0">
                         ₹{wash.price}
                       </h1>
                     </div>
-                  ))}
+                  ))} */}
+
+                {loading
+                  ? Array.from({ length: 3 }).map((_, index) => (
+                      <PackageSkeleton key={index} />
+                    ))
+                  : packages
+                      .filter(
+                        (item) => item.vehicleId._id === selectedVehicle?._id,
+                      )
+                      .map((wash) => (
+                        <div
+                          key={wash._id}
+                          onClick={() => setSelectedPackage(wash)}
+                          className={`border-2 rounded-2xl md:rounded-3xl p-3 md:p-6 cursor-pointer transition flex flex-col md:flex-row md:justify-between md:items-center gap-3 ${
+                            selectedPackage?._id === wash._id
+                              ? "border-blue-600 bg-blue-50"
+                              : "border-gray-200"
+                          }`}
+                        >
+                          <div className="flex-1">
+                            <h2 className="text-lg md:text-2xl font-bold">
+                              {wash.packageName}
+                            </h2>
+
+                            <p className="text-gray-500 mt-2 text-sm">
+                              {wash.description}
+                            </p>
+                          </div>
+
+                          <h1 className="text-3xl font-bold text-blue-600">
+                            ₹{wash.price}
+                          </h1>
+                        </div>
+                      ))}
               </div>
 
               <button
@@ -228,11 +300,15 @@ const Booking = () => {
           {/* STEP 3 */}
           {step === 3 && (
             <div>
-              <h1 className="text-xl md:text-3xl font-bold mb-4 md:mb-8">Schedule Your Service</h1>
+              <h1 className="text-xl md:text-3xl font-bold mb-4 md:mb-8">
+                Schedule Your Service
+              </h1>
 
               {/* Calendar */}
               <div className="mb-6 md:mb-10">
-                <label className="font-semibold text-sm md:text-lg">Select Date</label>
+                <label className="font-semibold text-sm md:text-lg">
+                  Select Date
+                </label>
 
                 <input
                   type="date"
@@ -245,7 +321,9 @@ const Booking = () => {
 
               {/* Time Slots */}
               <div>
-                <h2 className="font-semibold text-sm md:text-lg mb-3 md:mb-6">Select Time Slot</h2>
+                <h2 className="font-semibold text-sm md:text-lg mb-3 md:mb-6">
+                  Select Time Slot
+                </h2>
 
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-4">
                   {timeSlots.map((slot) => {
