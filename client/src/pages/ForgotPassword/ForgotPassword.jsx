@@ -94,22 +94,22 @@ const ForgotPassword = () => {
 
   return (
     <MainLayout>
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex items-center justify-center px-4 py-10">
-        <div className="w-full max-w-2xl bg-white rounded-[40px] shadow-2xl p-8 md:p-14">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex items-center justify-center px-4 sm:px-5 py-8 sm:py-10">
+        <div className="w-full max-w-2xl bg-white rounded-2xl sm:rounded-[40px] shadow-lg sm:shadow-2xl p-5 sm:p-8 md:p-14">
           {/* Heading */}
           <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900">
               Forgot Password
             </h1>
 
-            <p className="text-gray-500 mt-4">Reset your password securely</p>
+            <p className="text-gray-500 mt-2 sm:mt-4 text-sm sm:text-base">Reset your password securely</p>
           </div>
 
           {/* STEP 1 */}
           {step === 1 && (
-            <form onSubmit={handleEmailSubmit} className="mt-12 space-y-6">
+            <form onSubmit={handleEmailSubmit} className="mt-8 sm:mt-12 space-y-4 sm:space-y-6">
               <div>
-                <label className="font-semibold text-gray-700">
+                <label className="font-semibold text-gray-700 text-sm sm:text-base">
                   Email Address
                 </label>
 
@@ -118,18 +118,18 @@ const ForgotPassword = () => {
                   placeholder="Enter email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="mt-3 w-full rounded-2xl border border-blue-100 bg-[#F8FAFD] px-6 py-4 outline-none focus:ring-2 focus:ring-blue-500"
+                  className="mt-2 sm:mt-3 w-full rounded-xl sm:rounded-2xl border border-blue-100 bg-[#F8FAFD] px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={sendingOtp}
-                className={`w-full rounded-2xl py-4 text-lg font-semibold text-white transition
+                className={`w-full rounded-xl sm:rounded-2xl py-3 sm:py-4 text-base sm:text-lg font-semibold text-white transition
     ${
       sendingOtp
         ? "bg-gray-400 cursor-not-allowed"
-        : "bg-gradient-to-r from-[#2E63F4] to-[#244ED6] hover:scale-[1.02] shadow-xl"
+        : "bg-gradient-to-r from-[#2E63F4] to-[#244ED6] hover:scale-[1.02] shadow-xl active:scale-95"
     }`}
               >
                 {sendingOtp ? "Sending OTP..." : "Send OTP →"}
@@ -139,11 +139,11 @@ const ForgotPassword = () => {
 
           {/* STEP 2 */}
           {step === 2 && (
-            <form onSubmit={handleOTPSubmit} className="mt-12 space-y-6">
+            <form onSubmit={handleOTPSubmit} className="mt-8 sm:mt-12 space-y-4 sm:space-y-6">
               <div className="text-center">
-                <h2 className="text-2xl font-bold">OTP Verification</h2>
+                <h2 className="text-xl sm:text-2xl font-bold">OTP Verification</h2>
 
-                <p className="text-gray-500 mt-4">
+                <p className="text-gray-500 mt-2 sm:mt-4 text-xs sm:text-sm">
                   Enter 6 digit OTP sent to email
                 </p>
               </div>
@@ -155,18 +155,18 @@ const ForgotPassword = () => {
                   placeholder="Enter OTP"
                   value={otp}
                   onChange={(e) => setOtp(e.target.value)}
-                  className="w-full mt-3 border border-gray-300 rounded-2xl px-5 py-4 text-center text-2xl tracking-[10px] outline-none focus:border-blue-600"
+                  className="w-full mt-3 border border-gray-300 rounded-xl sm:rounded-2xl px-4 sm:px-5 py-3 sm:py-4 text-lg sm:text-2xl tracking-[8px] sm:tracking-[10px] text-center outline-none focus:border-blue-600"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={verifyingOtp}
-                className={`w-full rounded-2xl py-4 text-lg font-semibold text-white transition
+                className={`w-full rounded-xl sm:rounded-2xl py-3 sm:py-4 text-base sm:text-lg font-semibold text-white transition
     ${
       verifyingOtp
         ? "bg-gray-400 cursor-not-allowed"
-        : "bg-gradient-to-r from-[#2E63F4] to-[#244ED6] hover:scale-[1.02] shadow-xl"
+        : "bg-gradient-to-r from-[#2E63F4] to-[#244ED6] hover:scale-[1.02] shadow-xl active:scale-95"
     }`}
               >
                 {verifyingOtp ? "Verifying..." : "Verify OTP"}
@@ -176,56 +176,56 @@ const ForgotPassword = () => {
 
           {/* STEP 3 */}
           {step === 3 && (
-            <form onSubmit={handlePasswordSubmit} className="mt-12 space-y-6">
+            <form onSubmit={handlePasswordSubmit} className="mt-8 sm:mt-12 space-y-4 sm:space-y-6">
               <div>
-                <label className="font-medium text-gray-700">
+                <label className="font-medium text-gray-700 text-sm sm:text-base">
                   New Password
                 </label>
-                <div className="relative mt-1">
+                <div className="relative mt-2 sm:mt-3">
                   <input
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter new password"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
-                    className="mt-3 w-full rounded-2xl border border-blue-100 bg-[#F8FAFD] px-6 py-4 outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full rounded-xl sm:rounded-2xl border border-blue-100 bg-[#F8FAFD] px-4 sm:px-6 py-3 sm:py-4 pr-12 sm:pr-14 text-sm sm:text-base outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-5 top-1/2 -translate-y-1/4 text-gray-500 hover:text-blue-600 transition"
+                    className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-blue-600 transition"
                   >
                     {showPassword ? (
-                      <IoEye size={22} />
+                      <IoEye size={20} className="sm:w-[22px] sm:h-[22px]" />
                     ) : (
-                      <IoEyeOff size={22} />
+                      <IoEyeOff size={20} className="sm:w-[22px] sm:h-[22px]" />
                     )}
                   </button>
                 </div>
               </div>
 
               <div>
-                <label className="font-medium text-gray-700">
+                <label className="font-medium text-gray-700 text-sm sm:text-base">
                   Confirm Password
                 </label>
-                <div className="relative mt-3">
+                <div className="relative mt-2 sm:mt-3">
                   <input
                     type={confirmPasswordCheck ? "text" : "password"}
                     placeholder="Confirm password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="mt-3 w-full rounded-2xl border border-blue-100 bg-[#F8FAFD] px-6 py-4 outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full rounded-xl sm:rounded-2xl border border-blue-100 bg-[#F8FAFD] px-4 sm:px-6 py-3 sm:py-4 pr-12 sm:pr-14 text-sm sm:text-base outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   <button
                     type="button"
                     onClick={() =>
                       setConfirmPasswordCheck(!confirmPasswordCheck)
                     }
-                    className="absolute right-5 top-1/2 -translate-y-1/4 text-gray-500 hover:text-blue-600 transition"
+                    className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-blue-600 transition"
                   >
                     {confirmPasswordCheck ? (
-                      <IoEye size={22} />
+                      <IoEye size={20} className="sm:w-[22px] sm:h-[22px]" />
                     ) : (
-                      <IoEyeOff size={22} />
+                      <IoEyeOff size={20} className="sm:w-[22px] sm:h-[22px]" />
                     )}
                   </button>
                 </div>
@@ -234,11 +234,11 @@ const ForgotPassword = () => {
               <button
                 type="submit"
                 disabled={resettingPassword}
-                className={`w-full rounded-2xl py-4 text-lg font-semibold text-white transition
+                className={`w-full rounded-xl sm:rounded-2xl py-3 sm:py-4 text-base sm:text-lg font-semibold text-white transition
     ${
       resettingPassword
         ? "bg-gray-400 cursor-not-allowed"
-        : "bg-gradient-to-r from-[#2E63F4] to-[#244ED6] hover:scale-[1.02] shadow-xl"
+        : "bg-gradient-to-r from-[#2E63F4] to-[#244ED6] hover:scale-[1.02] shadow-xl active:scale-95"
     }`}
               >
                 {resettingPassword ? "Updating Password..." : "Continue"}
