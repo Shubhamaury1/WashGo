@@ -46,7 +46,7 @@ const bookingSchema = new mongoose.Schema(
 
     paymentMethod: {
       type: String,
-      enum: ["upi", "card", "cod"],
+      enum: ["upi", "phonepe", "gpay", "paytm", "card", "cod", "wallet", "netbanking", "paylater", "other"],
       default: "upi",
     },
 
