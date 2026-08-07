@@ -6,10 +6,12 @@ import BookingCard from "../../components/dashboard/BookingCard";
 import MainLayout from "../../layouts/MainLayout";
 import { useEffect, useState } from "react";
 import vehicleApi from "../../api/vehicleApi";
+import { useNavigate } from "react-router-dom";
 
 const CustomerDashboard = () => {
   const BaseURL = import.meta.env.VITE_API_IMG_URL;
   const [vehicles, setVehicles] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchVehicles = async () => {
@@ -70,7 +72,10 @@ const CustomerDashboard = () => {
                   Book New Service
                 </h1>
 
-                <button className="text-blue-600 font-semibold text-sm sm:text-base">
+                <button
+                  onClick={() => navigate("/booking")}
+                  className="text-blue-600 font-semibold text-sm sm:text-base cursor-pointer"
+                >
                   View All
                 </button>
               </div>
@@ -79,6 +84,7 @@ const CustomerDashboard = () => {
                 {vehicles.map((vehicle) => (
                   <VehicleCard
                     key={vehicle._id}
+                    vehicleId={vehicle._id}
                     title={vehicle.name}
                     image={`${BaseURL}${vehicle.image}`}
                   />
@@ -93,7 +99,10 @@ const CustomerDashboard = () => {
                   Active Booking
                 </h1>
 
-                <button className="text-blue-600 font-semibold text-sm sm:text-base">
+                <button
+                  onClick={() => navigate("/my-bookings")}
+                  className="text-blue-600 font-semibold text-sm sm:text-base cursor-pointer"
+                >
                   View All
                 </button>
               </div>
