@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import ServiceCard from "./ServiceCard";
 import vehicleApi from "../../api/vehicleApi";
 import packageApi from "../../api/packageApi";
+import SkeletonService from "../skeleton/SkeletonService";
 
 const ServicesSection = () => {
   const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
   const BaseURL = import.meta.env.VITE_API_IMG_URL;
 
   useEffect(() => {
@@ -13,20 +15,21 @@ const ServicesSection = () => {
 
   const loadServices = async () => {
     try {
+      setLoading(true);
       const [vehiclesRes, packagesRes] = await Promise.all([
         vehicleApi.getVehicles(),
         packageApi.getPackages(),
       ]);
 
       const activeVehicles = vehiclesRes.data.filter(
-        (vehicle) => vehicle.isActive
+        (vehicle) => vehicle.isActive,
       );
 
       const vehiclesWithPrice = activeVehicles.map((vehicle) => {
         const vehiclePackages = packagesRes.data.filter(
           (pkg) =>
             (pkg.vehicleId?._id || pkg.vehicleId) === vehicle._id &&
-            pkg.isActive
+            pkg.isActive,
         );
 
         const minPrice =
@@ -63,6 +66,8 @@ const ServicesSection = () => {
       setServices(randomServices);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -78,7 +83,7 @@ const ServicesSection = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
+      {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
         {services.map((service) => (
           <ServiceCard
             key={service._id}
@@ -90,6 +95,23 @@ const ServicesSection = () => {
             badgeColor={service.badgeColor}
           />
         ))}
+      </div> */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
+        {loading
+          ? Array.from({ length: 4 }).map((_, index) => (
+              <SkeletonService key={index} />
+            ))
+          : services.map((service) => (
+              <ServiceCard
+                key={service._id}
+                title={service.name}
+                image={`${BaseURL}${service.image}`}
+                description={service.description}
+                price={service.minPrice}
+                badge={service.badge}
+                badgeColor={service.badgeColor}
+              />
+            ))}
       </div>
     </section>
   );
