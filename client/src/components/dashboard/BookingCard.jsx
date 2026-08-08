@@ -63,7 +63,7 @@ const BookingCard = () => {
                 <div className="flex items-start gap-3 md:gap-5 w-full">
                   {/* Vehicle Image */}
                   <img
-                    src={`${BaseURL}${booking.vehicleId.image}`}
+                    src={booking.vehicleId.image?.startsWith("http") ? booking.vehicleId.image : `${BaseURL}${booking.vehicleId.image}`}
                     alt={booking.vehicleId.name}
                     className="w-20 md:w-28 h-20 md:h-28 rounded-xl md:rounded-2xl object-cover flex-shrink-0"
                   />

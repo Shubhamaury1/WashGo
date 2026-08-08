@@ -46,7 +46,7 @@ function ReviewCard({ review, onEdit, onDelete }) {
             {review.images.map((img, index) => (
               <img
                 key={index}
-                src={`${BaseUrl}${img}`}
+                src={img?.startsWith("http") ? img : `${BaseUrl}${img}`}
                 alt="review"
                 className="h-24 md:h-40 w-full object-cover rounded-lg md:rounded-xl border hover:scale-105 transition duration-300"
               />

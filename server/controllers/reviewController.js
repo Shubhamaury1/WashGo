@@ -33,7 +33,7 @@ export const createReview = async (req, res) => {
     }
 
     const images =
-      req.files?.map((file) => `/uploads/reviews/${file.filename}`) || [];
+      req.files?.map((file) => file.path) || [];
 
     const newReview = await Review.create({
       bookingId,
@@ -103,7 +103,7 @@ export const updateReview = async (req, res) => {
     }
 
     const newImages =
-      req.files?.map((file) => `/uploads/reviews/${file.filename}`) || [];
+      req.files?.map((file) => file.path) || [];
 
     const finalImages = [...oldImages, ...newImages];
 

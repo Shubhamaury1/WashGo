@@ -5,7 +5,7 @@ export const createVehicle = async (req, res) => {
     const vehicle = await Vehicle.create({
       name: req.body.name,
 
-      image: req.file ? `/uploads/${req.file.filename}` : "",
+      image: req.file ? req.file.path : "",
 
       description: req.body.description,
       title: req.body.title,
@@ -41,7 +41,7 @@ export const updateVehicle = async (req, res) => {
     };
 
     if (req.file) {
-      updateData.image = `/uploads/${req.file.filename}`;
+      updateData.image = req.file.path;
     }
 
     const vehicle = await Vehicle.findByIdAndUpdate(req.params.id, updateData, {

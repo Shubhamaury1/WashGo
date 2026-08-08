@@ -24,7 +24,7 @@ const Settings = () => {
   const IMG_URL = import.meta.env.VITE_API_IMG_URL;
 
   const [profileImage, setProfileImage] = useState(
-    user?.photo ? `${IMG_URL}${user.photo}` : "",
+    user?.photo ? (user.photo.startsWith("http") ? user.photo : `${IMG_URL}${user.photo}`) : "",
   );
 
   const [formData, setFormData] = useState({
@@ -70,11 +70,9 @@ const Settings = () => {
       localStorage.setItem("user", JSON.stringify(updatedUser));
       setProfileImage(
         updatedUser.photo
-          ? `${IMG_URL}${updatedUser.photo}`
+          ? (updatedUser.photo.startsWith("http") ? updatedUser.photo : `${IMG_URL}${updatedUser.photo}`)
           : "",
       );
-
-      setProfileImage(`${IMG_URL}${profileRes.data.user.photo}`);
 
       localStorage.setItem("user", JSON.stringify(profileRes.data.user));
 

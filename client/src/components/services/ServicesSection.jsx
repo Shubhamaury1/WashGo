@@ -88,7 +88,7 @@ const ServicesSection = () => {
           <ServiceCard
             key={service._id}
             title={service.name}
-            image={`${BaseURL}${service.image}`}
+            image={service.image?.startsWith("http") ? service.image : `${BaseURL}${service.image}`}
             description={service.description}
             price={service.minPrice}
             badge={service.badge}
@@ -105,7 +105,7 @@ const ServicesSection = () => {
               <ServiceCard
                 key={service._id}
                 title={service.name}
-                image={`${BaseURL}${service.image}`}
+                image={service.image?.startsWith("http") ? service.image : `${BaseURL}${service.image}`}
                 description={service.description}
                 price={service.minPrice}
                 badge={service.badge}

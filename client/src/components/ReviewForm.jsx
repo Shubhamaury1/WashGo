@@ -141,7 +141,7 @@ function ReviewForm({ bookingId, onReviewAdded, reviewData, isEditing }) {
                   className="relative rounded-lg md:rounded-xl overflow-hidden"
                 >
                   <img
-                    src={`${BaseUrl}${img}`}
+                    src={img?.startsWith("http") ? img : `${BaseUrl}${img}`}
                     alt="existing"
                     className="h-20 md:h-28 w-full object-cover rounded-lg md:rounded-xl border"
                   />

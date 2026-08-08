@@ -78,7 +78,7 @@ const Vehicles = () => {
       title: vehicle.title,
     });
 
-    setPreview(`${BaseURL}${vehicle.image}`);
+    setPreview(vehicle.image?.startsWith("http") ? vehicle.image : `${BaseURL}${vehicle.image}`);
 
     window.scrollTo({
       top: 0,
@@ -287,7 +287,7 @@ const Vehicles = () => {
             >
               <div className="overflow-hidden h-40 sm:h-56 lg:h-64">
                 <img
-                  src={`${BaseURL}${vehicle.image}`}
+                  src={vehicle.image?.startsWith("http") ? vehicle.image : `${BaseURL}${vehicle.image}`}
                   alt={vehicle.name}
                   className="w-full h-full object-cover hover:scale-105 transition duration-500"
                 />

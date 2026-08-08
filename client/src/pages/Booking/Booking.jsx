@@ -168,7 +168,7 @@ const Booking = () => {
                     }`}
                   >
                     <img
-                      src={`${BaseURL}${vehicle.image}`}
+                      src={vehicle.image?.startsWith("http") ? vehicle.image : `${BaseURL}${vehicle.image}`}
                       alt={vehicle.name}
                       className="h-20 md:h-32 w-full object-cover rounded-xl md:rounded-2xl"
                     />
@@ -194,7 +194,7 @@ const Booking = () => {
                         }`}
                       >
                         <img
-                          src={`${BaseURL}${vehicle.image}`}
+                          src={vehicle.image?.startsWith("http") ? vehicle.image : `${BaseURL}${vehicle.image}`}
                           alt={vehicle.name}
                           className="h-20 md:h-32 w-full object-cover rounded-xl md:rounded-2xl"
                         />

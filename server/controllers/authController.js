@@ -367,7 +367,7 @@ export const updateProfile = async (req, res) => {
     user.mobile = mobile;
 
     if (req.file) {
-      user.photo = `/uploads/profile/${req.file.filename}`;
+      user.photo = req.file.path;
     }
 
     await user.save();

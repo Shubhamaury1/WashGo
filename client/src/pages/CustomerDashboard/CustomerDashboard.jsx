@@ -86,7 +86,7 @@ const CustomerDashboard = () => {
                     key={vehicle._id}
                     vehicleId={vehicle._id}
                     title={vehicle.name}
-                    image={`${BaseURL}${vehicle.image}`}
+                    image={vehicle.image?.startsWith("http") ? vehicle.image : `${BaseURL}${vehicle.image}`}
                   />
                 ))}
               </div>

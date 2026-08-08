@@ -51,7 +51,7 @@ const TopHeader = () => {
   const IMG_URL = import.meta.env.VITE_API_IMG_URL;
 
   const profileImage = user?.photo
-    ? `${IMG_URL}${user.photo}`
+    ? (user.photo.startsWith("http") ? user.photo : `${IMG_URL}${user.photo}`)
     : `https://ui-avatars.com/api/?name=${encodeURIComponent(
         user?.fullName || "User",
       )}`;

@@ -73,7 +73,7 @@ const Services = () => {
                 >
                   <div className="relative overflow-hidden">
                     <img
-                      src={`${BaseURL}${service.image}`}
+                      src={service.image?.startsWith("http") ? service.image : `${BaseURL}${service.image}`}
                       alt={service.name}
                       className="w-full h-48 sm:h-56 md:h-72 object-cover group-hover:scale-110 transition duration-700"
                     />
