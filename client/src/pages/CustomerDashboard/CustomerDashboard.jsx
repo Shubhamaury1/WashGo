@@ -7,15 +7,19 @@ import MainLayout from "../../layouts/MainLayout";
 import { useEffect, useState } from "react";
 import vehicleApi from "../../api/vehicleApi";
 import { useNavigate } from "react-router-dom";
+import VehicleCardSkeleton from "../../components/skeleton/VehicleCardSkeleton";
+import BookingCardSkeleton from "../../components/skeleton/BookingCardSkeleton";
 
 const CustomerDashboard = () => {
   const BaseURL = import.meta.env.VITE_API_IMG_URL;
   const [vehicles, setVehicles] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchVehicles = async () => {
       try {
+        setLoading(true);
         const response = await vehicleApi.getVehicles();
 
         // Keep only active vehicles
@@ -30,9 +34,10 @@ const CustomerDashboard = () => {
 
         // setVehicles(activeVehicles);
         setVehicles(randomVehicles);
-
       } catch (error) {
         console.error("Error fetching vehicles:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -81,14 +86,22 @@ const CustomerDashboard = () => {
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-6">
-                {vehicles.map((vehicle) => (
-                  <VehicleCard
-                    key={vehicle._id}
-                    vehicleId={vehicle._id}
-                    title={vehicle.name}
-                    image={vehicle.image?.startsWith("http") ? vehicle.image : `${BaseURL}${vehicle.image}`}
-                  />
-                ))}
+                {loading
+                  ? Array.from({ length: 4 }).map((_, index) => (
+                      <VehicleCardSkeleton key={index} />
+                    ))
+                  : vehicles.map((vehicle) => (
+                      <VehicleCard
+                        key={vehicle._id}
+                        vehicleId={vehicle._id}
+                        title={vehicle.name}
+                        image={
+                          vehicle.image?.startsWith("http")
+                            ? vehicle.image
+                            : `${BaseURL}${vehicle.image}`
+                        }
+                      />
+                    ))}
               </div>
             </div>
 
@@ -108,7 +121,7 @@ const CustomerDashboard = () => {
               </div>
 
               <div className="space-y-6">
-                <BookingCard />
+                {loading ? <BookingCardSkeleton /> : <BookingCard />}
               </div>
             </div>
           </main>

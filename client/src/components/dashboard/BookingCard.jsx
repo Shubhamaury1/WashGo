@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 const BookingCard = () => {
   const BaseURL = import.meta.env.VITE_API_IMG_URL;
   const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     loadBookings();
@@ -12,6 +13,7 @@ const BookingCard = () => {
 
   const loadBookings = async () => {
     try {
+      setLoading(true);
       const user = JSON.parse(localStorage.getItem("user"));
 
       const res = await bookingApi.getUserBookings(user.id);
@@ -24,6 +26,8 @@ const BookingCard = () => {
       setBookings(activeBookings);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -63,7 +67,11 @@ const BookingCard = () => {
                 <div className="flex items-start gap-3 md:gap-5 w-full">
                   {/* Vehicle Image */}
                   <img
-                    src={booking.vehicleId.image?.startsWith("http") ? booking.vehicleId.image : `${BaseURL}${booking.vehicleId.image}`}
+                    src={
+                      booking.vehicleId.image?.startsWith("http")
+                        ? booking.vehicleId.image
+                        : `${BaseURL}${booking.vehicleId.image}`
+                    }
                     alt={booking.vehicleId.name}
                     className="w-20 md:w-28 h-20 md:h-28 rounded-xl md:rounded-2xl object-cover flex-shrink-0"
                   />
@@ -78,7 +86,7 @@ const BookingCard = () => {
 
                       <span
                         className={`px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap ${getStatusStyle(
-                          booking.status
+                          booking.status,
                         )}`}
                       >
                         {booking.status}
@@ -105,7 +113,7 @@ const BookingCard = () => {
                 <div className="hidden md:flex items-center gap-4 flex-nowrap">
                   <span
                     className={`inline-flex items-center justify-center px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap ${getStatusStyle(
-                      booking.status
+                      booking.status,
                     )}`}
                   >
                     {booking.status}
